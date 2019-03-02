@@ -1,0 +1,26 @@
+@ Main is the entrypoint to a program
+Main<>
+	@ Read from input and output the factorial of it
+	input = In<>
+	output = Factorial<input>
+	Out<output>
+end
+
+@ Produce the factorial of a number
+Factorial<num>
+  @ If it is not an integer or less than 0, return NaN
+	if num % 1 != 0
+		~
+	end
+	elif num < 0
+		~
+	end
+  @ Return 1 if 0 (base case)
+	elif num == 0
+		~1
+	end
+  @ Recursively call the factorial function with a number 1 less than the current one.
+	else	
+		~num * Factorial<num - 1>
+	end
+end
