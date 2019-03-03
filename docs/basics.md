@@ -21,7 +21,25 @@ variable <= variable - 1
 ```
 
 ## Functions
-`TODO`
+A function is declared with the function name and then the parameters in angled brackets, separated by commas. The function ends with the 'end' keyword. A tilde '~' indicates the result of the following expression will be returned.
+
+```
+Square<x>
+    ~x * x
+end
+```
+
+Omitting the expression after the tilde will return NaN. If a method ends without returning it will also return NaN.
+
+```
+Divide<top, bottom>
+    if bottom == 0
+        ~
+    end
+    
+    ~top / bottom
+end
+```
 
 ## Comments
 An '@' symbol denotes that the rest of the line will not be processed by the compiler and can be used to comment.
@@ -30,8 +48,8 @@ An '@' symbol denotes that the rest of the line will not be processed by the com
 A semicolon at the end of a line denotes that the statement continues on to the next line.
 
 ```
-x = y * ;
-    y
+xSquared = x * ;
+           x
 ```
 
 is exactly the same as
