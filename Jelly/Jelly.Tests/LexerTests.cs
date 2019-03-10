@@ -14,6 +14,7 @@ namespace Jelly.Tests
         public List<Token> GetTokens(string text) =>
             new Lexer().Lex(text);
 
+        #region Single
         [TestMethod]
         public void Identifier()
         {
@@ -307,5 +308,37 @@ namespace Jelly.Tests
 
             CollectionAssertUtility.AreEqual(expected, actual);
         }
+        #endregion
+
+        #region Multiple
+        [TestMethod]
+        public void Function()
+        {
+            var text = @"
+Main<>
+    x = In<>
+end";
+
+            var actual = GetTokens(text);
+
+            var expected = new List<Token>
+            {
+                new IdentifierToken("Main", new Position(2, 1)),
+                new SymbolToken(SymbolType.OpenAngleParenthesis, new Position(2, 5)),
+                new SymbolToken(SymbolType.CloseAngleParenthesis, new Position(2, 6)),
+                new EOSToken(new Position(2, 7)),
+                new IdentifierToken("x", new Position(3, 5)),
+                new SymbolToken(SymbolType.Assignment, new Position(3, 7)),
+                new IdentifierToken("In", new Position(3, 9)),
+                new SymbolToken(SymbolType.OpenAngleParenthesis, new Position(3, 11)),
+                new SymbolToken(SymbolType.CloseAngleParenthesis, new Position(3, 12)),
+                new EOSToken(new Position(3, 13)),
+                new KeywordToken(KeywordType.End, new Position(4, 1)),
+                new EOFToken(new Position(4, 4))
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
+        #endregion
     }
 }
