@@ -1,9 +1,9 @@
 ﻿using Jelly.Core.Parsing.Tokens;
+using Jelly.Core.Utility;
 using System;
 using System.Collections.Generic;
-using Jelly.Core.Utility;
-using static System.Char;
 using System.Linq;
+using static System.Char;
 
 namespace Jelly.Core.Parsing
 {
@@ -57,7 +57,7 @@ namespace Jelly.Core.Parsing
                     continue;
                 }
                 // Numbers
-                else if (IsDigit(span[index]))
+                else if (IsDigit(span[index]) || span[index] == '.')
                 {
                     var start = index;
                     var position = GetPosition();
@@ -78,11 +78,13 @@ namespace Jelly.Core.Parsing
                 NextChar();
             }
 
+            // If an End-Of-Line token was not the last token, append one
             if (!(tokens.Last() is EOLToken))
             {
                 tokens.Add(new EOLToken(GetPosition()));
             }
 
+            // Add an End-Of-File token
             tokens.Add(new EOFToken(GetPosition()));
 
             return tokens;

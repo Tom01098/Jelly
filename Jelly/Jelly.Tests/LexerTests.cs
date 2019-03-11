@@ -1,10 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Jelly.Core.Parsing;
+﻿using Jelly.Core.Parsing;
 using Jelly.Core.Parsing.Tokens;
 using Jelly.Core.Utility;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace Jelly.Tests
 {
@@ -55,6 +53,21 @@ namespace Jelly.Tests
                 new NumberToken(3.5, new Position(1, 1)),
                 new EOLToken(new Position(1, 4)),
                 new EOFToken(new Position(1, 4))
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void LeadingDecimalNumber()
+        {
+            var actual = GetTokens(".5");
+
+            var expected = new List<Token>
+            {
+                new NumberToken(.5, new Position(1, 1)),
+                new EOLToken(new Position(1, 3)),
+                new EOFToken(new Position(1, 3))
             };
 
             CollectionAssertUtility.AreEqual(expected, actual);
