@@ -74,6 +74,51 @@ namespace Jelly.Core.Parsing
 
                     continue;
                 }
+                // Return
+                else if (span[index] == '~')
+                {
+                    tokens.Add(new SymbolToken(SymbolType.Return, GetPosition()));
+                }
+                // Open angle parenthesis
+                else if (span[index] == '<')
+                {
+                    tokens.Add(new SymbolToken(SymbolType.OpenAngleParenthesis, GetPosition()));
+                }
+                // Close angle parenthesis
+                else if (span[index] == '>')
+                {
+                    tokens.Add(new SymbolToken(SymbolType.CloseAngleParenthesis, GetPosition()));
+                }
+                // Assignment
+                else if (span[index] == '=')
+                {
+                    tokens.Add(new SymbolToken(SymbolType.Assignment, GetPosition()));
+                }
+                // Add
+                else if (span[index] == '+')
+                {
+                    tokens.Add(new SymbolToken(SymbolType.Add, GetPosition()));
+                }
+                // Subtract
+                else if (span[index] == '-')
+                {
+                    tokens.Add(new SymbolToken(SymbolType.Subtract, GetPosition()));
+                }
+                // Multiply
+                else if (span[index] == '*')
+                {
+                    tokens.Add(new SymbolToken(SymbolType.Multiply, GetPosition()));
+                }
+                // Divide
+                else if (span[index] == '/')
+                {
+                    tokens.Add(new SymbolToken(SymbolType.Divide, GetPosition()));
+                }
+                // Modulo
+                else if (span[index] == '%')
+                {
+                    tokens.Add(new SymbolToken(SymbolType.Modulo, GetPosition()));
+                }
 
                 NextChar();
             }
