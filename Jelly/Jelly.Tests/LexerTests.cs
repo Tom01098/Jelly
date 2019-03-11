@@ -23,6 +23,7 @@ namespace Jelly.Tests
             var expected = new List<Token>
             {
                 new IdentifierToken("abc", new Position(1, 1)),
+                new EOLToken(new Position(1, 4)),
                 new EOFToken(new Position(1, 4))
             };
 
@@ -37,6 +38,7 @@ namespace Jelly.Tests
             var expected = new List<Token>
             {
                 new NumberToken(1, new Position(1, 1)),
+                new EOLToken(new Position(1, 2)),
                 new EOFToken(new Position(1, 2))
             };
 
@@ -51,6 +53,7 @@ namespace Jelly.Tests
             var expected = new List<Token>
             {
                 new NumberToken(3.5, new Position(1, 1)),
+                new EOLToken(new Position(1, 4)),
                 new EOFToken(new Position(1, 4))
             };
 
@@ -65,6 +68,7 @@ namespace Jelly.Tests
             var expected = new List<Token>
             {
                 new KeywordToken(KeywordType.End, new Position(1, 1)),
+                new EOLToken(new Position(1, 4)),
                 new EOFToken(new Position(1, 4))
             };
 
@@ -79,6 +83,7 @@ namespace Jelly.Tests
             var expected = new List<Token>
             {
                 new KeywordToken(KeywordType.If, new Position(1, 1)),
+                new EOLToken(new Position(1, 3)),
                 new EOFToken(new Position(1, 3))
             };
 
@@ -93,6 +98,7 @@ namespace Jelly.Tests
             var expected = new List<Token>
             {
                 new KeywordToken(KeywordType.Elif, new Position(1, 1)),
+                new EOLToken(new Position(1, 5)),
                 new EOFToken(new Position(1, 5))
             };
 
@@ -107,6 +113,7 @@ namespace Jelly.Tests
             var expected = new List<Token>
             {
                 new KeywordToken(KeywordType.Else, new Position(1, 1)),
+                new EOLToken(new Position(1, 5)),
                 new EOFToken(new Position(1, 5))
             };
 
@@ -121,6 +128,7 @@ namespace Jelly.Tests
             var expected = new List<Token>
             {
                 new SymbolToken(SymbolType.OpenAngleParenthesis, new Position(1, 1)),
+                new EOLToken(new Position(1, 2)),
                 new EOFToken(new Position(1, 2))
             };
 
@@ -135,6 +143,7 @@ namespace Jelly.Tests
             var expected = new List<Token>
             {
                 new SymbolToken(SymbolType.CloseAngleParenthesis, new Position(1, 1)),
+                new EOLToken(new Position(1, 2)),
                 new EOFToken(new Position(1, 2))
             };
 
@@ -149,6 +158,7 @@ namespace Jelly.Tests
             var expected = new List<Token>
             {
                 new SymbolToken(SymbolType.Assignment, new Position(1, 1)),
+                new EOLToken(new Position(1, 2)),
                 new EOFToken(new Position(1, 2))
             };
 
@@ -163,6 +173,7 @@ namespace Jelly.Tests
             var expected = new List<Token>
             {
                 new SymbolToken(SymbolType.Mutation, new Position(1, 1)),
+                new EOLToken(new Position(1, 3)),
                 new EOFToken(new Position(1, 3))
             };
 
@@ -177,6 +188,7 @@ namespace Jelly.Tests
             var expected = new List<Token>
             {
                 new SymbolToken(SymbolType.Return, new Position(1, 1)),
+                new EOLToken(new Position(1, 2)),
                 new EOFToken(new Position(1, 2))
             };
 
@@ -191,6 +203,7 @@ namespace Jelly.Tests
             var expected = new List<Token>
             {
                 new SymbolToken(SymbolType.EqualTo, new Position(1, 1)),
+                new EOLToken(new Position(1, 3)),
                 new EOFToken(new Position(1, 3))
             };
 
@@ -205,6 +218,7 @@ namespace Jelly.Tests
             var expected = new List<Token>
             {
                 new SymbolToken(SymbolType.UnequalTo, new Position(1, 1)),
+                new EOLToken(new Position(1, 3)),
                 new EOFToken(new Position(1, 3))
             };
 
@@ -219,6 +233,7 @@ namespace Jelly.Tests
             var expected = new List<Token>
             {
                 new SymbolToken(SymbolType.GreaterThanOrEqualTo, new Position(1, 1)),
+                new EOLToken(new Position(1, 3)),
                 new EOFToken(new Position(1, 3))
             };
 
@@ -233,6 +248,7 @@ namespace Jelly.Tests
             var expected = new List<Token>
             {
                 new SymbolToken(SymbolType.LessThanOrEqualTo, new Position(1, 1)),
+                new EOLToken(new Position(1, 3)),
                 new EOFToken(new Position(1, 3))
             };
 
@@ -247,6 +263,7 @@ namespace Jelly.Tests
             var expected = new List<Token>
             {
                 new SymbolToken(SymbolType.Modulo, new Position(1, 1)),
+                new EOLToken(new Position(1, 2)),
                 new EOFToken(new Position(1, 2))
             };
 
@@ -261,6 +278,7 @@ namespace Jelly.Tests
             var expected = new List<Token>
             {
                 new SymbolToken(SymbolType.Add, new Position(1, 1)),
+                new EOLToken(new Position(1, 2)),
                 new EOFToken(new Position(1, 2))
             };
 
@@ -275,6 +293,7 @@ namespace Jelly.Tests
             var expected = new List<Token>
             {
                 new SymbolToken(SymbolType.Subtract, new Position(1, 1)),
+                new EOLToken(new Position(1, 2)),
                 new EOFToken(new Position(1, 2))
             };
 
@@ -289,6 +308,7 @@ namespace Jelly.Tests
             var expected = new List<Token>
             {
                 new SymbolToken(SymbolType.Multiply, new Position(1, 1)),
+                new EOLToken(new Position(1, 2)),
                 new EOFToken(new Position(1, 2))
             };
 
@@ -303,6 +323,7 @@ namespace Jelly.Tests
             var expected = new List<Token>
             {
                 new SymbolToken(SymbolType.Divide, new Position(1, 1)),
+                new EOLToken(new Position(1, 2)),
                 new EOFToken(new Position(1, 2))
             };
 
@@ -326,14 +347,15 @@ end";
                 new IdentifierToken("Main", new Position(2, 1)),
                 new SymbolToken(SymbolType.OpenAngleParenthesis, new Position(2, 5)),
                 new SymbolToken(SymbolType.CloseAngleParenthesis, new Position(2, 6)),
-                new EOSToken(new Position(2, 7)),
+                new EOLToken(new Position(2, 7)),
                 new IdentifierToken("x", new Position(3, 5)),
                 new SymbolToken(SymbolType.Assignment, new Position(3, 7)),
                 new IdentifierToken("In", new Position(3, 9)),
                 new SymbolToken(SymbolType.OpenAngleParenthesis, new Position(3, 11)),
                 new SymbolToken(SymbolType.CloseAngleParenthesis, new Position(3, 12)),
-                new EOSToken(new Position(3, 13)),
+                new EOLToken(new Position(3, 13)),
                 new KeywordToken(KeywordType.End, new Position(4, 1)),
+                new EOLToken(new Position(4, 4)),
                 new EOFToken(new Position(4, 4))
             };
 

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Jelly.Core.Utility;
 using static System.Char;
+using System.Linq;
 
 namespace Jelly.Core.Parsing
 {
@@ -75,6 +76,11 @@ namespace Jelly.Core.Parsing
                 }
 
                 NextChar();
+            }
+
+            if (!(tokens.Last() is EOLToken))
+            {
+                tokens.Add(new EOLToken(GetPosition()));
             }
 
             tokens.Add(new EOFToken(GetPosition()));

@@ -2,9 +2,9 @@
 
 namespace Jelly.Core.Parsing.Tokens
 {
-    public class EOSToken : Token
+    public class EOLToken : Token
     {
-        public EOSToken(Position position)
+        public EOLToken(Position position)
             : base(position) { }
     }
 }
