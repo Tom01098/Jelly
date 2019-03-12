@@ -15,6 +15,7 @@
         Add,
         Subtract,
         Multiply,
-        Divide
+        Divide,
+        Comma
     }
 }

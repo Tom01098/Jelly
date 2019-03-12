@@ -172,21 +172,22 @@ namespace Jelly.Core.Parsing
                 {
                     tokens.Add(new SymbolToken(SymbolType.Modulo, GetPosition()));
                 }
+                // Comma
+                else if (span[index] == ',')
+                {
+                    tokens.Add(new SymbolToken(SymbolType.Comma, GetPosition()));
+                }
                 // Newline
-                else if (span[index] == '\n' || span[index] == '\r')
+                else if (span[index] == '\r')
                 {
                     if (tokens.Count != 0 && !(tokens.Last() is EOLToken))
                     {
                         tokens.Add(new EOLToken(GetPosition()));
-                        NextLine();
-                        continue;
-                    }
-                    else if (tokens.Count == 0)
-                    {
-                        NextLine();
                     }
 
-                    characterNumber = 0;
+                    lineNumber++;
+                    characterNumber = -1;
+                    NextChar();
                 }
                 // Invalid
                 else if (!IsWhiteSpace(span[index]))
@@ -216,13 +217,6 @@ namespace Jelly.Core.Parsing
             {
                 index++;
                 characterNumber++;
-            }
-
-            void NextLine()
-            {
-                index++;
-                lineNumber++;
-                characterNumber = 1;
             }
         }
     }

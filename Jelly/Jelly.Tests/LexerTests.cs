@@ -342,6 +342,21 @@ namespace Jelly.Tests
 
             CollectionAssertUtility.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void Comma()
+        {
+            var actual = GetTokens(",");
+
+            var expected = new List<Token>
+            {
+                new SymbolToken(SymbolType.Comma, new Position(1, 1)),
+                new EOLToken(new Position(1, 2)),
+                new EOFToken(new Position(1, 2))
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
         #endregion
 
         #region Multiple
@@ -392,7 +407,30 @@ end";
 
             var expected = new List<Token>
             {
-                new IdentifierToken("SafeDivide", new Position(2, 1)), 
+                new IdentifierToken("SafeDivide", new Position(3, 1)),
+                new SymbolToken(SymbolType.OpenAngleParenthesis, new Position(3, 11)),
+                new IdentifierToken("top", new Position(3, 12)),
+                new SymbolToken(SymbolType.Comma, new Position(3, 15)),
+                new IdentifierToken("bottom", new Position(3, 17)),
+                new SymbolToken(SymbolType.CloseAngleParenthesis, new Position(3, 23)),
+                new EOLToken(new Position(3, 24)),
+                new KeywordToken(KeywordType.If, new Position(4, 5)),
+                new IdentifierToken("bottom", new Position(4, 8)),
+                new SymbolToken(SymbolType.EqualTo, new Position(4, 15)),
+                new NumberToken(0, new Position(4, 18)),
+                new EOLToken(new Position(4, 19)),
+                new SymbolToken(SymbolType.Return, new Position(5, 9)),
+                new EOLToken(new Position(5, 10)),
+                new KeywordToken(KeywordType.End, new Position(6, 5)),
+                new EOLToken(new Position(6, 8)),
+                new SymbolToken(SymbolType.Return, new Position(8, 5)),
+                new IdentifierToken("top", new Position(8, 6)),
+                new SymbolToken(SymbolType.Divide, new Position(8, 10)),
+                new IdentifierToken("bottom", new Position(8, 12)),
+                new EOLToken(new Position(8, 18)),
+                new KeywordToken(KeywordType.End, new Position(9, 1)),
+                new EOLToken(new Position(9, 4)),
+                new EOFToken(new Position(9, 4))
             };
 
             CollectionAssertUtility.AreEqual(expected, actual);
