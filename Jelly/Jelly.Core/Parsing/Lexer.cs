@@ -79,20 +79,73 @@ namespace Jelly.Core.Parsing
                 {
                     tokens.Add(new SymbolToken(SymbolType.Return, GetPosition()));
                 }
-                // Open angle parenthesis
+                // Open angle parenthesis / Less than or equal to
                 else if (span[index] == '<')
                 {
-                    tokens.Add(new SymbolToken(SymbolType.OpenAngleParenthesis, GetPosition()));
+                    var position = GetPosition();
+                    NextChar();
+
+                    if (index < span.Length && span[index] == '=')
+                    {
+                        tokens.Add(new SymbolToken(SymbolType.LessThanOrEqualTo, position));
+                    }
+                    else
+                    {
+                        tokens.Add(new SymbolToken(SymbolType.OpenAngleParenthesis, position));
+                        continue;
+                    }
                 }
-                // Close angle parenthesis
+                // Close angle parenthesis / Greater than or equal to
                 else if (span[index] == '>')
                 {
-                    tokens.Add(new SymbolToken(SymbolType.CloseAngleParenthesis, GetPosition()));
+                    var position = GetPosition();
+                    NextChar();
+
+                    if (index < span.Length && span[index] == '=')
+                    {
+                        tokens.Add(new SymbolToken(SymbolType.GreaterThanOrEqualTo, position));
+                    }
+                    else
+                    {
+                        tokens.Add(new SymbolToken(SymbolType.CloseAngleParenthesis, position));
+                        continue;
+                    }
                 }
-                // Assignment
+                // Mutation / Equal to / Assignment
                 else if (span[index] == '=')
                 {
-                    tokens.Add(new SymbolToken(SymbolType.Assignment, GetPosition()));
+                    var position = GetPosition();
+                    NextChar();
+
+                    if (index < span.Length && span[index] == '>')
+                    {
+                        tokens.Add(new SymbolToken(SymbolType.Mutation, position));
+                    }
+                    else if (index < span.Length && span[index] == '=')
+                    {
+                        tokens.Add(new SymbolToken(SymbolType.EqualTo, position));
+                    }
+                    else
+                    {
+                        tokens.Add(new SymbolToken(SymbolType.Assignment, position));
+                        continue;
+                    }
+                }
+                // Unequal to
+                else if (span[index] == '!')
+                {
+                    var position = GetPosition();
+                    NextChar();
+
+                    if (index < span.Length && span[index] == '=')
+                    {
+                        tokens.Add(new SymbolToken(SymbolType.UnequalTo, position));
+                    }
+                    else
+                    {
+                        throw new ArgumentException(
+                            "'!' is only valid when followed by '='");
+                    }
                 }
                 // Add
                 else if (span[index] == '+')
@@ -118,6 +171,12 @@ namespace Jelly.Core.Parsing
                 else if (span[index] == '%')
                 {
                     tokens.Add(new SymbolToken(SymbolType.Modulo, GetPosition()));
+                }
+                // Invalid
+                else
+                {
+                    throw new ArgumentException(
+                        $"'{span[index]}' is an invalid character");
                 }
 
                 NextChar();
