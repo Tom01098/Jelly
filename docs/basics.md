@@ -14,10 +14,10 @@ variable = 3 + 6
 ```
 
 ### Mutating
-Variables mutations are structurally similar to their initialisation, but they use '<=' rather than '='.
+Variables mutations are structurally similar to their initialisation, but they use '=>' rather than '='.
 
 ```
-variable <= variable - 1
+variable => variable - 1
 ```
 
 ## Functions

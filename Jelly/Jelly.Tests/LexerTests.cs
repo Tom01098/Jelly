@@ -181,7 +181,7 @@ namespace Jelly.Tests
         [TestMethod]
         public void Mutation()
         {
-            var actual = GetTokens("<=");
+            var actual = GetTokens("=>");
 
             var expected = new List<Token>
             {
