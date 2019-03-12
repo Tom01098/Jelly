@@ -29,6 +29,21 @@ namespace Jelly.Tests
         }
 
         [TestMethod]
+        public void IdentifierWithUnderscores()
+        {
+            var actual = GetTokens("_I_Hate_Underscores_But_Some_People_Dont_");
+
+            var expected = new List<Token>
+            {
+                new IdentifierToken("_I_Hate_Underscores_But_Some_People_Dont_", new Position(1, 1)),
+                new EOLToken(new Position(1, 42)),
+                new EOFToken(new Position(1, 42))
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
         public void Number()
         {
             var actual = GetTokens("1");

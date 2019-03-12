@@ -22,7 +22,7 @@ namespace Jelly.Core.Parsing
             while (index < span.Length)
             {
                 // Identifiers/Keywords
-                if (IsLetter(span[index]))
+                if (IsLetter(span[index]) || span[index] == '_')
                 {
                     var start = index;
                     var position = GetPosition();
@@ -31,7 +31,7 @@ namespace Jelly.Core.Parsing
                     {
                         NextChar();
                     }
-                    while (index < span.Length && IsLetter(span[index]));
+                    while (index < span.Length && (IsLetter(span[index]) || span[index] == '_'));
 
                     var identifier = span.Slice(start, index - start).ToString();
 
