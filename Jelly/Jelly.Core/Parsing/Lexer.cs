@@ -172,8 +172,24 @@ namespace Jelly.Core.Parsing
                 {
                     tokens.Add(new SymbolToken(SymbolType.Modulo, GetPosition()));
                 }
+                // Newline
+                else if (span[index] == '\n' || span[index] == '\r')
+                {
+                    if (tokens.Count != 0 && !(tokens.Last() is EOLToken))
+                    {
+                        tokens.Add(new EOLToken(GetPosition()));
+                        NextLine();
+                        continue;
+                    }
+                    else if (tokens.Count == 0)
+                    {
+                        NextLine();
+                    }
+
+                    characterNumber = 0;
+                }
                 // Invalid
-                else
+                else if (!IsWhiteSpace(span[index]))
                 {
                     throw new ArgumentException(
                         $"'{span[index]}' is an invalid character");
@@ -183,7 +199,7 @@ namespace Jelly.Core.Parsing
             }
 
             // If an End-Of-Line token was not the last token, append one
-            if (!(tokens.Last() is EOLToken))
+            if (tokens.Count != 0 && !(tokens.Last() is EOLToken))
             {
                 tokens.Add(new EOLToken(GetPosition()));
             }

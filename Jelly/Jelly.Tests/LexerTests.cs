@@ -374,6 +374,29 @@ end";
 
             CollectionAssertUtility.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void Function2()
+        {
+            var text = @"
+
+SafeDivide<top, bottom>
+    if bottom == 0
+        ~
+    end
+    
+    ~top / bottom
+end";
+
+            var actual = GetTokens(text);
+
+            var expected = new List<Token>
+            {
+                new IdentifierToken("SafeDivide", new Position(2, 1)), 
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
         #endregion
     }
 }
