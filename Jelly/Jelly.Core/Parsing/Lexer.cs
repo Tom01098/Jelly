@@ -189,6 +189,32 @@ namespace Jelly.Core.Parsing
                     characterNumber = -1;
                     NextChar();
                 }
+                // Line continuation
+                else if (span[index] == ';')
+                {
+                    bool isComment = false;
+
+                    do
+                    {
+                        NextChar();
+
+                        if (span[index] == '@')
+                        {
+                            isComment = true;
+                        }
+                        else if (!isComment && !IsWhiteSpace(span[index]))
+                        {
+                            throw new ArgumentException(
+                                "Only a comment is allowed after a line continuation");
+                        }
+                    }
+                    while (index < span.Length && 
+                    !(span[index] == '\r' 
+                    || (!isComment && !IsWhiteSpace(span[index]))));
+
+                    lineNumber++;
+                    characterNumber = -1;
+                }
                 // Comment
                 else if (span[index] == '@')
                 {

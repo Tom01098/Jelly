@@ -472,6 +472,30 @@ x = 3 @ And this is a comment after the code on the same line
 
             CollectionAssertUtility.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void LineContinuation()
+        {
+            var text = @"
+xSquared = x * ; @ This is a line continuation
+x
+";
+
+            var actual = GetTokens(text);
+
+            var expected = new List<Token>
+            {
+                new IdentifierToken("xSquared", new Position(2, 1)),
+                new SymbolToken(SymbolType.Assignment, new Position(2, 10)),
+                new IdentifierToken("x", new Position(2, 12)),
+                new SymbolToken(SymbolType.Multiply, new Position(2, 14)),
+                new IdentifierToken("x", new Position(3, 1)),
+                new EOLToken(new Position(3, 2)),
+                new EOFToken(new Position(4, 1))
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
         #endregion
     }
 }
