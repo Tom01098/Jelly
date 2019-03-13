@@ -2,6 +2,7 @@
 using Jelly.Core.Parsing.Tokens;
 using Jelly.Core.Utility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 
 namespace Jelly.Tests
@@ -495,6 +496,36 @@ x
             };
 
             CollectionAssertUtility.AreEqual(expected, actual);
+        }
+        #endregion
+
+        #region Invalid
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void InvalidCharacter()
+        {
+            GetTokens("[");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void InvalidCharacter2()
+        {
+            GetTokens("'");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void InvalidCharacter3()
+        {
+            GetTokens("#");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void InvalidCharacter4()
+        {
+            GetTokens("!");
         }
         #endregion
     }
