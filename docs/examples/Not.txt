@@ -1,0 +1,13 @@
+@ Invert a Boolean.
+@ As 0 is false and everything else is true,
+@ return 0 if x and 1 if not.
+Not<x>
+	if x
+		~0
+	end
+
+	@ This technically doesn't need to be in
+	@ an else block as it will have already
+	@ returned.
+	~1
+end
