@@ -409,13 +409,13 @@ end";
         public void Function2()
         {
             var text = @"
-
+@ Safely divide two numbers
 SafeDivide<top, bottom>
     if bottom == 0
-        ~
+        ~ @ Return NaN
     end
     
-    ~top / bottom
+    ~top / bottom @ Return the result of division
 end";
 
             var actual = GetTokens(text);
@@ -435,17 +435,39 @@ end";
                 new NumberToken(0, new Position(4, 18)),
                 new EOLToken(new Position(4, 19)),
                 new SymbolToken(SymbolType.Return, new Position(5, 9)),
-                new EOLToken(new Position(5, 10)),
+                new EOLToken(new Position(5, 11)),
                 new KeywordToken(KeywordType.End, new Position(6, 5)),
                 new EOLToken(new Position(6, 8)),
                 new SymbolToken(SymbolType.Return, new Position(8, 5)),
                 new IdentifierToken("top", new Position(8, 6)),
                 new SymbolToken(SymbolType.Divide, new Position(8, 10)),
                 new IdentifierToken("bottom", new Position(8, 12)),
-                new EOLToken(new Position(8, 18)),
+                new EOLToken(new Position(8, 19)),
                 new KeywordToken(KeywordType.End, new Position(9, 1)),
                 new EOLToken(new Position(9, 4)),
                 new EOFToken(new Position(9, 4))
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void Function3()
+        {
+            var text = @"
+@ This is a commented line of code
+x = 3 @ And this is a comment after the code on the same line
+";
+
+            var actual = GetTokens(text);
+
+            var expected = new List<Token>
+            {
+                new IdentifierToken("x", new Position(3, 1)),
+                new SymbolToken(SymbolType.Assignment, new Position(3, 3)),
+                new NumberToken(3, new Position(3, 5)),
+                new EOLToken(new Position(3, 7)),
+                new EOFToken(new Position(4, 1)),
             };
 
             CollectionAssertUtility.AreEqual(expected, actual);

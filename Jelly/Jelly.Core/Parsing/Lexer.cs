@@ -189,6 +189,24 @@ namespace Jelly.Core.Parsing
                     characterNumber = -1;
                     NextChar();
                 }
+                // Comment
+                else if (span[index] == '@')
+                {
+                    if (tokens.Count != 0 && !(tokens.Last() is EOLToken))
+                    {
+                        tokens.Add(new EOLToken(GetPosition()));
+                    }
+
+                    do
+                    {
+                        NextChar();
+                    }
+                    while (index < span.Length && span[index] != '\r');
+
+                    lineNumber++;
+                    characterNumber = -1;
+                    NextChar();
+                }
                 // Invalid
                 else if (!IsWhiteSpace(span[index]))
                 {
