@@ -1,23 +1,25 @@
 program = {function} ? EOFToken ?;
 
-function = function_declaration {construct} end;
+function = signature {construct} end;
 
-function_declaration = identifier '<' [parameters] '>' EOL;
+signature = identifier '<' [parameters] '>' EOL;
 parameters = identifier {',' identifier};
 
-construct = statement EOL;
+construct = statement EOL | if_block;
 statement = assignment | mutation | call | return;
+
+if_block = 'if' value EOL {construct} end {'elif' value EOL {construct} end} ['else' value EOL {construct} end];
 
 assignment = identifier '=' value;
 mutation = identifier '=>' value;
 call = identifier '<' [arguments] '>';
 return = '~' value;
 
-value = number | identifier | call | calculation;
+value = number | identifier | call | operation;
 arguments = value {',' value};
 
-calculation = value op value;
-op = '+' | '-' | '*' | '/' | '%' | '==' | '!=' | '<' | '>' | '<=' | '>=';
+operation = value operator value;
+operator = '+' | '-' | '*' | '/' | '%' | '==' | '!=' | '<' | '>' | '<=' | '>=';
 
 end = 'end' EOL;
 
