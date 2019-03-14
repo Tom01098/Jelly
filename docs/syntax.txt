@@ -13,8 +13,11 @@ mutation = identifier '=>' value;
 call = identifier '<' [arguments] '>';
 return = '~' value;
 
-value = number | identifier | call;
+value = number | identifier | call | calculation;
 arguments = value {',' value};
+
+calculation = value op value;
+op = '+' | '-' | '*' | '/' | '%' | '==' | '!=' | '<' | '>' | '<=' | '>=';
 
 end = 'end' EOL;
 
