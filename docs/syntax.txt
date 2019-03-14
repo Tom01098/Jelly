@@ -1,0 +1,23 @@
+program = {function} ? EOFToken ?;
+
+function = function_declaration {construct} end;
+
+function_declaration = identifier '<' [parameters] '>' EOL;
+parameters = identifier {',' identifier};
+
+construct = statement EOL;
+statement = assignment | mutation | call | return;
+
+assignment = identifier '=' value;
+mutation = identifier '=>' value;
+call = identifier '<' [arguments] '>';
+return = '~' value;
+
+value = number | identifier | call;
+arguments = value {',' value};
+
+end = 'end' EOL;
+
+identifier = ? IdentifierToken ?;
+number = ['-'] ? NumberToken ?;
+EOL = ? EOLToken ?;
