@@ -2,12 +2,13 @@
 {
     public readonly struct Position
     {
+        public string File { get; }
         public int Line { get; }
         public int Character { get; }
 
-        public Position(int line, int character) => 
-            (Line, Character) = (line, character);
+        public Position(string file, int line, int character) => 
+            (File, Line, Character) = (file, line, character);
 
-        public override string ToString() => $"({Line}, {Character})";
+        public override string ToString() => $"({File}, {Line}, {Character})";
     }
 }

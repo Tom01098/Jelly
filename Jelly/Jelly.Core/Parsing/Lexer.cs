@@ -9,7 +9,7 @@ namespace Jelly.Core.Parsing
 {
     public class Lexer
     {
-        public List<Token> Lex(string text)
+        public List<Token> Lex(string text, string file)
         {
             var span = text.AsSpan();
             var index = 0;
@@ -257,7 +257,7 @@ namespace Jelly.Core.Parsing
             return tokens;
 
             // Local functions
-            Position GetPosition() => new Position(lineNumber, characterNumber);
+            Position GetPosition() => new Position(file, lineNumber, characterNumber);
 
             void NextChar()
             {
