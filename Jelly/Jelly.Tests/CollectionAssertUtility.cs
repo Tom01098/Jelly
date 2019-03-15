@@ -1,5 +1,7 @@
-﻿using Jelly.Core.Parsing.Tokens;
+﻿using Jelly.Core.Parsing.AST;
+using Jelly.Core.Parsing.Tokens;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 
 namespace Jelly.Tests
@@ -17,6 +19,12 @@ namespace Jelly.Tests
             {
                 AssertUtility.AreEqual(expected[i], actual[i]);
             }
+        }
+
+        public static void AreEqual(List<FunctionNode> expected, 
+                                    List<FunctionNode> actual)
+        {
+            throw new NotImplementedException();
         }
     }
 }
