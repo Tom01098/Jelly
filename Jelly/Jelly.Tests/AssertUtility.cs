@@ -1,5 +1,7 @@
 ﻿using Jelly.Core.Parsing.Tokens;
+using Jelly.Core.Utility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace Jelly.Tests
 {
@@ -46,6 +48,25 @@ namespace Jelly.Tests
                     throw new AssertFailedException("Different symbols");
                 }
             }
+        }
+
+        public static void ThrowsJellyException(Action action, string message)
+        {
+            try
+            {
+                action();
+            }
+            catch (JellyException e)
+            {
+                if (e.Message != message)
+                {
+                    throw new AssertFailedException("Different messages");
+                }
+
+                return;
+            }
+
+            throw new AssertFailedException("Did not throw JellyException");
         }
     }
 }

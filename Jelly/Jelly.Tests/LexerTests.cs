@@ -2,7 +2,6 @@
 using Jelly.Core.Parsing.Tokens;
 using Jelly.Core.Utility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Collections.Generic;
 
 namespace Jelly.Tests
@@ -501,31 +500,42 @@ x
 
         #region Invalid
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void InvalidCharacter()
         {
-            GetTokens("[");
+            AssertUtility.ThrowsJellyException(() => GetTokens("["),
+                "'[' is an invalid character at (1, 1)");
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void InvalidCharacter2()
         {
-            GetTokens("'");
+            AssertUtility.ThrowsJellyException(() => GetTokens("'"),
+                "''' is an invalid character at (1, 1)");
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void InvalidCharacter3()
         {
-            GetTokens("#");
+            AssertUtility.ThrowsJellyException(() => GetTokens("#"),
+                "'#' is an invalid character at (1, 1)");
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void InvalidCharacter4()
         {
-            GetTokens("!");
+            AssertUtility.ThrowsJellyException(() => GetTokens("!"),
+                "'!' is only valid when followed by '=' at (1, 1)");
+        }
+
+        [TestMethod]
+        public void InvalidLineContinuation()
+        {
+            var text = @"
+asd = vefg + ; 8
+      9";
+
+            AssertUtility.ThrowsJellyException(() => GetTokens(text),
+                "Only a comment is allowed after a line continuation at (2, 16)");
         }
         #endregion
     }

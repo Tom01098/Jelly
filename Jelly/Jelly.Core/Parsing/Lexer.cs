@@ -143,8 +143,8 @@ namespace Jelly.Core.Parsing
                     }
                     else
                     {
-                        throw new ArgumentException(
-                            "'!' is only valid when followed by '='");
+                        throw new JellyException(
+                            "'!' is only valid when followed by '='", position);
                     }
                 }
                 // Add
@@ -204,8 +204,9 @@ namespace Jelly.Core.Parsing
                         }
                         else if (!isComment && !IsWhiteSpace(span[index]))
                         {
-                            throw new ArgumentException(
-                                "Only a comment is allowed after a line continuation");
+                            throw new JellyException(
+                                "Only a comment is allowed after a line continuation",
+                                GetPosition());
                         }
                     }
                     while (index < span.Length && 
@@ -236,8 +237,9 @@ namespace Jelly.Core.Parsing
                 // Invalid
                 else if (!IsWhiteSpace(span[index]))
                 {
-                    throw new ArgumentException(
-                        $"'{span[index]}' is an invalid character");
+                    throw new JellyException(
+                        $"'{span[index]}' is an invalid character", 
+                        GetPosition());
                 }
 
                 NextChar();
