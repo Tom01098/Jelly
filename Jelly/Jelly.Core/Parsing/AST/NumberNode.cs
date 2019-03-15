@@ -2,11 +2,11 @@
 
 namespace Jelly.Core.Parsing.AST
 {
-    public class NumberToken : Node, IValueNode
+    public class NumberNode : Node, IValueNode
     {
         public double Number { get; }
 
-        public NumberToken(double number, Position position)
+        public NumberNode(double number, Position position)
             : base(position) => Number = number;
     }
 }
