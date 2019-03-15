@@ -1,12 +1,12 @@
 ﻿namespace Jelly.Core.Parsing.AST
 {
-    public class OperationNode : ValueNode
+    public class OperationNode : IValueNode
     {
-        public ValueNode LHS { get; }
+        public IValueNode LHS { get; }
         public OperatorType Operator { get; }
-        public ValueNode RHS { get; }
+        public IValueNode RHS { get; }
 
-        public OperationNode(ValueNode lhs, OperatorType op, ValueNode rhs) =>
+        public OperationNode(IValueNode lhs, OperatorType op, IValueNode rhs) =>
             (LHS, Operator, RHS) = (lhs, op, rhs);
     }
 }

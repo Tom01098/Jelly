@@ -1,11 +1,11 @@
 ﻿namespace Jelly.Core.Parsing.AST
 {
-    public class MutationNode : StatementNode
+    public class MutationNode : IStatementNode
     {
         public IdentifierNode Identifier { get; }
-        public ValueNode Value { get; }
+        public IValueNode Value { get; }
 
-        public MutationNode(IdentifierNode identifier, ValueNode value) =>
+        public MutationNode(IdentifierNode identifier, IValueNode value) =>
             (Identifier, Value) = (identifier, value);
     }
 }

@@ -4,9 +4,9 @@ namespace Jelly.Core.Parsing.AST
 {
     public class ArgumentsNode
     {
-        public List<ValueNode> Arguments { get; }
+        public List<IValueNode> Arguments { get; }
 
-        public ArgumentsNode(List<ValueNode> args) =>
+        public ArgumentsNode(List<IValueNode> args) =>
             Arguments = args;
     }
 }

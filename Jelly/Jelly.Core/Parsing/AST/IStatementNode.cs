@@ -1,6 +1,6 @@
 ﻿namespace Jelly.Core.Parsing.AST
 {
-    public abstract class ValueNode
+    public interface IStatementNode : IConstructNode
     {
 
     }

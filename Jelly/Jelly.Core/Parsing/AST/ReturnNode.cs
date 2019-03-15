@@ -1,10 +1,10 @@
 ﻿namespace Jelly.Core.Parsing.AST
 {
-    public class ReturnNode : StatementNode
+    public class ReturnNode : IStatementNode
     {
-        public ValueNode Value { get; }
+        public IValueNode Value { get; }
 
-        public ReturnNode(ValueNode value) =>
+        public ReturnNode(IValueNode value) =>
             Value = value;
     }
 }

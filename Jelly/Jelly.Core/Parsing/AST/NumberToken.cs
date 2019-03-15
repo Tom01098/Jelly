@@ -1,6 +1,6 @@
 ﻿namespace Jelly.Core.Parsing.AST
 {
-    public class NumberToken : ValueNode
+    public class NumberToken : IValueNode
     {
         public double Number { get; }
 

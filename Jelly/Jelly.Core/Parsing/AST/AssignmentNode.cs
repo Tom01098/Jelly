@@ -1,11 +1,11 @@
 ﻿namespace Jelly.Core.Parsing.AST
 {
-    public class AssignmentNode : StatementNode
+    public class AssignmentNode : IStatementNode
     {
         public IdentifierNode Identifier { get; }
-        public ValueNode Value { get; }
+        public IValueNode Value { get; }
 
-        public AssignmentNode(IdentifierNode identifier, ValueNode value) =>
+        public AssignmentNode(IdentifierNode identifier, IValueNode value) =>
             (Identifier, Value) = (identifier, value);
     }
 }

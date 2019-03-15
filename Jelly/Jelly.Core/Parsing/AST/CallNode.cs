@@ -1,6 +1,6 @@
 ﻿namespace Jelly.Core.Parsing.AST
 {
-    public class CallNode : ValueNode
+    public class CallNode : IValueNode, IStatementNode
     {
         public IdentifierNode Identifier { get; }
         public ArgumentsNode Arguments { get; }
