@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Jelly.Core.Utility;
+using System.Collections.Generic;
 
 namespace Jelly.Core.Parsing.AST
 {
-    public class FunctionNode
+    public class FunctionNode : Node
     {
         public IdentifierNode Identifier { get; }
         public ParametersNode Parameters { get; }
@@ -10,7 +11,9 @@ namespace Jelly.Core.Parsing.AST
 
         public FunctionNode(IdentifierNode identifier,
                             ParametersNode parameters,
-                            List<IConstructNode> constructs) =>
+                            List<IConstructNode> constructs,
+                            Position position)
+            : base(position) =>
             (Identifier, Parameters, Constructs) = 
             (identifier, parameters, constructs);
             

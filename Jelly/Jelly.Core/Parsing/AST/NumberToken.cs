@@ -1,9 +1,12 @@
-﻿namespace Jelly.Core.Parsing.AST
+﻿using Jelly.Core.Utility;
+
+namespace Jelly.Core.Parsing.AST
 {
-    public class NumberToken : IValueNode
+    public class NumberToken : Node, IValueNode
     {
         public double Number { get; }
 
-        public NumberToken(double number) => Number = number;
+        public NumberToken(double number, Position position)
+            : base(position) => Number = number;
     }
 }
