@@ -8,7 +8,9 @@ parameters = identifier {',' identifier};
 
 construct = statement EOL | if_block;
 
-if_block = 'if' value EOL {construct} end {'elif' value EOL {construct} end} ['else' value EOL {construct} end];
+if_block = 'if' conditional_block {'elif' conditional_block} ['else' EOL {construct} end];
+conditional_block = value EOL {construct} end;
+
 statement = return | assignment | mutation | call;
 
 assignment = identifier '=' value;
