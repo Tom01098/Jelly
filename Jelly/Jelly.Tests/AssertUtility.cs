@@ -57,6 +57,12 @@ namespace Jelly.Tests
 #pragma warning disable IDE0020
         public static void AreEqual(Node expected, Node actual)
         {
+            // Null check
+            if (expected == null ^ actual == null)
+            {
+                throw new AssertFailedException("One node was null");
+            }
+
             // Types are equal, so recursively check its members
             if (expected.GetType() == actual.GetType())
             {
@@ -66,31 +72,54 @@ namespace Jelly.Tests
                     var e = (ArgumentsNode)expected;
                     var a = (ArgumentsNode)actual;
 
+                    if (e.Arguments.Count != a.Arguments.Count)
+                    {
+                        throw new AssertFailedException("Different number of arguments");
+                    }
 
+                    for (int i = 0; i < e.Arguments.Count; i++)
+                    {
+                        AreEqual((Node)e.Arguments[i], (Node)a.Arguments[i]);
+                    }
                 }
                 // AssignmentNode
-                if (expected is AssignmentNode)
+                else if (expected is AssignmentNode)
                 {
                     var e = (AssignmentNode)expected;
                     var a = (AssignmentNode)actual;
 
-
+                    AreEqual(e.Identifier, a.Identifier);
+                    AreEqual((Node)e.Value, (Node)a.Value);
                 }
                 // CallNode
-                if (expected is CallNode)
+                else if (expected is CallNode)
                 {
                     var e = (CallNode)expected;
                     var a = (CallNode)actual;
 
-
+                    AreEqual(e.Identifier, a.Identifier);
+                    AreEqual(e.Arguments, a.Arguments);
                 }
                 // ConditionalBlockNode
-                if (expected is ConditionalBlockNode)
+                else if (expected is ConditionalBlockNode)
                 {
                     var e = (ConditionalBlockNode)expected;
                     var a = (ConditionalBlockNode)actual;
 
+                    if (!((a.Condition == null || e.Condition == null) && (a.Condition == e.Condition)))
+                    {
+                        AreEqual((Node)e.Condition, (Node)a.Condition);
+                    }
 
+                    if (e.Constructs.Count != a.Constructs.Count)
+                    {
+                        throw new AssertFailedException("Different number of constructs");
+                    }
+
+                    for (int i = 0; i < e.Constructs.Count; i++)
+                    {
+                        AreEqual((Node)e.Constructs[i], (Node)a.Constructs[i]);
+                    }
                 }
                 // FunctionNode
                 else if (expected is FunctionNode)
@@ -112,60 +141,82 @@ namespace Jelly.Tests
                     }
                 }
                 // IdentifierNode
-                if (expected is IdentifierNode)
+                else if (expected is IdentifierNode)
                 {
                     var e = (IdentifierNode)expected;
                     var a = (IdentifierNode)actual;
 
-
+                    Assert.AreEqual(e.Identifier, a.Identifier);
                 }
                 // IfBlockNode
-                if (expected is IfBlockNode)
+                else if (expected is IfBlockNode)
                 {
                     var e = (IfBlockNode)expected;
                     var a = (IfBlockNode)actual;
 
+                    if (e.ConditionalBlocks.Count != a.ConditionalBlocks.Count)
+                    {
+                        throw new AssertFailedException("Different number of constructs");
+                    }
 
+                    for (int i = 0; i < e.ConditionalBlocks.Count; i++)
+                    {
+                        AreEqual(e.ConditionalBlocks[i], a.ConditionalBlocks[i]);
+                    }
                 }
                 // MutationNode
-                if (expected is MutationNode)
+                else if (expected is MutationNode)
                 {
                     var e = (MutationNode)expected;
                     var a = (MutationNode)actual;
 
-
+                    AreEqual(e.Identifier, a.Identifier);
+                    AreEqual((Node)e.Value, (Node)a.Value);
                 }
                 // NumberNode
-                if (expected is NumberNode)
+                else if (expected is NumberNode)
                 {
                     var e = (NumberNode)expected;
                     var a = (NumberNode)actual;
 
-
+                    Assert.AreEqual(e.Number, a.Number);
                 }
                 // OperationNode
-                if (expected is OperationNode)
+                else if (expected is OperationNode)
                 {
                     var e = (OperationNode)expected;
                     var a = (OperationNode)actual;
 
-
+                    AreEqual((Node)e.LHS, (Node)a.LHS);
+                    Assert.AreEqual(e.Operator, a.Operator);
+                    AreEqual((Node)e.RHS, (Node)a.RHS);
                 }
                 // ParametersNode
-                if (expected is ParametersNode)
+                else if (expected is ParametersNode)
                 {
                     var e = (ParametersNode)expected;
                     var a = (ParametersNode)actual;
 
+                    if (e.Parameters.Count != a.Parameters.Count)
+                    {
+                        throw new AssertFailedException("Different number of constructs");
+                    }
 
+                    for (int i = 0; i < e.Parameters.Count; i++)
+                    {
+                        AreEqual(e.Parameters[i], a.Parameters[i]);
+                    }
                 }
                 // ReturnNode
-                if (expected is ReturnNode)
+                else if (expected is ReturnNode)
                 {
                     var e = (ReturnNode)expected;
                     var a = (ReturnNode)actual;
 
-
+                    if (!((a.Value == null || e.Value == null) && (a.Value == e.Value)))
+                    {
+                        AreEqual((Node)e.Value, (Node)a.Value);
+                    }
                 }
                 // Node is not of a valid node type
                 else

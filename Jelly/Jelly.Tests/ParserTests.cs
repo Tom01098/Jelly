@@ -318,6 +318,174 @@ end
 
             CollectionAssertUtility.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void EmptyIf()
+        {
+/*
+Main<>
+    if 1
+
+    end
+end
+*/
+
+            var tokens = new List<Token>
+            {
+                new IdentifierToken("Main", Position(1, 1)),
+                new SymbolToken(SymbolType.OpenAngleParenthesis, Position(1, 5)),
+                new SymbolToken(SymbolType.CloseAngleParenthesis, Position(1, 6)),
+                new EOLToken(Position(1, 7)),
+
+                new KeywordToken(KeywordType.If, Position(2, 5)),
+                new NumberToken(1, Position(2, 8)),
+                new EOLToken(Position(2, 9)),
+
+                new KeywordToken(KeywordType.End, Position(4, 5)),
+                new EOLToken(Position(4, 8)),
+
+                new KeywordToken(KeywordType.End, Position(5, 1)),
+                new EOLToken(Position(5, 4)),
+                new EOFToken(Position(5, 4)),
+            };
+
+            var actual = GetAST(tokens);
+
+            var expected = new List<FunctionNode>
+            {
+                new FunctionNode
+                (
+                    new IdentifierNode("Main", Position(1, 1)),
+                    new ParametersNode
+                    (
+                        new List<IdentifierNode>
+                        {
+
+                        },
+                        Position(1, 5)
+                    ),
+                    new List<IConstructNode>
+                    {
+                        new IfBlockNode
+                        (
+                            new List<ConditionalBlockNode>
+                            {
+                                new ConditionalBlockNode
+                                (
+                                    new NumberNode
+                                    (
+                                        1,
+                                        Position(2, 8)
+                                    ),
+                                    new List<IConstructNode>
+                                    {
+
+                                    },
+                                    Position(2, 5)
+                                )
+                            },
+                            Position(2, 5)
+                        )
+                    },
+                    Position(1, 1)
+                )
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void EmptyIfElse()
+        {
+/*
+Main<>
+    if 1
+
+    end
+    else
+
+    end
+end
+*/
+
+            var tokens = new List<Token>
+            {
+                new IdentifierToken("Main", Position(1, 1)),
+                new SymbolToken(SymbolType.OpenAngleParenthesis, Position(1, 5)),
+                new SymbolToken(SymbolType.CloseAngleParenthesis, Position(1, 6)),
+                new EOLToken(Position(1, 7)),
+
+                new KeywordToken(KeywordType.If, Position(2, 5)),
+                new NumberToken(1, Position(2, 8)),
+                new EOLToken(Position(2, 9)),
+
+                new KeywordToken(KeywordType.End, Position(4, 5)),
+                new EOLToken(Position(4, 8)),
+
+                new KeywordToken(KeywordType.Else, Position(5, 5)),
+                new EOLToken(Position(5, 9)),
+
+                new KeywordToken(KeywordType.End, Position(7, 5)),
+                new EOLToken(Position(7, 8)),
+
+                new KeywordToken(KeywordType.End, Position(8, 1)),
+                new EOLToken(Position(8, 4)),
+                new EOFToken(Position(8, 4)),
+            };
+
+            var actual = GetAST(tokens);
+
+            var expected = new List<FunctionNode>
+            {
+                new FunctionNode
+                (
+                    new IdentifierNode("Main", Position(1, 1)),
+                    new ParametersNode
+                    (
+                        new List<IdentifierNode>
+                        {
+
+                        },
+                        Position(1, 5)
+                    ),
+                    new List<IConstructNode>
+                    {
+                        new IfBlockNode
+                        (
+                            new List<ConditionalBlockNode>
+                            {
+                                new ConditionalBlockNode
+                                (
+                                    new NumberNode
+                                    (
+                                        1,
+                                        Position(2, 8)
+                                    ),
+                                    new List<IConstructNode>
+                                    {
+
+                                    },
+                                    Position(2, 5)
+                                ),
+                                new ConditionalBlockNode
+                                (
+                                    null,
+                                    new List<IConstructNode>
+                                    {
+
+                                    },
+                                    Position(5, 5)
+                                )
+                            },
+                            Position(2, 5)
+                        )
+                    },
+                    Position(1, 1)
+                )
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
         #endregion
 
         #region Complex
