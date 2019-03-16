@@ -798,6 +798,113 @@ end
 
             CollectionAssertUtility.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void MultipleFunctionsWithCall()
+        {
+/*
+Main<>
+    Get<3>
+end
+
+Get<x>
+    ~x
+end
+*/
+
+            var tokens = new List<Token>
+            {
+                new IdentifierToken("Main", Position(1, 1)),
+                new SymbolToken(SymbolType.OpenAngleParenthesis, Position(1, 5)),
+                new SymbolToken(SymbolType.CloseAngleParenthesis, Position(1, 6)),
+                new EOLToken(Position(1, 7)),
+
+                new IdentifierToken("Get", Position(2, 5)),
+                new SymbolToken(SymbolType.OpenAngleParenthesis, Position(2, 8)),
+                new NumberToken(3, Position(2, 9)),
+                new SymbolToken(SymbolType.CloseAngleParenthesis, Position(2, 10)),
+                new EOLToken(Position(2, 11)),
+
+                new KeywordToken(KeywordType.End, Position(3, 1)),
+                new EOLToken(Position(3, 4)),
+
+                new IdentifierToken("Get", Position(5, 1)),
+                new SymbolToken(SymbolType.OpenAngleParenthesis, Position(5, 4)),
+                new IdentifierToken("x", Position(5, 5)),
+                new SymbolToken(SymbolType.CloseAngleParenthesis, Position(5, 6)),
+                new EOLToken(Position(5, 7)),
+
+                new SymbolToken(SymbolType.Return, Position(6, 5)),
+                new IdentifierToken("x", Position(6, 6)),
+                new EOLToken(Position(6, 7)),
+
+                new KeywordToken(KeywordType.End, Position(7, 1)),
+                new EOLToken(Position(7, 4)),
+                new EOFToken(Position(7, 4)),
+            };
+
+            var actual = GetAST(tokens);
+
+            var expected = new List<FunctionNode>
+            {
+                new FunctionNode
+                (
+                    new IdentifierNode("Main", Position(1, 1)),
+                    new List<IdentifierNode>
+                    {
+
+                    },
+                    new List<IConstructNode>
+                    {
+                        new CallNode
+                        (
+                            new IdentifierNode
+                            (
+                                "Get",
+                                Position(2, 5)
+                            ),
+                            new List<IValueNode>
+                            {
+                                new NumberNode
+                                (
+                                    3,
+                                    Position(2, 9)
+                                )
+                            },
+                            Position(2, 5)
+                        )
+                    },
+                    Position(1, 1)
+                ),
+                new FunctionNode
+                (
+                    new IdentifierNode("Get", Position(5, 1)),
+                    new List<IdentifierNode>
+                    {
+                        new IdentifierNode
+                        (
+                            "x",
+                            Position(5, 5)
+                        )
+                    },
+                    new List<IConstructNode>
+                    {
+                        new ReturnNode
+                        (
+                            new IdentifierNode
+                            (
+                                "x",
+                                Position(6, 6)
+                            ),
+                            Position(6, 5)
+                        )
+                    },
+                    Position(5, 1)
+                )
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
         #endregion
     }
 }
