@@ -1,5 +1,6 @@
 ﻿using Jelly.Core.Parsing.AST;
 using Jelly.Core.Parsing.Tokens;
+using Jelly.Core.Utility;
 using System;
 using System.Collections.Generic;
 
@@ -14,6 +15,8 @@ namespace Jelly.Core.Parsing
             tokens = new TokenEnumerator(list);
             var functions = new List<FunctionNode>();
 
+            tokens.MoveNext();
+
             while (!(tokens.Current is EOFToken))
             {
                 functions.Add(Function());
@@ -22,11 +25,56 @@ namespace Jelly.Core.Parsing
             return functions;
         }
 
+        private bool IsSymbol(Token token, SymbolType type)
+        {
+            return token is SymbolToken s && s.Symbol == type;
+        }
+
+        private bool IsKeyword(Token token, KeywordType type)
+        {
+            return token is KeywordToken k && k.Keyword == type;
+        }
+
         // function = signature {construct} end;
         // signature = identifier '<' [parameters] '>' EOL;
         private FunctionNode Function()
         {
-            throw new NotImplementedException();
+            var position = tokens.Current.Position;
+            var identifier = Identifier();
+
+            if (!IsSymbol(tokens.Current, SymbolType.OpenAngleParenthesis))
+            {
+                throw new JellyException("Expected '<'", tokens.Current.Position);
+            }
+
+            tokens.MoveNext();
+
+            // TODO Implement optional using lookahead
+            var parameters = Parameters();
+
+            if (!IsSymbol(tokens.Current, SymbolType.CloseAngleParenthesis))
+            {
+                throw new JellyException("Expected '>'", tokens.Current.Position);
+            }
+
+            tokens.MoveNext();
+
+            if (!(tokens.Current is EOLToken))
+            {
+                throw new JellyException("A function signature must end with a newline", 
+                                         tokens.Current.Position);
+            }
+
+            tokens.MoveNext();
+
+            var constructs = new List<IConstructNode>();
+
+            while (!IsKeyword(tokens.Current, KeywordType.End))
+            {
+                constructs.Add(Construct());
+            }
+
+            return new FunctionNode(identifier, parameters, constructs, position);
         }
 
         // arguments = value {',' value};
@@ -105,13 +153,45 @@ namespace Jelly.Core.Parsing
         // identifier = ? IdentifierToken ?;
         private IdentifierNode Identifier()
         {
-            throw new NotImplementedException();
+            if (tokens.Current is IdentifierToken token)
+            {
+                var identifier = token.Identifier;
+                var pos = token.Position;
+
+                tokens.MoveNext();
+
+                return new IdentifierNode(identifier, pos);
+            }
+            else
+            {
+                throw new JellyException("Expected an identifier", tokens.Current.Position);
+            }
         }
 
         // number = ['-'] ? NumberToken ?;
         private NumberNode Number()
         {
-            throw new NotImplementedException();
+            bool isNegative = false;
+
+            if (IsSymbol(tokens.Current, SymbolType.Subtract))
+            {
+                isNegative = true;
+                tokens.MoveNext();
+            }
+
+            if (tokens.Current is NumberToken token)
+            {
+                var num = isNegative ? -token.Number : token.Number;
+                var pos = token.Position;
+
+                tokens.MoveNext();
+
+                return new NumberNode(num, pos);
+            }
+            else
+            {
+                throw new JellyException("Expected a number", tokens.Current.Position);
+            }
         }
     }
 }

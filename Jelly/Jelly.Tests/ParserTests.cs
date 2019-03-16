@@ -15,6 +15,52 @@ namespace Jelly.Tests
 
         #region Simple
         [TestMethod]
+        public void EmptyFunction()
+        {
+/*
+Main<>
+    
+end
+*/
+
+            var tokens = new List<Token>
+            {
+                new IdentifierToken("Main", Position(1, 1)),
+                new SymbolToken(SymbolType.OpenAngleParenthesis, Position(1, 5)),
+                new SymbolToken(SymbolType.CloseAngleParenthesis, Position(1, 6)),
+                new EOLToken(Position(1, 7)),
+                new KeywordToken(KeywordType.End, Position(3, 1)),
+                new EOLToken(Position(3, 4)),
+                new EOFToken(Position(3, 4)),
+            };
+
+            var actual = GetAST(tokens);
+
+            var expected = new List<FunctionNode>
+            {
+                new FunctionNode
+                (
+                    new IdentifierNode("Main", Position(1, 1)),
+                    new ParametersNode
+                    (
+                        new List<IdentifierNode>
+                        {
+
+                        },
+                        Position(1, 5)
+                    ),
+                    new List<IConstructNode>
+                    {
+                        
+                    },
+                    Position(1, 1)
+                )
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
         public void FunctionWithReturn()
         {
 /*
