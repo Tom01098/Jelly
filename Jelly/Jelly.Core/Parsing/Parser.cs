@@ -177,7 +177,18 @@ namespace Jelly.Core.Parsing
         // assignment = identifier '=' value;
         private AssignmentNode Assignment()
         {
-            throw new NotImplementedException();
+            var position = tokens.Current.Position;
+            var identifier = Identifier();
+
+            if (!IsSymbol(tokens.Current, SymbolType.Assignment))
+            {
+                throw new JellyException("Expected '='", tokens.Current.Position);
+            }
+
+            tokens.MoveNext();
+            var value = Value();
+
+            return new AssignmentNode(identifier, value, position);
         }
 
         // mutation = identifier '=>' value;
