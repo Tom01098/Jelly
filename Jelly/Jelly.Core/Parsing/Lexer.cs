@@ -147,6 +147,16 @@ namespace Jelly.Core.Parsing
                             "'!' is only valid when followed by '='", position);
                     }
                 }
+                // Open parenthesis
+                else if (span[index] == '(')
+                {
+                    tokens.Add(new SymbolToken(SymbolType.OpenParenthesis, GetPosition()));
+                }
+                // Close parenthesis
+                else if (span[index] == ')')
+                {
+                    tokens.Add(new SymbolToken(SymbolType.CloseParenthesis, GetPosition()));
+                }
                 // Add
                 else if (span[index] == '+')
                 {

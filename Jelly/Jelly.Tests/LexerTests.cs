@@ -1,6 +1,5 @@
 ﻿using Jelly.Core.Parsing;
 using Jelly.Core.Parsing.Tokens;
-using Jelly.Core.Utility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using static Jelly.Tests.TestUtility;
@@ -367,6 +366,36 @@ namespace Jelly.Tests
             var expected = new List<Token>
             {
                 new SymbolToken(SymbolType.Comma, Position(1, 1)),
+                new EOLToken(Position(1, 2)),
+                new EOFToken(Position(1, 2))
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void OpenParenthesis()
+        {
+            var actual = GetTokens("(");
+
+            var expected = new List<Token>
+            {
+                new SymbolToken(SymbolType.OpenParenthesis, Position(1, 1)),
+                new EOLToken(Position(1, 2)),
+                new EOFToken(Position(1, 2))
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CloseParenthesis()
+        {
+            var actual = GetTokens(")");
+
+            var expected = new List<Token>
+            {
+                new SymbolToken(SymbolType.CloseParenthesis, Position(1, 1)),
                 new EOLToken(Position(1, 2)),
                 new EOFToken(Position(1, 2))
             };

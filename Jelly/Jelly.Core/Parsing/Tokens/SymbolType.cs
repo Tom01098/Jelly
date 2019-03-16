@@ -16,6 +16,8 @@
         Subtract,
         Multiply,
         Divide,
-        Comma
+        Comma,
+        OpenParenthesis,
+        CloseParenthesis
     }
 }
