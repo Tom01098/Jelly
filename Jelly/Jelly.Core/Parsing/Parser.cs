@@ -227,6 +227,8 @@ namespace Jelly.Core.Parsing
                     throw new JellyException("Expected ')'", tokens.Current.Position);
                 }
 
+                tokens.MoveNext();
+
                 return value;
             }
             else if (tokens.Current is IdentifierToken && IsSymbol(tokens.LookAhead(1), SymbolType.OpenAngleParenthesis)

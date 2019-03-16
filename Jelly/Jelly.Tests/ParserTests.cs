@@ -161,6 +161,63 @@ end
         }
 
         [TestMethod]
+        public void FunctionWithParenthesisedReturnValue()
+        {
+/*
+Main<>
+    ~(num)
+end
+*/
+
+            var tokens = new List<Token>
+            {
+                new IdentifierToken("Main", Position(1, 1)),
+                new SymbolToken(SymbolType.OpenAngleParenthesis, Position(1, 5)),
+                new SymbolToken(SymbolType.CloseAngleParenthesis, Position(1, 6)),
+                new EOLToken(Position(1, 7)),
+
+                new SymbolToken(SymbolType.Return, Position(2, 5)),
+                new SymbolToken(SymbolType.OpenParenthesis, Position(2, 6)),
+                new IdentifierToken("num", Position(2, 7)),
+                new SymbolToken(SymbolType.CloseParenthesis, Position(2, 10)),
+                new EOLToken(Position(2, 11)),
+
+                new KeywordToken(KeywordType.End, Position(3, 1)),
+                new EOLToken(Position(3, 4)),
+                new EOFToken(Position(3, 4)),
+            };
+
+            var actual = GetAST(tokens);
+
+            var expected = new List<FunctionNode>
+            {
+                new FunctionNode
+                (
+                    new IdentifierNode("Main", Position(1, 1)),
+                    new List<IdentifierNode>
+                    {
+
+                    },
+                    new List<IConstructNode>
+                    {
+                        new ReturnNode
+                        (
+                            new IdentifierNode
+                            (
+                                "num",
+                                Position(2, 7)
+                            ),
+                            Position(2, 5)
+                        )
+                    },
+                    Position(1, 1)
+                )
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
         public void EmptyFunctionWithSingleParameter()
         {
 /*
