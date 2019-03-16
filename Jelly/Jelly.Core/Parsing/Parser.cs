@@ -97,10 +97,25 @@ namespace Jelly.Core.Parsing
             return new FunctionNode(identifier, parameters, constructs, position);
         }
 
-        // construct = statement EOL | if_block;
+        // construct = if_block | statement EOL;
         private IConstructNode Construct()
         {
-            throw new NotImplementedException();
+            if (IsKeyword(tokens.Current, KeywordType.If))
+            {
+                return IfBlock();
+            }
+            else
+            {
+                var statement = Statement();
+
+                if (!(tokens.Current is EOLToken))
+                {
+                    throw new JellyException("A statement must end with a newline", 
+                                             tokens.Current.Position);
+                }
+
+                return statement;
+            }
         }
 
         // if_block = 'if' conditional_block {'elif' conditional_block} ['else' EOL {construct} end];
@@ -140,7 +155,7 @@ namespace Jelly.Core.Parsing
             throw new NotImplementedException();
         }
 
-        // return = '~' value;
+        // return = '~' [value];
         private ReturnNode Return()
         {
             throw new NotImplementedException();

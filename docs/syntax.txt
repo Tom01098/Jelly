@@ -6,7 +6,7 @@ signature = identifier '<' [parameters] '>' EOL;
 arguments = value {',' value};
 parameters = identifier {',' identifier};
 
-construct = statement EOL | if_block;
+construct = if_block | statement EOL;
 
 if_block = 'if' conditional_block {'elif' conditional_block} ['else' EOL {construct} end];
 conditional_block = value EOL {construct} end;
@@ -16,7 +16,7 @@ statement = return | assignment | mutation | call;
 assignment = identifier '=' value;
 mutation = identifier '=>' value;
 call = identifier '<' [arguments] '>';
-return = '~' value;
+return = '~' [value];
 
 value = '(' value ')' | number | identifier | call | operation;
 
