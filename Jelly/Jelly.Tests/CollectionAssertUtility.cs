@@ -24,7 +24,15 @@ namespace Jelly.Tests
         public static void AreEqual(List<FunctionNode> expected, 
                                     List<FunctionNode> actual)
         {
-            throw new NotImplementedException();
+            if (expected.Count != actual.Count)
+            {
+                throw new AssertFailedException("Different number of elements");
+            }
+
+            for (int i = 0; i < expected.Count; i++)
+            {
+                AssertUtility.AreEqual(expected[i], actual[i]);
+            }
         }
     }
 }
