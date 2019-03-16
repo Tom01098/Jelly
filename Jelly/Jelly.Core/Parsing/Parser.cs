@@ -48,9 +48,10 @@ namespace Jelly.Core.Parsing
             }
 
             tokens.MoveNext();
-
-            // TODO Implement optional using lookahead
-            var parameters = Parameters();
+            
+            var parameters = new List<IdentifierNode>();
+            
+            // TODO Parameters
 
             if (!IsSymbol(tokens.Current, SymbolType.CloseAngleParenthesis))
             {
@@ -75,18 +76,6 @@ namespace Jelly.Core.Parsing
             }
 
             return new FunctionNode(identifier, parameters, constructs, position);
-        }
-
-        // arguments = value {',' value};
-        private ArgumentsNode Arguments()
-        {
-            throw new NotImplementedException();
-        }
-
-        // parameters = identifier {',' identifier};
-        private ParametersNode Parameters()
-        {
-            throw new NotImplementedException();
         }
 
         // construct = statement EOL | if_block;

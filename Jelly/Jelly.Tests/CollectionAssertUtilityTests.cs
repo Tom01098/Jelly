@@ -17,14 +17,10 @@ namespace Jelly.Tests
                 new FunctionNode
                 (
                     new IdentifierNode("Main", Position(1, 1)),
-                    new ParametersNode
-                    (
-                        new List<IdentifierNode>
-                        {
+                    new List<IdentifierNode>
+                    {
 
-                        },
-                        Position(1, 5)
-                    ),
+                    },
                     new List<IConstructNode>
                     {
                         new ReturnNode
@@ -48,14 +44,10 @@ namespace Jelly.Tests
                 new FunctionNode
                 (
                     new IdentifierNode("Main", Position(1, 1)),
-                    new ParametersNode
-                    (
-                        new List<IdentifierNode>
-                        {
+                    new List<IdentifierNode>
+                    {
 
-                        },
-                        Position(1, 5)
-                    ),
+                    },
                     new List<IConstructNode>
                     {
                         new AssignmentNode
@@ -112,28 +104,24 @@ namespace Jelly.Tests
                 new FunctionNode
                 (
                     new IdentifierNode("Main", Position(1, 1)),
-                    new ParametersNode
-                    (
-                        new List<IdentifierNode>
-                        {
-                            new IdentifierNode
-                            (
-                                "one",
-                                Position(1, 6)
-                            ),
-                            new IdentifierNode
-                            (
-                                "two",
-                                Position(1, 11)
-                            ),
-                            new IdentifierNode
-                            (
-                                "three",
-                                Position(1, 16)
-                            )
-                        },
-                        Position(1, 5)
-                    ),
+                    new List<IdentifierNode>
+                    {
+                        new IdentifierNode
+                        (
+                            "one",
+                            Position(1, 6)
+                        ),
+                        new IdentifierNode
+                        (
+                            "two",
+                            Position(1, 11)
+                        ),
+                        new IdentifierNode
+                        (
+                            "three",
+                            Position(1, 16)
+                        )
+                    },
                     new List<IConstructNode>
                     {
 
@@ -153,14 +141,10 @@ namespace Jelly.Tests
                 new FunctionNode
                 (
                     new IdentifierNode("Main", Position(1, 1)),
-                    new ParametersNode
-                    (
-                        new List<IdentifierNode>
-                        {
+                    new List<IdentifierNode>
+                    {
 
-                        },
-                        Position(1, 5)
-                    ),
+                    },
                     new List<IConstructNode>
                     {
                         new IfBlockNode
@@ -199,14 +183,10 @@ namespace Jelly.Tests
                 new FunctionNode
                 (
                     new IdentifierNode("Main", Position(1, 1)),
-                    new ParametersNode
-                    (
-                        new List<IdentifierNode>
-                        {
+                    new List<IdentifierNode>
+                    {
 
-                        },
-                        Position(1, 5)
-                    ),
+                    },
                     new List<IConstructNode>
                     {
                         new IfBlockNode
@@ -257,14 +237,10 @@ namespace Jelly.Tests
                 new FunctionNode
                 (
                     new IdentifierNode("Maix", Position(1, 1)),
-                    new ParametersNode
-                    (
-                        new List<IdentifierNode>
-                        {
+                    new List<IdentifierNode>
+                    {
 
-                        },
-                        Position(1, 5)
-                    ),
+                    },
                     new List<IConstructNode>
                     {
                         new ReturnNode
@@ -282,14 +258,10 @@ namespace Jelly.Tests
                 new FunctionNode
                 (
                     new IdentifierNode("Main", Position(1, 1)),
-                    new ParametersNode
-                    (
-                        new List<IdentifierNode>
-                        {
+                    new List<IdentifierNode>
+                    {
 
-                        },
-                        Position(1, 5)
-                    ),
+                    },
                     new List<IConstructNode>
                     {
                         new ReturnNode
@@ -318,14 +290,10 @@ namespace Jelly.Tests
                 new FunctionNode
                 (
                     new IdentifierNode("Main", Position(1, 1)),
-                    new ParametersNode
-                    (
-                        new List<IdentifierNode>
-                        {
+                    new List<IdentifierNode>
+                    {
 
-                        },
-                        Position(1, 5)
-                    ),
+                    },
                     new List<IConstructNode>
                     {
                         new AssignmentNode
@@ -376,14 +344,10 @@ namespace Jelly.Tests
                 new FunctionNode
                 (
                     new IdentifierNode("Main", Position(1, 1)),
-                    new ParametersNode
-                    (
-                        new List<IdentifierNode>
-                        {
+                    new List<IdentifierNode>
+                    {
 
-                        },
-                        Position(1, 5)
-                    ),
+                    },
                     new List<IConstructNode>
                     {
                         new AssignmentNode
@@ -441,28 +405,24 @@ namespace Jelly.Tests
                 new FunctionNode
                 (
                     new IdentifierNode("Main", Position(1, 1)),
-                    new ParametersNode
-                    (
-                        new List<IdentifierNode>
-                        {
-                            new IdentifierNode
-                            (
-                                "one",
-                                Position(1, 6)
-                            ),
-                            new IdentifierNode
-                            (
-                                "two",
-                                Position(1, 11)
-                            ),
-                            new IdentifierNode
-                            (
-                                "three",
-                                Position(1, 16)
-                            )
-                        },
-                        Position(1, 5)
-                    ),
+                    new List<IdentifierNode>
+                    {
+                        new IdentifierNode
+                        (
+                            "one",
+                            Position(1, 6)
+                        ),
+                        new IdentifierNode
+                        (
+                            "two",
+                            Position(1, 11)
+                        ),
+                        new IdentifierNode
+                        (
+                            "three",
+                            Position(1, 16)
+                        )
+                    },
                     new List<IConstructNode>
                     {
 
@@ -476,28 +436,24 @@ namespace Jelly.Tests
                 new FunctionNode
                 (
                     new IdentifierNode("Main", Position(1, 1)),
-                    new ParametersNode
-                    (
-                        new List<IdentifierNode>
-                        {
-                            new IdentifierNode
-                            (
-                                "one",
-                                Position(1, 6)
-                            ),
-                            new IdentifierNode
-                            (
-                                "two",
-                                Position(1, 11)
-                            ),
-                            new IdentifierNode
-                            (
-                                "three",
-                                Position(1, 23123)
-                            )
-                        },
-                        Position(1, 5)
-                    ),
+                    new List<IdentifierNode>
+                    {
+                        new IdentifierNode
+                        (
+                            "one",
+                            Position(1, 6)
+                        ),
+                        new IdentifierNode
+                        (
+                            "two",
+                            Position(1, 11)
+                        ),
+                        new IdentifierNode
+                        (
+                            "three",
+                            Position(1, 23123)
+                        )
+                    },
                     new List<IConstructNode>
                     {
 
@@ -518,14 +474,10 @@ namespace Jelly.Tests
                 new FunctionNode
                 (
                     new IdentifierNode("Main", Position(1, 1)),
-                    new ParametersNode
-                    (
-                        new List<IdentifierNode>
-                        {
+                    new List<IdentifierNode>
+                    {
 
-                        },
-                        Position(1, 5)
-                    ),
+                    },
                     new List<IConstructNode>
                     {
                         new IfBlockNode
@@ -558,18 +510,14 @@ namespace Jelly.Tests
                 new FunctionNode
                 (
                     new IdentifierNode("Main", Position(1, 1)),
-                    new ParametersNode
-                    (
-                        new List<IdentifierNode>
-                        {
-                            new IdentifierNode
-                            (
-                                "x",
-                                Position(1, 6)
-                            )
-                        },
-                        Position(1, 5)
-                    ),
+                    new List<IdentifierNode>
+                    {
+                        new IdentifierNode
+                        (
+                            "x",
+                            Position(1, 6)
+                        )
+                    },
                     new List<IConstructNode>
                     {
                         new IfBlockNode
@@ -609,14 +557,10 @@ namespace Jelly.Tests
                 new FunctionNode
                 (
                     new IdentifierNode("Main", Position(1, 1)),
-                    new ParametersNode
-                    (
-                        new List<IdentifierNode>
-                        {
+                    new List<IdentifierNode>
+                    {
 
-                        },
-                        Position(1, 5)
-                    ),
+                    },
                     new List<IConstructNode>
                     {
                         new IfBlockNode
@@ -658,14 +602,10 @@ namespace Jelly.Tests
                 new FunctionNode
                 (
                     new IdentifierNode("Main", Position(1, 1)),
-                    new ParametersNode
-                    (
-                        new List<IdentifierNode>
-                        {
+                    new List<IdentifierNode>
+                    {
 
-                        },
-                        Position(1, 5)
-                    ),
+                    },
                     new List<IConstructNode>
                     {
                         new IfBlockNode

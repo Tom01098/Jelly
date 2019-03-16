@@ -66,24 +66,8 @@ namespace Jelly.Tests
             // Types are equal, so recursively check its members
             if (expected.GetType() == actual.GetType())
             {
-                // ArgumentsNode
-                if (expected is ArgumentsNode)
-                {
-                    var e = (ArgumentsNode)expected;
-                    var a = (ArgumentsNode)actual;
-
-                    if (e.Arguments.Count != a.Arguments.Count)
-                    {
-                        throw new AssertFailedException("Different number of arguments");
-                    }
-
-                    for (int i = 0; i < e.Arguments.Count; i++)
-                    {
-                        AreEqual((Node)e.Arguments[i], (Node)a.Arguments[i]);
-                    }
-                }
                 // AssignmentNode
-                else if (expected is AssignmentNode)
+                if (expected is AssignmentNode)
                 {
                     var e = (AssignmentNode)expected;
                     var a = (AssignmentNode)actual;
@@ -98,7 +82,16 @@ namespace Jelly.Tests
                     var a = (CallNode)actual;
 
                     AreEqual(e.Identifier, a.Identifier);
-                    AreEqual(e.Arguments, a.Arguments);
+
+                    if (e.Arguments.Count != a.Arguments.Count)
+                    {
+                        throw new AssertFailedException("Different number of arguments");
+                    }
+
+                    for (int i = 0; i < e.Arguments.Count; i++)
+                    {
+                        AreEqual((Node)e.Arguments[i], (Node)a.Arguments[i]);
+                    }
                 }
                 // ConditionalBlockNode
                 else if (expected is ConditionalBlockNode)
@@ -128,7 +121,16 @@ namespace Jelly.Tests
                     var a = (FunctionNode)actual;
 
                     AreEqual(e.Identifier, a.Identifier);
-                    AreEqual(e.Parameters, a.Parameters);
+
+                    if (e.Parameters.Count != a.Parameters.Count)
+                    {
+                        throw new AssertFailedException("Different number of parameters");
+                    }
+
+                    for (int i = 0; i < e.Parameters.Count; i++)
+                    {
+                        AreEqual(e.Parameters[i], a.Parameters[i]);
+                    }
 
                     if (e.Constructs.Count != a.Constructs.Count)
                     {
@@ -190,22 +192,6 @@ namespace Jelly.Tests
                     AreEqual((Node)e.LHS, (Node)a.LHS);
                     Assert.AreEqual(e.Operator, a.Operator);
                     AreEqual((Node)e.RHS, (Node)a.RHS);
-                }
-                // ParametersNode
-                else if (expected is ParametersNode)
-                {
-                    var e = (ParametersNode)expected;
-                    var a = (ParametersNode)actual;
-
-                    if (e.Parameters.Count != a.Parameters.Count)
-                    {
-                        throw new AssertFailedException("Different number of constructs");
-                    }
-
-                    for (int i = 0; i < e.Parameters.Count; i++)
-                    {
-                        AreEqual(e.Parameters[i], a.Parameters[i]);
-                    }
                 }
                 // ReturnNode
                 else if (expected is ReturnNode)
