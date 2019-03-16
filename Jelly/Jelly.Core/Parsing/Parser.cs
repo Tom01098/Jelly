@@ -75,6 +75,15 @@ namespace Jelly.Core.Parsing
                 constructs.Add(Construct());
             }
 
+            tokens.MoveNext();
+
+            if (!(tokens.Current is EOLToken))
+            {
+                throw new JellyException("Expected newline", tokens.Current.Position);
+            }
+
+            tokens.MoveNext();
+
             return new FunctionNode(identifier, parameters, constructs, position);
         }
 
