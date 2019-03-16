@@ -326,11 +326,12 @@ end
         }
 
         [TestMethod]
-        public void FunctionWithAssignment()
+        public void FunctionWithAssignmentAndMutation()
         {
 /*
 Main<>
     x = -4.3
+    x => 3
 end
 */
 
@@ -340,14 +341,21 @@ end
                 new SymbolToken(SymbolType.OpenAngleParenthesis, Position(1, 5)),
                 new SymbolToken(SymbolType.CloseAngleParenthesis, Position(1, 6)),
                 new EOLToken(Position(1, 7)),
+
                 new IdentifierToken("x", Position(2, 5)),
                 new SymbolToken(SymbolType.Assignment, Position(2, 7)),
                 new SymbolToken(SymbolType.Subtract, Position(2, 9)),
                 new NumberToken(4.3, Position(2, 10)),
                 new EOLToken(Position(2, 13)),
-                new KeywordToken(KeywordType.End, Position(3, 1)),
-                new EOLToken(Position(3, 4)),
-                new EOFToken(Position(3, 4)),
+
+                new IdentifierToken("x", Position(3, 5)),
+                new SymbolToken(SymbolType.Mutation, Position(3, 7)),
+                new NumberToken(3, Position(3, 10)),
+                new EOLToken(Position(3, 11)),
+
+                new KeywordToken(KeywordType.End, Position(4, 1)),
+                new EOLToken(Position(4, 4)),
+                new EOFToken(Position(4, 4)),
             };
 
             var actual = GetAST(tokens);
@@ -359,7 +367,7 @@ end
                     new IdentifierNode("Main", Position(1, 1)),
                     new List<IdentifierNode>
                     {
-                            
+
                     },
                     new List<IConstructNode>
                     {
@@ -376,6 +384,20 @@ end
                                 Position(2, 9)
                             ),
                             Position(2, 5)
+                        ),
+                        new MutationNode
+                        (
+                            new IdentifierNode
+                            (
+                                "x",
+                                Position(3, 5)
+                            ),
+                            new NumberNode
+                            (
+                                3,
+                                Position(3, 10)
+                            ),
+                            Position(3, 5)
                         )
                     },
                     Position(1, 1)

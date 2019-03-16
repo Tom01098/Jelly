@@ -194,7 +194,18 @@ namespace Jelly.Core.Parsing
         // mutation = identifier '=>' value;
         private MutationNode Mutation()
         {
-            throw new NotImplementedException();
+            var position = tokens.Current.Position;
+            var identifier = Identifier();
+
+            if (!IsSymbol(tokens.Current, SymbolType.Mutation))
+            {
+                throw new JellyException("Expected '=>'", tokens.Current.Position);
+            }
+
+            tokens.MoveNext();
+            var value = Value();
+
+            return new MutationNode(identifier, value, position);
         }
 
         // call = identifier '<' [arguments] '>';
