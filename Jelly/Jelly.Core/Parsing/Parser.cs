@@ -35,6 +35,22 @@ namespace Jelly.Core.Parsing
             return token is KeywordToken k && k.Keyword == type;
         }
 
+        private bool IsOperator(Token token)
+        {
+            return token is SymbolToken s && (
+                s.Symbol == SymbolType.Add ||
+                s.Symbol == SymbolType.Subtract ||
+                s.Symbol == SymbolType.Multiply ||
+                s.Symbol == SymbolType.Divide ||
+                s.Symbol == SymbolType.Modulo ||
+                s.Symbol == SymbolType.EqualTo ||
+                s.Symbol == SymbolType.UnequalTo ||
+                s.Symbol == SymbolType.OpenAngleParenthesis ||
+                s.Symbol == SymbolType.CloseAngleParenthesis ||
+                s.Symbol == SymbolType.LessThanOrEqualTo ||
+                s.Symbol == SymbolType.GreaterThanOrEqualTo);
+        }
+
         // function = signature {construct} end;
         // signature = identifier '<' [parameters] '>' EOL;
         // parameters = identifier {',' identifier};
@@ -198,10 +214,45 @@ namespace Jelly.Core.Parsing
             return new ReturnNode(value, position);
         }
 
-        // value = '(' value ')' | number | identifier | call | operation;
+        // value = '(' value ')' | call | operation | number | identifier;
         private IValueNode Value()
         {
-            throw new NotImplementedException();
+            if (IsSymbol(tokens.Current, SymbolType.OpenParenthesis))
+            {
+                tokens.MoveNext();
+                var value = Value();
+
+                if (!IsSymbol(tokens.Current, SymbolType.CloseParenthesis))
+                {
+                    throw new JellyException("Expected ')'", tokens.Current.Position);
+                }
+
+                return value;
+            }
+            else if (tokens.Current is IdentifierToken && IsSymbol(tokens.LookAhead(1), SymbolType.OpenAngleParenthesis)
+                 && (IsSymbol(tokens.LookAhead(2), SymbolType.CloseAngleParenthesis) 
+                 || IsSymbol(tokens.LookAhead(3), SymbolType.CloseAngleParenthesis)
+                 || IsSymbol(tokens.LookAhead(3), SymbolType.Comma)))
+            {
+                return Call();
+            }
+            else if (IsOperator(tokens.LookAhead(1)))
+            {
+                return Operation();
+            }
+            else if (IsSymbol(tokens.Current, SymbolType.Subtract) || tokens.Current is NumberToken)
+            {
+                return Number();
+            }
+            else if (tokens.Current is IdentifierToken)
+            {
+                return Identifier();
+            }
+            else
+            {
+                throw new JellyException("Only a parenthesised value, call, operation, number, or identifier can be used as a value", 
+                                         tokens.Current.Position);
+            }
         }
 
         // operation = value operator value;
@@ -232,6 +283,7 @@ namespace Jelly.Core.Parsing
         // number = ['-'] ? NumberToken ?;
         private NumberNode Number()
         {
+            var position = tokens.Current.Position;
             bool isNegative = false;
 
             if (IsSymbol(tokens.Current, SymbolType.Subtract))
@@ -243,11 +295,10 @@ namespace Jelly.Core.Parsing
             if (tokens.Current is NumberToken token)
             {
                 var num = isNegative ? -token.Number : token.Number;
-                var pos = token.Position;
 
                 tokens.MoveNext();
 
-                return new NumberNode(num, pos);
+                return new NumberNode(num, position);
             }
             else
             {

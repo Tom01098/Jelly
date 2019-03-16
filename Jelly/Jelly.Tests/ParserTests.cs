@@ -105,6 +105,62 @@ end
         }
 
         [TestMethod]
+        public void FunctionWithReturnValue()
+        {
+/*
+Main<>
+    ~-4
+end
+*/
+
+            var tokens = new List<Token>
+            {
+                new IdentifierToken("Main", Position(1, 1)),
+                new SymbolToken(SymbolType.OpenAngleParenthesis, Position(1, 5)),
+                new SymbolToken(SymbolType.CloseAngleParenthesis, Position(1, 6)),
+                new EOLToken(Position(1, 7)),
+
+                new SymbolToken(SymbolType.Return, Position(2, 5)),
+                new SymbolToken(SymbolType.Subtract, Position(2, 6)),
+                new NumberToken(4, Position(2, 7)),
+                new EOLToken(Position(2, 8)),
+
+                new KeywordToken(KeywordType.End, Position(3, 1)),
+                new EOLToken(Position(3, 4)),
+                new EOFToken(Position(3, 4)),
+            };
+
+            var actual = GetAST(tokens);
+
+            var expected = new List<FunctionNode>
+            {
+                new FunctionNode
+                (
+                    new IdentifierNode("Main", Position(1, 1)),
+                    new List<IdentifierNode>
+                    {
+
+                    },
+                    new List<IConstructNode>
+                    {
+                        new ReturnNode
+                        (
+                            new NumberNode
+                            (
+                                -4,
+                                Position(2, 6)
+                            ),
+                            Position(2, 5)
+                        )
+                    },
+                    Position(1, 1)
+                )
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
         public void EmptyFunctionWithSingleParameter()
         {
 /*

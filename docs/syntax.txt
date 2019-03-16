@@ -18,7 +18,7 @@ mutation = identifier '=>' value;
 call = identifier '<' [arguments] '>';
 return = '~' [value];
 
-value = '(' value ')' | number | identifier | call | operation;
+value = '(' value ')' | call | operation | number | identifier;
 
 operation = value operator value;
 operator = '+' | '-' | '*' | '/' | '%' | '==' | '!=' | '<' | '>' | '<=' | '>=';
