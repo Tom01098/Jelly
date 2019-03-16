@@ -15,8 +15,6 @@ namespace Jelly.Core.Parsing
             tokens = new TokenEnumerator(list);
             var functions = new List<FunctionNode>();
 
-            tokens.MoveNext();
-
             while (!(tokens.Current is EOFToken))
             {
                 functions.Add(Function());
@@ -212,7 +210,36 @@ namespace Jelly.Core.Parsing
         // arguments = value {',' value};
         private CallNode Call()
         {
-            throw new NotImplementedException();
+            var position = tokens.Current.Position;
+            var identifier = Identifier();
+
+            if (!IsSymbol(tokens.Current, SymbolType.OpenAngleParenthesis))
+            {
+                throw new JellyException("Expected '<'", tokens.Current.Position);
+            }
+
+            tokens.MoveNext();
+            var arguments = new List<IValueNode>();
+
+            if (!IsSymbol(tokens.Current, SymbolType.CloseAngleParenthesis))
+            {
+                arguments.Add(Value());
+
+                while (!IsSymbol(tokens.Current, SymbolType.CloseAngleParenthesis))
+                {
+                    if (!IsSymbol(tokens.Current, SymbolType.Comma))
+                    {
+                        throw new JellyException("Expected ','", tokens.Current.Position);
+                    }
+
+                    tokens.MoveNext();
+                    arguments.Add(Value());
+                }
+            }
+
+            tokens.MoveNext();
+
+            return new CallNode(identifier, arguments, position);
         }
 
         // return = '~' [value];
@@ -260,7 +287,8 @@ namespace Jelly.Core.Parsing
             {
                 return Call();
             }
-            else if (IsOperator(tokens.LookAhead(1)))
+            else if (IsOperator(tokens.LookAhead(1)) 
+                && (!IsOperator(tokens.LookAhead(2)) && !(tokens.LookAhead(2) is EOLToken)))
             {
                 return Operation();
             }
