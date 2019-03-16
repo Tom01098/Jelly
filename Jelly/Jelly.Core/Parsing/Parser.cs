@@ -114,6 +114,8 @@ namespace Jelly.Core.Parsing
                                              tokens.Current.Position);
                 }
 
+                tokens.MoveNext();
+
                 return statement;
             }
         }
@@ -133,7 +135,27 @@ namespace Jelly.Core.Parsing
         // statement = return | assignment | mutation | call;
         private IStatementNode Statement()
         {
-            throw new NotImplementedException();
+            if (IsSymbol(tokens.Current, SymbolType.Return))
+            {
+                return Return();
+            }
+            else if (IsSymbol(tokens.LookAhead(1), SymbolType.Assignment))
+            {
+                return Assignment();
+            }
+            else if (IsSymbol(tokens.LookAhead(1), SymbolType.Mutation))
+            {
+                return Mutation();
+            }
+            else if (IsSymbol(tokens.LookAhead(1), SymbolType.OpenAngleParenthesis))
+            {
+                return Call();
+            }
+            else
+            {
+                throw new JellyException("Only return, assignment, mutation, or call can be used as a statement", 
+                                         tokens.Current.Position);
+            }
         }
 
         // assignment = identifier '=' value;
@@ -158,7 +180,22 @@ namespace Jelly.Core.Parsing
         // return = '~' [value];
         private ReturnNode Return()
         {
-            throw new NotImplementedException();
+            var position = tokens.Current.Position;
+
+            if (!IsSymbol(tokens.Current, SymbolType.Return))
+            {
+                throw new JellyException("Expected '~'", tokens.Current.Position);
+            }
+
+            tokens.MoveNext();
+            IValueNode value = null;
+
+            if (!(tokens.Current is EOLToken))
+            {
+                value = Value();
+            }
+
+            return new ReturnNode(value, position);
         }
 
         // value = '(' value ')' | number | identifier | call | operation;

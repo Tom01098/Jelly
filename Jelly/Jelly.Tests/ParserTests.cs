@@ -57,7 +57,7 @@ end
         }
 
         [TestMethod]
-        public void FunctionWithReturn()
+        public void FunctionWithReturnNoValue()
         {
 /*
 Main<>
