@@ -37,6 +37,7 @@ namespace Jelly.Core.Parsing
 
         // function = signature {construct} end;
         // signature = identifier '<' [parameters] '>' EOL;
+        // parameters = identifier {',' identifier};
         private FunctionNode Function()
         {
             var position = tokens.Current.Position;
@@ -50,12 +51,21 @@ namespace Jelly.Core.Parsing
             tokens.MoveNext();
             
             var parameters = new List<IdentifierNode>();
-            
-            // TODO Parameters
 
             if (!IsSymbol(tokens.Current, SymbolType.CloseAngleParenthesis))
             {
-                throw new JellyException("Expected '>'", tokens.Current.Position);
+                parameters.Add(Identifier());
+
+                while (!IsSymbol(tokens.Current, SymbolType.CloseAngleParenthesis))
+                {
+                    if (!IsSymbol(tokens.Current, SymbolType.Comma))
+                    {
+                        throw new JellyException("Expected ','", tokens.Current.Position);
+                    }
+
+                    tokens.MoveNext();
+                    parameters.Add(Identifier());
+                }
             }
 
             tokens.MoveNext();
@@ -124,6 +134,7 @@ namespace Jelly.Core.Parsing
         }
 
         // call = identifier '<' [arguments] '>';
+        // arguments = value {',' value};
         private CallNode Call()
         {
             throw new NotImplementedException();

@@ -182,7 +182,7 @@ end
             {
                 new FunctionNode
                 (
-                    new IdentifierNode("Main", Position(1, 1)),
+                    new IdentifierNode("Test", Position(1, 1)),
                     new List<IdentifierNode>
                     {
                         new IdentifierNode
