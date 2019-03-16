@@ -586,6 +586,216 @@ end
 
             CollectionAssertUtility.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void IfElifElseWithStatements()
+        {
+/*
+Main<>
+    if 0
+        x = 1
+        ~x
+    end
+    elif 1 + (4 * 5)
+        ~0
+    end
+    else
+        ~2 / 3
+    end
+end
+*/
+
+            var tokens = new List<Token>
+            {
+                new IdentifierToken("Main", Position(1, 1)),
+                new SymbolToken(SymbolType.OpenAngleParenthesis, Position(1, 5)),
+                new SymbolToken(SymbolType.CloseAngleParenthesis, Position(1, 6)),
+                new EOLToken(Position(1, 7)),
+
+                new KeywordToken(KeywordType.If, Position(2, 5)),
+                new NumberToken(0, Position(2, 8)),
+                new EOLToken(Position(2, 9)),
+
+                new IdentifierToken("x", Position(3, 9)),
+                new SymbolToken(SymbolType.Assignment, Position(3, 11)),
+                new NumberToken(1, Position(3, 13)),
+                new EOLToken(Position(3, 14)),
+
+                new SymbolToken(SymbolType.Return, Position(4, 9)),
+                new IdentifierToken("x", Position(4, 10)),
+                new EOLToken(Position(4, 11)),
+
+                new KeywordToken(KeywordType.End, Position(5, 5)),
+                new EOLToken(Position(5, 8)),
+
+                new KeywordToken(KeywordType.Elif, Position(6, 5)),
+                new NumberToken(1, Position(6, 10)),
+                new SymbolToken(SymbolType.Add, Position(6, 12)),
+                new SymbolToken(SymbolType.OpenParenthesis, Position(6, 14)),
+                new NumberToken(4, Position(6, 15)),
+                new SymbolToken(SymbolType.Multiply, Position(6, 17)),
+                new NumberToken(5, Position(6, 19)),
+                new SymbolToken(SymbolType.CloseParenthesis, Position(6, 20)),
+                new EOLToken(Position(6, 21)),
+
+                new SymbolToken(SymbolType.Return, Position(7, 9)),
+                new NumberToken(0, Position(7, 10)),
+                new EOLToken(Position(7, 11)),
+
+                new KeywordToken(KeywordType.End, Position(8, 5)),
+                new EOLToken(Position(8, 8)),
+
+                new KeywordToken(KeywordType.Else, Position(9, 5)),
+                new EOLToken(Position(9, 9)),
+
+                new SymbolToken(SymbolType.Return, Position(10, 9)),
+                new NumberToken(2, Position(10, 10)),
+                new SymbolToken(SymbolType.Divide, Position(10, 12)),
+                new NumberToken(3, Position(10, 14)),
+                new EOLToken(Position(10, 15)),
+
+                new KeywordToken(KeywordType.End, Position(11, 5)),
+                new EOLToken(Position(1, 8)),
+
+                new KeywordToken(KeywordType.End, Position(12, 1)),
+                new EOLToken(Position(12, 4)),
+                new EOFToken(Position(12, 4)),
+            };
+
+            var actual = GetAST(tokens);
+
+            var expected = new List<FunctionNode>
+            {
+                new FunctionNode
+                (
+                    new IdentifierNode("Main", Position(1, 1)),
+                    new ParametersNode
+                    (
+                        new List<IdentifierNode>
+                        {
+
+                        },
+                        Position(1, 5)
+                    ),
+                    new List<IConstructNode>
+                    {
+                        new IfBlockNode
+                        (
+                            new List<ConditionalBlockNode>
+                            {
+                                new ConditionalBlockNode
+                                (
+                                    new NumberNode
+                                    (
+                                        0,
+                                        Position(2, 8)
+                                    ),
+                                    new List<IConstructNode>
+                                    {
+                                        new AssignmentNode
+                                        (
+                                            new IdentifierNode
+                                            (
+                                                "x",
+                                                Position(3, 9)
+                                            ),
+                                            new NumberNode
+                                            (
+                                                1,
+                                                Position(3, 13)
+                                            ),
+                                            Position(3, 9)
+                                        ),
+                                        new ReturnNode
+                                        (
+                                            new IdentifierNode
+                                            (
+                                                "x",
+                                                Position(4, 10)
+                                            ),
+                                            Position(4, 9)
+                                        )
+                                    },
+                                    Position(2, 5)
+                                ),
+                                new ConditionalBlockNode
+                                (
+                                    new OperationNode
+                                    (
+                                        new NumberNode
+                                        (
+                                            1,
+                                            Position(6, 10)
+                                        ),
+                                        OperatorType.Add,
+                                        new OperationNode
+                                        (
+                                            new NumberNode
+                                            (
+                                                4,
+                                                Position(6, 15)
+                                            ),
+                                            OperatorType.Multiply,
+                                            new NumberNode
+                                            (
+                                                5,
+                                                Position(6, 19)
+                                            ),
+                                            Position(6, 14)
+                                        ),
+                                        Position(6, 10)
+                                    ),
+                                    new List<IConstructNode>
+                                    {
+                                        new ReturnNode
+                                        (
+                                            new NumberNode
+                                            (
+                                                0,
+                                                Position(7, 10)
+                                            ),
+                                            Position(7, 9)
+                                        )
+                                    },
+                                    Position(6, 5)
+                                ),
+                                new ConditionalBlockNode
+                                (
+                                    null,
+                                    new List<IConstructNode>
+                                    {
+                                        new ReturnNode
+                                        (
+                                            new OperationNode
+                                            (
+                                                new NumberNode
+                                                (
+                                                    2,
+                                                    Position(10, 10)
+                                                ),
+                                                OperatorType.Divide,
+                                                new NumberNode
+                                                (
+                                                    3,
+                                                    Position(10, 14)
+                                                ),
+                                                Position(10, 10)
+                                            ),
+                                            Position(10, 9)
+                                        )
+                                    },
+                                    Position(9, 5)
+                                )
+                            },
+                            Position(2, 5)
+                        )
+                    },
+                    Position(1, 1)
+                )
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
         #endregion
     }
 }
