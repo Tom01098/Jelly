@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Jelly.Core.Parsing
 {
+    /// <summary>
+    /// Enumerates over a given list of tokens with look ahead ability.
+    /// </summary>
     public class TokenEnumerator
     {
         private List<Token> tokens;

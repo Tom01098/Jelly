@@ -1,5 +1,8 @@
 ﻿namespace Jelly.Core.Utility
 {
+    /// <summary>
+    /// Represents a position of a character in a file.
+    /// </summary>
     public readonly struct Position
     {
         public string File { get; }

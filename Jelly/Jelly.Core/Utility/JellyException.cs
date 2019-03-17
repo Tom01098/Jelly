@@ -2,6 +2,9 @@
 
 namespace Jelly.Core.Utility
 {
+    /// <summary>
+    /// Custom exception type using <see cref="Position"/>.
+    /// </summary>
     [Serializable]
     public class JellyException : Exception
     {

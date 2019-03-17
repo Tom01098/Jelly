@@ -1,11 +1,13 @@
 ﻿using Jelly.Core.Parsing.AST;
 using Jelly.Core.Parsing.Tokens;
 using Jelly.Core.Utility;
-using System;
 using System.Collections.Generic;
 
 namespace Jelly.Core.Parsing
 {
+    /// <summary>
+    /// Parses an input list of tokens into a syntax tree.
+    /// </summary>
     public class Parser
     {
         private TokenEnumerator tokens;

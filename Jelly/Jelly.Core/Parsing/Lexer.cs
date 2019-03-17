@@ -7,6 +7,9 @@ using static System.Char;
 
 namespace Jelly.Core.Parsing
 {
+    /// <summary>
+    /// Converts an input string into a list of tokens with the same meaning.
+    /// </summary>
     public class Lexer
     {
         public List<Token> Lex(string text, string file)
