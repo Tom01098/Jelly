@@ -1198,7 +1198,7 @@ end
                                         6,
                                         Position(2, 17)
                                     ),
-                                    Position(2, 19)
+                                    Position(2, 15)
                                 ),
                                 OperatorType.Divide,
                                 new OperationNode
@@ -1216,7 +1216,7 @@ end
                                     ),
                                     Position(2, 22)
                                 ),
-                                Position(2, 9)
+                                Position(2, 19)
                             ),
                             Position(2, 5)
                         )
@@ -1331,7 +1331,7 @@ end
                                     ),
                                     Position(2, 20)
                                 ),
-                                Position(2, 10)
+                                Position(2, 9)
                             ),
                             Position(2, 5)
                         )

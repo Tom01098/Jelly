@@ -1,7 +1,6 @@
 ﻿using Jelly.Core.Parsing.AST;
 using Jelly.Core.Parsing.Tokens;
 using Jelly.Core.Utility;
-using System;
 using System.Collections.Generic;
 
 namespace Jelly.Core.Parsing
@@ -341,24 +340,10 @@ namespace Jelly.Core.Parsing
             return new ReturnNode(value, position);
         }
 
-        // value = '(' value ')' | call | operation | number | identifier;
+        // value = call | operation | number | identifier;
         private IValueNode Value()
         {
-            if (IsSymbol(tokens.Current, SymbolType.OpenParenthesis))
-            {
-                tokens.MoveNext();
-                var value = Value();
-
-                if (!IsSymbol(tokens.Current, SymbolType.CloseParenthesis))
-                {
-                    throw new JellyException("Expected ')'", tokens.Current.Position);
-                }
-
-                tokens.MoveNext();
-
-                return value;
-            }
-            else if (tokens.Current is IdentifierToken && IsSymbol(tokens.LookAhead(1), SymbolType.OpenAngleParenthesis)
+            if (tokens.Current is IdentifierToken && IsSymbol(tokens.LookAhead(1), SymbolType.OpenAngleParenthesis)
                  && (IsSymbol(tokens.LookAhead(2), SymbolType.CloseAngleParenthesis) 
                  || IsSymbol(tokens.LookAhead(3), SymbolType.CloseAngleParenthesis)
                  || IsSymbol(tokens.LookAhead(3), SymbolType.Comma)))
@@ -380,30 +365,27 @@ namespace Jelly.Core.Parsing
             }
             else
             {
-                throw new JellyException("Only a parenthesised value, call, operation, number, or identifier can be used as a value", 
-                                         tokens.Current.Position);
+                return Operation();
             }
         }
 
         // operation = term {operator term};
-        private OperationNode Operation()
+        private IValueNode Operation()
         {
             var position = tokens.Current.Position;
 
             var pos = position;
             var lhs = Term();
-            var op = Operator();
-            var rhs = Term();
 
             while (IsOperator(tokens.Current))
             {
+                var op = Operator();
+                var rhs = Term();
                 lhs = new OperationNode(lhs, op, rhs, pos);
-                op = Operator();
-                rhs = Term();
                 pos = tokens.Current.Position;
             }
 
-            return new OperationNode(lhs, op, rhs, position);
+            return lhs;
         }
 
         // term = '(' value ')' | call | number | identifier;
