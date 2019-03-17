@@ -8,8 +8,8 @@ parameters = identifier {',' identifier};
 
 construct = if_block | statement EOL;
 
-if_block = 'if' conditional_block {'elif' conditional_block} ['else' EOL {construct} end];
-conditional_block = value EOL {construct} end;
+if_block = 'if' value conditional_block {'elif' value conditional_block} ['else' conditional_block];
+conditional_block = EOL {construct} end;
 
 statement = return | assignment | mutation | call;
 
@@ -18,14 +18,14 @@ mutation = identifier '=>' value;
 call = identifier '<' [arguments] '>';
 return = '~' [value];
 
-value = call | operation | number | identifier;
-
-operation = term {operator term};
+value = term {operator term};
 operator = '+' | '-' | '*' | '/' | '%' | '==' | '!=' | '<' | '>' | '<=' | '>=';
-term = '(' value ')' | call | number | identifier;
-
-end = 'end' EOL;
+term = '(' value ')' | not | negative | call | number | identifier;
 
 identifier = ? IdentifierToken ?;
-number = ['-'] ? NumberToken ?;
+number = ? NumberToken ?;
+not = '!' value;
+negative = ['-'] value;
+
 EOL = ? EOLToken ?;
+end = 'end' EOL;
