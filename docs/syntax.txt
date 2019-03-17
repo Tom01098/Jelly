@@ -20,7 +20,7 @@ return = '~' [value];
 
 value = '(' value ')' | call | operation | number | identifier;
 
-operation = term operator value;
+operation = term {operator term};
 operator = '+' | '-' | '*' | '/' | '%' | '==' | '!=' | '<' | '>' | '<=' | '>=';
 term = '(' value ')' | call | number | identifier;
 

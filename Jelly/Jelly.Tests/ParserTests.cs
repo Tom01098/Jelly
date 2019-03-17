@@ -631,6 +631,80 @@ end
 
             CollectionAssertUtility.AreEqual(expected, actual);
         }
+        
+        [TestMethod]
+        public void ReturnOperation()
+        {
+/*
+Double<x>
+    ~(x * 2)
+end
+*/
+
+            var tokens = new List<Token>
+            {
+                new IdentifierToken("Double", Position(1, 1)),
+                new SymbolToken(SymbolType.OpenAngleParenthesis, Position(1, 7)),
+                new IdentifierToken("x", Position(1, 8)),
+                new SymbolToken(SymbolType.CloseAngleParenthesis, Position(1, 9)),
+                new EOLToken(Position(1, 10)),
+
+                new SymbolToken(SymbolType.Return, Position(2, 5)),
+                new SymbolToken(SymbolType.OpenParenthesis, Position(2, 6)),
+                new IdentifierToken("x", Position(2, 7)),
+                new SymbolToken(SymbolType.Multiply, Position(2, 9)),
+                new NumberToken(2, Position(2, 11)),
+                new SymbolToken(SymbolType.CloseParenthesis, Position(2, 12)),
+                new EOLToken(Position(2, 13)),
+
+                new KeywordToken(KeywordType.End, Position(3, 1)),
+                new EOLToken(Position(3, 4)),
+                new EOFToken(Position(3, 4)),
+            };
+
+            var actual = GetAST(tokens);
+
+            var expected = new List<FunctionNode>
+            {
+                new FunctionNode
+                (
+                    new IdentifierNode("Double", Position(1, 1)),
+                    new List<IdentifierNode>
+                    {
+                        new IdentifierNode
+                        (
+                            "x",
+                            Position(1, 8)
+                        )
+                    },
+                    new List<IConstructNode>
+                    {
+                        new ReturnNode
+                        (
+                            new OperationNode
+                            (
+                                new IdentifierNode
+                                (
+                                    "x",
+                                    Position(2, 7)
+                                ),
+                                OperatorType.Multiply,
+                                new NumberNode
+                                (
+                                    2,
+                                    Position(2, 11)
+                                ),
+                                Position(2, 7)
+                            ),
+                            Position(2, 5)
+                        )
+                    },
+                    Position(1, 1)
+                )
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
         #endregion
 
         #region Complex
@@ -1035,6 +1109,119 @@ end
                         )
                     },
                     Position(5, 1)
+                )
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void LongOperation()
+        {
+/*
+Main<>
+    x = 1 * 4 + 6 / (-4 - -6)
+end
+*/
+
+            var tokens = new List<Token>
+            {
+                new IdentifierToken("Main", Position(1, 1)),
+                new SymbolToken(SymbolType.OpenAngleParenthesis, Position(1, 5)),
+                new SymbolToken(SymbolType.CloseAngleParenthesis, Position(1, 6)),
+                new EOLToken(Position(1, 7)),
+
+                new IdentifierToken("x", Position(2, 5)),
+                new SymbolToken(SymbolType.Assignment, Position(2, 7)),
+                new NumberToken(1, Position(2, 9)),
+                new SymbolToken(SymbolType.Multiply, Position(2, 11)),
+                new NumberToken(4, Position(2, 13)),
+                new SymbolToken(SymbolType.Add, Position(2, 15)),
+                new NumberToken(6, Position(2, 17)),
+                new SymbolToken(SymbolType.Divide, Position(2, 19)),
+                new SymbolToken(SymbolType.OpenParenthesis, Position(2, 21)),
+                new SymbolToken(SymbolType.Subtract, Position(2, 22)),
+                new NumberToken(4, Position(2, 23)),
+                new SymbolToken(SymbolType.Subtract, Position(2, 25)),
+                new SymbolToken(SymbolType.Subtract, Position(2, 27)),
+                new NumberToken(6, Position(2, 28)),
+                new SymbolToken(SymbolType.CloseParenthesis, Position(2, 29)),
+                new EOLToken(Position(2, 30)),
+
+                new KeywordToken(KeywordType.End, Position(3, 1)),
+                new EOLToken(Position(3, 4)),
+                new EOFToken(Position(3, 4)),
+            };
+
+            var actual = GetAST(tokens);
+
+            var expected = new List<FunctionNode>
+            {
+                new FunctionNode
+                (
+                    new IdentifierNode("Main", Position(1, 1)),
+                    new List<IdentifierNode>
+                    {
+
+                    },
+                    new List<IConstructNode>
+                    {
+                        new AssignmentNode
+                        (
+                            new IdentifierNode
+                            (
+                                "x",
+                                Position(2, 5)
+                            ),
+                            new OperationNode
+                            (
+                                new OperationNode
+                                (
+                                    new OperationNode
+                                    (
+                                        new NumberNode
+                                        (
+                                            1,
+                                            Position(2, 9)
+                                        ),
+                                        OperatorType.Multiply,
+                                        new NumberNode
+                                        (
+                                            4,
+                                            Position(2, 13)
+                                        ),
+                                        Position(2, 9)
+                                    ),
+                                    OperatorType.Add,
+                                    new NumberNode
+                                    (
+                                        6,
+                                        Position(2, 17)
+                                    ),
+                                    Position(2, 19)
+                                ),
+                                OperatorType.Divide,
+                                new OperationNode
+                                (
+                                    new NumberNode
+                                    (
+                                        -4,
+                                        Position(2, 22)
+                                    ),
+                                    OperatorType.Subtract,
+                                    new NumberNode
+                                    (
+                                        -6,
+                                        Position(2, 27)
+                                    ),
+                                    Position(2, 22)
+                                ),
+                                Position(2, 9)
+                            ),
+                            Position(2, 5)
+                        )
+                    },
+                    Position(1, 1)
                 )
             };
 
