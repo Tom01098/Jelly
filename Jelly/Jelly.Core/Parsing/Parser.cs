@@ -307,11 +307,105 @@ namespace Jelly.Core.Parsing
             }
         }
 
-        // operation = value operator value;
+        // operation = term operator value;
         // operator = '+' | '-' | '*' | '/' | '%' | '==' | '!=' | '<' | '>' | '<=' | '>=';
+        // term = '(' value ')' | call | number | identifier;
         private OperationNode Operation()
         {
-            throw new NotImplementedException();
+            var position = tokens.Current.Position;
+
+            IValueNode lhs;
+
+            if (IsSymbol(tokens.Current, SymbolType.OpenParenthesis))
+            {
+                tokens.MoveNext();
+                var value = Value();
+
+                if (!IsSymbol(tokens.Current, SymbolType.CloseParenthesis))
+                {
+                    throw new JellyException("Expected ')'", tokens.Current.Position);
+                }
+
+                tokens.MoveNext();
+
+                lhs = value;
+            }
+            else if (tokens.Current is IdentifierToken && IsSymbol(tokens.LookAhead(1), SymbolType.OpenAngleParenthesis)
+                 && (IsSymbol(tokens.LookAhead(2), SymbolType.CloseAngleParenthesis)
+                 || IsSymbol(tokens.LookAhead(3), SymbolType.CloseAngleParenthesis)
+                 || IsSymbol(tokens.LookAhead(3), SymbolType.Comma)))
+            {
+                lhs = Call();
+            }
+            else if (IsSymbol(tokens.Current, SymbolType.Subtract) || tokens.Current is NumberToken)
+            {
+                lhs = Number();
+            }
+            else if (tokens.Current is IdentifierToken)
+            {
+                lhs = Identifier();
+            }
+            else
+            {
+                throw new JellyException("Only a parenthesised value, call, number, or identifier can be used as a term",
+                                         tokens.Current.Position);
+            }
+
+            OperatorType op;
+
+            if (IsSymbol(tokens.Current, SymbolType.Add))
+            {
+                op = OperatorType.Add;
+            }
+            else if (IsSymbol(tokens.Current, SymbolType.Subtract))
+            {
+                op = OperatorType.Subtract;
+            }
+            else if (IsSymbol(tokens.Current, SymbolType.Multiply))
+            {
+                op = OperatorType.Multiply;
+            }
+            else if (IsSymbol(tokens.Current, SymbolType.Divide))
+            {
+                op = OperatorType.Divide;
+            }
+            else if (IsSymbol(tokens.Current, SymbolType.Modulo))
+            {
+                op = OperatorType.Modulo;
+            }
+            else if (IsSymbol(tokens.Current, SymbolType.EqualTo))
+            {
+                op = OperatorType.EqualTo;
+            }
+            else if (IsSymbol(tokens.Current, SymbolType.UnequalTo))
+            {
+                op = OperatorType.UnequalTo;
+            }
+            else if (IsSymbol(tokens.Current, SymbolType.OpenAngleParenthesis))
+            {
+                op = OperatorType.LessThan;
+            }
+            else if (IsSymbol(tokens.Current, SymbolType.CloseAngleParenthesis))
+            {
+                op = OperatorType.GreaterThan;
+            }
+            else if (IsSymbol(tokens.Current, SymbolType.LessThanOrEqualTo))
+            {
+                op = OperatorType.LessThanOrEqualTo;
+            }
+            else if (IsSymbol(tokens.Current, SymbolType.GreaterThanOrEqualTo))
+            {
+                op = OperatorType.GreaterThanOrEqualTo;
+            }
+            else
+            {
+                throw new JellyException("Expected an operator", tokens.Current.Position);
+            }
+
+            tokens.MoveNext();
+            var rhs = Value();
+
+            return new OperationNode(lhs, op, rhs, position);
         }
 
         // identifier = ? IdentifierToken ?;

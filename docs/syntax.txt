@@ -20,8 +20,9 @@ return = '~' [value];
 
 value = '(' value ')' | call | operation | number | identifier;
 
-operation = value operator value;
+operation = term operator value;
 operator = '+' | '-' | '*' | '/' | '%' | '==' | '!=' | '<' | '>' | '<=' | '>=';
+term = '(' value ')' | call | number | identifier;
 
 end = 'end' EOL;
 
