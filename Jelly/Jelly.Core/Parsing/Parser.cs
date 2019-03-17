@@ -137,13 +137,88 @@ namespace Jelly.Core.Parsing
         // if_block = 'if' conditional_block {'elif' conditional_block} ['else' EOL {construct} end];
         private IfBlockNode IfBlock()
         {
-            throw new NotImplementedException();
+            var position = tokens.Current.Position;
+            var blocks = new List<ConditionalBlockNode>();
+
+            if (!IsKeyword(tokens.Current, KeywordType.If))
+            {
+                throw new JellyException("Expected 'if'", tokens.Current.Position);
+            }
+
+            tokens.MoveNext();
+            blocks.Add(ConditionalBlock());
+
+            while (IsKeyword(tokens.Current, KeywordType.Elif))
+            {
+                tokens.MoveNext();
+                blocks.Add(ConditionalBlock());
+            }
+
+            if (IsKeyword(tokens.Current, KeywordType.Else))
+            {
+                var pos = tokens.Current.Position;
+                tokens.MoveNext();
+
+                if (!(tokens.Current is EOLToken))
+                {
+                    throw new JellyException("An else signature must end with a newline", 
+                                             tokens.Current.Position);
+                }
+
+                tokens.MoveNext();
+                var constructs = new List<IConstructNode>();
+
+                while (!IsKeyword(tokens.Current, KeywordType.End))
+                {
+                    constructs.Add(Construct());
+                }
+
+                tokens.MoveNext();
+
+                if (!(tokens.Current is EOLToken))
+                {
+                    throw new JellyException("'end' must be followed by a newline",
+                                             tokens.Current.Position);
+                }
+
+                tokens.MoveNext();
+                blocks.Add(new ConditionalBlockNode(null, constructs, pos));
+            }
+
+            return new IfBlockNode(blocks, position);
         }
 
         // conditional_block = value EOL {construct} end;
         private ConditionalBlockNode ConditionalBlock()
         {
-            throw new NotImplementedException();
+            var position = tokens.Current.Position;
+            var value = Value();
+
+            if (!(tokens.Current is EOLToken))
+            {
+                throw new JellyException("A conditional signature must end with a newline",
+                                         tokens.Current.Position);
+            }
+
+            tokens.MoveNext();
+            var constructs = new List<IConstructNode>();
+
+            while (!IsKeyword(tokens.Current, KeywordType.End))
+            {
+                constructs.Add(Construct());
+            }
+
+            tokens.MoveNext();
+
+            if (!(tokens.Current is EOLToken))
+            {
+                throw new JellyException("'end' must be followed by a newline",
+                                         tokens.Current.Position);
+            }
+
+            tokens.MoveNext();
+
+            return new ConditionalBlockNode(value, constructs, position);
         }
 
         // statement = return | assignment | mutation | call;

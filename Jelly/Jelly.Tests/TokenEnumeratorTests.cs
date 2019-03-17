@@ -22,9 +22,7 @@ namespace Jelly.Tests
             };
 
             var enumerator = new TokenEnumerator(tokens);
-
-            Assert.AreEqual(null, enumerator.Current);
-            enumerator.MoveNext();
+            
             Assert.AreEqual(tokens[0], enumerator.Current);
             enumerator.MoveNext();
             Assert.AreEqual(tokens[1], enumerator.Current);
@@ -52,9 +50,7 @@ namespace Jelly.Tests
             };
 
             var enumerator = new TokenEnumerator(tokens);
-
-            Assert.AreEqual(null, enumerator.Current);
-            enumerator.MoveNext();
+            
             Assert.AreEqual(tokens[0], enumerator.Current);
             enumerator.MoveNext();
             Assert.AreEqual(tokens[3], enumerator.LookAhead(2));

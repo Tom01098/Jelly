@@ -530,7 +530,7 @@ end
                                     {
 
                                     },
-                                    Position(2, 5)
+                                    Position(2, 8)
                                 )
                             },
                             Position(2, 5)
@@ -610,7 +610,7 @@ end
                                     {
 
                                     },
-                                    Position(2, 5)
+                                    Position(2, 8)
                                 ),
                                 new ConditionalBlockNode
                                 (
@@ -853,7 +853,7 @@ end
                                             Position(4, 9)
                                         )
                                     },
-                                    Position(2, 5)
+                                    Position(2, 8)
                                 ),
                                 new ConditionalBlockNode
                                 (
@@ -878,7 +878,7 @@ end
                                                 5,
                                                 Position(6, 19)
                                             ),
-                                            Position(6, 14)
+                                            Position(6, 15)
                                         ),
                                         Position(6, 10)
                                     ),
@@ -894,7 +894,7 @@ end
                                             Position(7, 9)
                                         )
                                     },
-                                    Position(6, 5)
+                                    Position(6, 10)
                                 ),
                                 new ConditionalBlockNode
                                 (
