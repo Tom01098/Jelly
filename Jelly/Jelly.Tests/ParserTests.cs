@@ -1227,6 +1227,121 @@ end
 
             CollectionAssertUtility.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void LongOperation2()
+        {
+/*
+Main<>
+    x = (5 + 1) * (6 / (8 + 2))
+end
+*/
+
+            var tokens = new List<Token>
+            {
+                new IdentifierToken("Main", Position(1, 1)),
+                new SymbolToken(SymbolType.OpenAngleParenthesis, Position(1, 5)),
+                new SymbolToken(SymbolType.CloseAngleParenthesis, Position(1, 6)),
+                new EOLToken(Position(1, 7)),
+
+                new IdentifierToken("x", Position(2, 5)),
+                new SymbolToken(SymbolType.Assignment, Position(2, 7)),
+                new SymbolToken(SymbolType.OpenParenthesis, Position(2, 9)),
+                new NumberToken(5, Position(2, 10)),
+                new SymbolToken(SymbolType.Add, Position(2, 12)),
+                new NumberToken(1, Position(2, 14)),
+                new SymbolToken(SymbolType.CloseParenthesis, Position(2, 15)),
+                new SymbolToken(SymbolType.Multiply, Position(2, 17)),
+                new SymbolToken(SymbolType.OpenParenthesis, Position(2, 19)),
+                new NumberToken(6, Position(2, 20)),
+                new SymbolToken(SymbolType.Divide, Position(2, 22)),
+                new SymbolToken(SymbolType.OpenParenthesis, Position(2, 24)),
+                new NumberToken(8, Position(2, 25)),
+                new SymbolToken(SymbolType.Add, Position(2, 27)),
+                new NumberToken(2, Position(2, 29)),
+                new SymbolToken(SymbolType.CloseParenthesis, Position(2, 30)),
+                new SymbolToken(SymbolType.CloseParenthesis, Position(2, 31)),
+                new EOLToken(Position(2, 32)),
+
+                new KeywordToken(KeywordType.End, Position(3, 1)),
+                new EOLToken(Position(3, 4)),
+                new EOFToken(Position(3, 4)),
+            };
+
+            var actual = GetAST(tokens);
+
+            var expected = new List<FunctionNode>
+            {
+                new FunctionNode
+                (
+                    new IdentifierNode("Main", Position(1, 1)),
+                    new List<IdentifierNode>
+                    {
+
+                    },
+                    new List<IConstructNode>
+                    {
+                        new AssignmentNode
+                        (
+                            new IdentifierNode
+                            (
+                                "x",
+                                Position(2, 5)
+                            ),
+                            new OperationNode
+                            (
+                                new OperationNode
+                                (
+                                    new NumberNode
+                                    (
+                                        5,
+                                        Position(2, 10)
+                                    ),
+                                    OperatorType.Add,
+                                    new NumberNode
+                                    (
+                                        1,
+                                        Position(2, 14)
+                                    ),
+                                    Position(2, 10)
+                                ),
+                                OperatorType.Multiply,
+                                new OperationNode
+                                (
+                                    new NumberNode
+                                    (
+                                        6,
+                                        Position(2, 20)
+                                    ),
+                                    OperatorType.Divide,
+                                    new OperationNode
+                                    (
+                                        new NumberNode
+                                        (
+                                            8,
+                                            Position(2, 25)
+                                        ),
+                                        OperatorType.Add,
+                                        new NumberNode
+                                        (
+                                            2,
+                                            Position(2, 29)
+                                        ),
+                                        Position(2, 25)
+                                    ),
+                                    Position(2, 20)
+                                ),
+                                Position(2, 10)
+                            ),
+                            Position(2, 5)
+                        )
+                    },
+                    Position(1, 1)
+                )
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
         #endregion
     }
 }
