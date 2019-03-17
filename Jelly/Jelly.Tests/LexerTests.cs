@@ -402,6 +402,21 @@ namespace Jelly.Tests
 
             CollectionAssertUtility.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void Exclamation()
+        {
+            var actual = GetTokens("!");
+
+            var expected = new List<Token>
+            {
+                new SymbolToken(SymbolType.Exclamation, Position(1, 1)),
+                new EOLToken(Position(1, 2)),
+                new EOFToken(Position(1, 2))
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
         #endregion
 
         #region Multiple
@@ -548,13 +563,6 @@ x
         {
             AssertUtility.ThrowsJellyException(() => GetTokens("#"),
                 "'#' is an invalid character at (test, 1, 1)");
-        }
-
-        [TestMethod]
-        public void InvalidCharacter4()
-        {
-            AssertUtility.ThrowsJellyException(() => GetTokens("!"),
-                "'!' is only valid when followed by '=' at (test, 1, 1)");
         }
 
         [TestMethod]

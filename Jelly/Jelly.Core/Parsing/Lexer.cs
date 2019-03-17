@@ -146,8 +146,8 @@ namespace Jelly.Core.Parsing
                     }
                     else
                     {
-                        throw new JellyException(
-                            "'!' is only valid when followed by '='", position);
+                        tokens.Add(new SymbolToken(SymbolType.Exclamation, position));
+                        continue;
                     }
                 }
                 // Open parenthesis

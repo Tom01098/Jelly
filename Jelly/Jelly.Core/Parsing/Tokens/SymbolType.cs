@@ -18,6 +18,7 @@
         Divide,
         Comma,
         OpenParenthesis,
-        CloseParenthesis
+        CloseParenthesis,
+        Exclamation,
     }
 }
