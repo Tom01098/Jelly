@@ -5,11 +5,10 @@ namespace Jelly.Core.Parsing.AST
 {
     public class IfBlockNode : Node, IConstructNode
     {
-        public List<ConditionalBlockNode> ConditionalBlocks { get; }
+        public List<ConditionalBlockNode> Blocks { get; }
 
-        public IfBlockNode(List<ConditionalBlockNode> conditionalBlocks, 
+        public IfBlockNode(List<ConditionalBlockNode> blocks,
                            Position position)
-            : base(position) =>
-            ConditionalBlocks = conditionalBlocks;
+            : base(position) => Blocks = blocks;
     }
 }

@@ -14,8 +14,7 @@ namespace Jelly.Core.Parsing.AST
                             List<IConstructNode> constructs,
                             Position position)
             : base(position) =>
-            (Identifier, Parameters, Constructs) = 
+            (Identifier, Parameters, Constructs) =
             (identifier, parameters, constructs);
-            
     }
 }

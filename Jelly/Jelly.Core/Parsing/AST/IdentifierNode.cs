@@ -2,12 +2,11 @@
 
 namespace Jelly.Core.Parsing.AST
 {
-    public class IdentifierNode : Node, IValueNode
+    public class IdentifierNode : Node, ITermNode
     {
         public string Identifier { get; }
 
         public IdentifierNode(string identifier, Position position)
-            : base(position) => 
-            Identifier = identifier;
+            : base(position) => Identifier = identifier;
     }
 }

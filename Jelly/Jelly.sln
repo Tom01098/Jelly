@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.329
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jelly.Core", "Jelly.Core\Jelly.Core.csproj", "{91C29E16-2369-4129-8F4C-5CD58AE02B04}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jelly.Core", "Jelly.Core\Jelly.Core.csproj", "{91C29E16-2369-4129-8F4C-5CD58AE02B04}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jelly.Tests", "Jelly.Tests\Jelly.Tests.csproj", "{3A2C5811-574E-4C68-B58D-B5E8C4292206}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jelly.Tests", "Jelly.Tests\Jelly.Tests.csproj", "{3A2C5811-574E-4C68-B58D-B5E8C4292206}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jelly", "Jelly\Jelly.csproj", "{31928F57-2555-4D78-BB77-961BE333AACC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jelly", "Jelly\Jelly.csproj", "{31928F57-2555-4D78-BB77-961BE333AACC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jelly.Benchmarks", "Jelly.Benchmarks\Jelly.Benchmarks.csproj", "{93EC7722-44CC-4AFB-BDA5-61EC0575E5C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Jelly.Benchmarks", "Jelly.Benchmarks\Jelly.Benchmarks.csproj", "{93EC7722-44CC-4AFB-BDA5-61EC0575E5C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

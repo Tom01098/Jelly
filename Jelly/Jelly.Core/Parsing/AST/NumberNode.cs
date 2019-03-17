@@ -2,7 +2,7 @@
 
 namespace Jelly.Core.Parsing.AST
 {
-    public class NumberNode : Node, IValueNode
+    public class NumberNode : Node, ITermNode
     {
         public double Number { get; }
 

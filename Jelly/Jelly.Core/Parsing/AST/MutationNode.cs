@@ -5,12 +5,11 @@ namespace Jelly.Core.Parsing.AST
     public class MutationNode : Node, IStatementNode
     {
         public IdentifierNode Identifier { get; }
-        public IValueNode Value { get; }
+        public ValueNode Value { get; }
 
-        public MutationNode(IdentifierNode identifier, 
-                            IValueNode value,
+        public MutationNode(IdentifierNode identifier,
+                            ValueNode value,
                             Position position)
-            : base(position) =>
-            (Identifier, Value) = (identifier, value);
+            : base(position) => (Identifier, Value) = (identifier, value);
     }
 }

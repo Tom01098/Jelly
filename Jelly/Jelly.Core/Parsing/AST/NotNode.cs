@@ -2,11 +2,11 @@
 
 namespace Jelly.Core.Parsing.AST
 {
-    public class ReturnNode : Node, IStatementNode
+    public class NotNode : Node, ITermNode
     {
         public ValueNode Value { get; }
 
-        public ReturnNode(ValueNode value, Position position)
+        public NotNode(ValueNode value, Position position)
             : base(position) => Value = value;
     }
 }

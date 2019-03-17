@@ -1,6 +1,6 @@
 ﻿namespace Jelly.Core.Parsing.AST
 {
-    public interface IValueNode
+    public interface ITermNode
     {
 
     }
