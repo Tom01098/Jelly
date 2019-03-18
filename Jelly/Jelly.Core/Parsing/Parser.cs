@@ -71,13 +71,43 @@ namespace Jelly.Core.Parsing
         // arguments = value {',' value};
         private List<ValueNode> Arguments()
         {
-            throw new NotImplementedException();
+            var arguments = new List<ValueNode>();
+
+            if (!IsSymbol(tokens.Current, SymbolType.CloseAngleParenthesis))
+            {
+                arguments.Add(Value());
+
+                while (IsSymbol(tokens.Current, SymbolType.Comma))
+                {
+                    tokens.MoveNext();
+                    arguments.Add(Value());
+                }
+            }
+
+            return arguments;
         }
 
         // call = identifier '<' [arguments] '>';
         private CallNode Call()
         {
-            throw new NotImplementedException();
+            var position = tokens.Current.Position;
+            var identifier = Identifier();
+
+            if (!IsSymbol(tokens.Current, SymbolType.OpenAngleParenthesis))
+            {
+                throw new JellyException("Expected '<'", tokens.Current.Position);
+            }
+
+            tokens.MoveNext();
+            var arguments = Arguments();
+
+            if (!IsSymbol(tokens.Current, SymbolType.CloseAngleParenthesis))
+            {
+                throw new JellyException("Expected '>'", tokens.Current.Position);
+            }
+
+            tokens.MoveNext();
+            return new CallNode(identifier, arguments, position);
         }
 
         // conditional_block = value EOL {construct} end;
