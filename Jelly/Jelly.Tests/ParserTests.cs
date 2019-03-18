@@ -512,6 +512,181 @@ end";
 
             CollectionAssertUtility.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void AssignmentWithOperation()
+        {
+            var text = @"
+Main<>
+    sum = 3 % 4
+end";
+
+            var actual = GetAST(text);
+
+            var expected = new List<FunctionNode>
+            {
+                new FunctionNode
+                (
+                    new IdentifierNode
+                    (
+                        "Main",
+                        Position(2, 1)
+                    ),
+                    new List<IdentifierNode>
+                    {
+
+                    },
+                    new List<IConstructNode>
+                    {
+                        new AssignmentNode
+                        (
+                            new IdentifierNode
+                            (
+                                "sum",
+                                Position(3, 5)
+                            ),
+                            new ValueNode
+                            (
+                                new NumberNode
+                                (
+                                    3,
+                                    Position(3, 11)
+                                ),
+                                OperatorType.Modulo,
+                                new NumberNode
+                                (
+                                    4,
+                                    Position(3, 15)
+                                ),
+                                Position(3, 11)
+                            ),
+                            Position(3, 5)
+                        )
+                    },
+                    Position(2, 1)
+                )
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void AssignmentWithParenthesisedOperation()
+        {
+            var text = @"
+Main<>
+    sum = (3 * 4)
+end";
+
+            var actual = GetAST(text);
+
+            var expected = new List<FunctionNode>
+            {
+                new FunctionNode
+                (
+                    new IdentifierNode
+                    (
+                        "Main",
+                        Position(2, 1)
+                    ),
+                    new List<IdentifierNode>
+                    {
+
+                    },
+                    new List<IConstructNode>
+                    {
+                        new AssignmentNode
+                        (
+                            new IdentifierNode
+                            (
+                                "sum",
+                                Position(3, 5)
+                            ),
+                            new ValueNode
+                            (
+                                new NumberNode
+                                (
+                                    3,
+                                    Position(3, 12)
+                                ),
+                                OperatorType.Modulo,
+                                new NumberNode
+                                (
+                                    4,
+                                    Position(3, 16)
+                                ),
+                                Position(3, 11)
+                            ),
+                            Position(3, 5)
+                        )
+                    },
+                    Position(2, 1)
+                )
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void AssignmentWithCall()
+        {
+            var text = @"
+Main<>
+    result = Test<>
+end";
+
+            var actual = GetAST(text);
+
+            var expected = new List<FunctionNode>
+            {
+                new FunctionNode
+                (
+                    new IdentifierNode
+                    (
+                        "Main",
+                        Position(2, 1)
+                    ),
+                    new List<IdentifierNode>
+                    {
+
+                    },
+                    new List<IConstructNode>
+                    {
+                        new AssignmentNode
+                        (
+                            new IdentifierNode
+                            (
+                                "result",
+                                Position(3, 5)
+                            ),
+                            new ValueNode
+                            (
+                                new CallNode
+                                (
+                                    new IdentifierNode
+                                    (
+                                        "Test",
+                                        Position(3, 14)
+                                    ),
+                                    new List<ValueNode>
+                                    {
+
+                                    },
+                                    Position(3, 14)
+                                ),
+                                OperatorType.None,
+                                null,
+                                Position(3, 14)
+                            ),
+                            Position(3, 5)
+                        )
+                    },
+                    Position(2, 1)
+                )
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
         #endregion
     }
 }
