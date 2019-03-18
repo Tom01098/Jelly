@@ -25,7 +25,7 @@ term = '(' value ')' | not | negative | call | number | identifier;
 identifier = ? IdentifierToken ?;
 number = ? NumberToken ?;
 not = '!' value;
-negative = ['-'] value;
+negative = '-' value;
 
 EOL = ? EOLToken ?;
 end = 'end' EOL;

@@ -55,7 +55,17 @@ namespace Jelly.Core.Parsing
         // assignment = identifier '=' value;
         private AssignmentNode Assignment()
         {
-            throw new NotImplementedException();
+            var position = tokens.Current.Position;
+            var identifier = Identifier();
+
+            if (!IsSymbol(tokens.Current, SymbolType.Assignment))
+            {
+                throw new JellyException("Expected '='", 
+                                         tokens.Current.Position);
+            }
+
+            tokens.MoveNext();
+            return new AssignmentNode(identifier, Value(), position);
         }
 
         // arguments = value {',' value};
@@ -184,10 +194,19 @@ namespace Jelly.Core.Parsing
             throw new NotImplementedException();
         }
 
-        // negative = ['-'] value;
+        // negative = '-' value;
         private NegativeNode Negative()
         {
-            throw new NotImplementedException();
+            var position = tokens.Current.Position;
+
+            if (!IsSymbol(tokens.Current, SymbolType.Subtract))
+            {
+                throw new JellyException("Expected '-'", tokens.Current.Position);
+            }
+
+            tokens.MoveNext();
+
+            return new NegativeNode(Value(), position);
         }
 
         // not = '!' value;
