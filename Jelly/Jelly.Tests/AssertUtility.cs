@@ -64,9 +64,161 @@ namespace Jelly.Tests
             }
 
             // Types are equal, so recursively check its members
-            if (expected.GetType() == actual.GetType())
+            if (expected != null && actual != null && expected.GetType() == actual.GetType())
             {
-                
+                // AssignmentNode
+                if (expected is AssignmentNode)
+                {
+                    var e = (AssignmentNode)expected;
+                    var a = (AssignmentNode)actual;
+
+                    AreEqual(e.Identifier, a.Identifier);
+                    AreEqual(e.Value, a.Value);
+                }
+                // CallNode
+                else if (expected is CallNode)
+                {
+                    var e = (CallNode)expected;
+                    var a = (CallNode)actual;
+
+                    AreEqual(e.Identifier, a.Identifier);
+
+                    if (e.Arguments.Count != a.Arguments.Count)
+                    {
+                        throw new AssertFailedException("Different number of arguments");
+                    }
+
+                    for (int i = 0; i < e.Arguments.Count; i++)
+                    {
+                        AreEqual(e.Arguments[i], a.Arguments[i]);
+                    }
+                }
+                // ConditionalBlockNode
+                else if (expected is ConditionalBlockNode)
+                {
+                    var e = (ConditionalBlockNode)expected;
+                    var a = (ConditionalBlockNode)actual;
+
+                    AreEqual(e.Condition, a.Condition);
+
+                    if (e.Constructs.Count != a.Constructs.Count)
+                    {
+                        throw new AssertFailedException("Different number of constructs");
+                    }
+
+                    for (int i = 0; i < e.Constructs.Count; i++)
+                    {
+                        AreEqual((Node)e.Constructs[i], (Node)a.Constructs[i]);
+                    }
+                }
+                // FunctionNode
+                else if (expected is FunctionNode)
+                {
+                    var e = (FunctionNode)expected;
+                    var a = (FunctionNode)actual;
+
+                    AreEqual(e.Identifier, a.Identifier);
+
+                    if (e.Parameters.Count != a.Parameters.Count)
+                    {
+                        throw new AssertFailedException("Different number of parameters");
+                    }
+
+                    for (int i = 0; i < e.Parameters.Count; i++)
+                    {
+                        AreEqual(e.Parameters[i], a.Parameters[i]);
+                    }
+
+                    if (e.Constructs.Count != a.Constructs.Count)
+                    {
+                        throw new AssertFailedException("Different number of constructs");
+                    }
+
+                    for (int i = 0; i < e.Constructs.Count; i++)
+                    {
+                        AreEqual((Node)e.Constructs[i], (Node)a.Constructs[i]);
+                    }
+                }
+                // IdentifierNode
+                else if (expected is IdentifierNode)
+                {
+                    var e = (IdentifierNode)expected;
+                    var a = (IdentifierNode)actual;
+
+                    Assert.AreEqual(e.Identifier, a.Identifier);
+                }
+                // IfBlockNode
+                else if (expected is IfBlockNode)
+                {
+                    var e = (IfBlockNode)expected;
+                    var a = (IfBlockNode)actual;
+
+                    if (e.Blocks.Count != a.Blocks.Count)
+                    {
+                        throw new AssertFailedException("Different number of blocks");
+                    }
+
+                    for (int i = 0; i < e.Blocks.Count; i++)
+                    {
+                        AreEqual(e.Blocks[i], a.Blocks[i]);
+                    }
+                }
+                // MutationNode
+                else if (expected is MutationNode)
+                {
+                    var e = (MutationNode)expected;
+                    var a = (MutationNode)actual;
+
+                    AreEqual(e.Identifier, a.Identifier);
+                    AreEqual(e.Value, a.Value);
+                }
+                // NegativeNode
+                else if (expected is NegativeNode)
+                {
+                    var e = (NegativeNode)expected;
+                    var a = (NegativeNode)actual;
+
+                    AreEqual(e.Value, a.Value);
+                }
+                // NotNode
+                else if (expected is NotNode)
+                {
+                    var e = (NotNode)expected;
+                    var a = (NotNode)actual;
+
+                    AreEqual(e.Value, a.Value);
+                }
+                // NumberNode
+                else if (expected is NumberNode)
+                {
+                    var e = (NumberNode)expected;
+                    var a = (NumberNode)actual;
+
+                    Assert.AreEqual(e.Number, a.Number);
+                }
+                // ReturnNode
+                else if (expected is ReturnNode)
+                {
+                    var e = (ReturnNode)expected;
+                    var a = (ReturnNode)actual;
+
+                    AreEqual(e.Value, a.Value);
+                }
+                // ValueNode
+                else if (expected is ValueNode)
+                {
+                    var e = (ValueNode)expected;
+                    var a = (ValueNode)actual;
+
+                    AreEqual((Node)e.LHS, (Node)a.LHS);
+                    Assert.AreEqual(e.Operator, a.Operator);
+                    AreEqual((Node)e.RHS, (Node)a.RHS);
+                }
+                // Invalid
+                else
+                {
+                    throw new ArgumentException("Unknown node type");
+                }
 
                 // Check position
                 if (expected.Position.Line != actual.Position.Line || expected.Position.Character != actual.Position.Character)
@@ -75,7 +227,7 @@ namespace Jelly.Tests
                 }
             }
             // Types are not equal
-            else
+            else if (expected != null && actual != null)
             {
                 throw new AssertFailedException("Different node types");
             }
