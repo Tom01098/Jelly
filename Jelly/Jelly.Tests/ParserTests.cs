@@ -822,5 +822,136 @@ end";
             CollectionAssertUtility.AreEqual(expected, actual);
         }
         #endregion
+
+        #region Complex
+        [TestMethod]
+        public void IfElifOperations()
+        {
+            var text = @"
+Main<>
+    if x > 5
+        ~x
+    end
+    elif x <= (2 * (5 / 4))
+        ~
+    end
+end";
+
+            var actual = GetAST(text);
+
+            var expected = new List<FunctionNode>
+            {
+                new FunctionNode
+                (
+                    new IdentifierNode
+                    (
+                        "Main",
+                        Position(2, 1)
+                    ),
+                    new List<IdentifierNode>
+                    {
+
+                    },
+                    new List<IConstructNode>
+                    {
+                        new IfBlockNode
+                        (
+                            new List<ConditionalBlockNode>
+                            {
+                                new ConditionalBlockNode
+                                (
+                                    new ValueNode
+                                    (
+                                        new IdentifierNode
+                                        (
+                                            "x",
+                                            Position(3, 8)
+                                        ),
+                                        OperatorType.GreaterThan,
+                                        new NumberNode
+                                        (
+                                            5,
+                                            Position(3, 12)
+                                        ),
+                                        Position(3, 8)
+                                    ),
+                                    new List<IConstructNode>
+                                    {
+                                        new ReturnNode
+                                        (
+                                            new ValueNode
+                                            (
+                                                new IdentifierNode
+                                                (
+                                                    "x",
+                                                    Position(4, 10)
+                                                ),
+                                                OperatorType.None,
+                                                null,
+                                                Position(4, 10)
+                                            ),
+                                            Position(4, 9)
+                                        )
+                                    },
+                                    Position(3, 5)
+                                ),
+                                new ConditionalBlockNode
+                                (
+                                    new ValueNode
+                                    (
+                                        new IdentifierNode
+                                        (
+                                            "x",
+                                            Position(6, 10)
+                                        ),
+                                        OperatorType.LessThanOrEqualTo,
+                                        new ValueNode
+                                        (
+                                            new NumberNode
+                                            (
+                                                2,
+                                                Position(6, 16)
+                                            ),
+                                            OperatorType.Multiply,
+                                            new ValueNode
+                                            (
+                                                new NumberNode
+                                                (
+                                                    5,
+                                                    Position(6, 21)
+                                                ),
+                                                OperatorType.Divide,
+                                                new NumberNode
+                                                (
+                                                    4,
+                                                    Position(6, 25)
+                                                ),
+                                                Position(6, 20)
+                                            ),
+                                            Position(6, 15)
+                                        ),
+                                        Position(6, 15)
+                                    ),
+                                    new List<IConstructNode>
+                                    {
+                                        new ReturnNode
+                                        (
+                                            null,
+                                            Position(7, 9)
+                                        )
+                                    },
+                                    Position(6, 5)
+                                )
+                            },
+                            Position(3, 5)
+                        )
+                    },
+                    Position(2, 1)
+                )
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
+        #endregion
     }
 }
