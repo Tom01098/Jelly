@@ -687,6 +687,140 @@ end";
 
             CollectionAssertUtility.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void EmptyIf()
+        {
+            var text = @"
+Main<>
+    if 1
+
+    end
+end";
+
+            var actual = GetAST(text);
+
+            var expected = new List<FunctionNode>
+            {
+                new FunctionNode
+                (
+                    new IdentifierNode
+                    (
+                        "Main",
+                        Position(2, 1)
+                    ),
+                    new List<IdentifierNode>
+                    {
+
+                    },
+                    new List<IConstructNode>
+                    {
+                        new IfBlockNode
+                        (
+                            new List<ConditionalBlockNode>
+                            {
+                                new ConditionalBlockNode
+                                (
+                                    new ValueNode
+                                    (
+                                        new NumberNode
+                                        (
+                                            1,
+                                            Position(3, 8)
+                                        ),
+                                        OperatorType.None,
+                                        null,
+                                        Position(3, 8)
+                                    ),
+                                    new List<IConstructNode>
+                                    {
+
+                                    },
+                                    Position(3, 5)
+                                )
+                            },
+                            Position(3, 5)
+                        )
+                    },
+                    Position(2, 1)
+                )
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void EmptyIfElse()
+        {
+            var text = @"
+Main<>
+    if 1
+
+    end
+    else
+
+    end
+end";
+
+            var actual = GetAST(text);
+
+            var expected = new List<FunctionNode>
+            {
+                new FunctionNode
+                (
+                    new IdentifierNode
+                    (
+                        "Main",
+                        Position(2, 1)
+                    ),
+                    new List<IdentifierNode>
+                    {
+
+                    },
+                    new List<IConstructNode>
+                    {
+                        new IfBlockNode
+                        (
+                            new List<ConditionalBlockNode>
+                            {
+                                new ConditionalBlockNode
+                                (
+                                    new ValueNode
+                                    (
+                                        new NumberNode
+                                        (
+                                            1,
+                                            Position(3, 8)
+                                        ),
+                                        OperatorType.None,
+                                        null,
+                                        Position(3, 8)
+                                    ),
+                                    new List<IConstructNode>
+                                    {
+
+                                    },
+                                    Position(3, 5)
+                                ),
+                                new ConditionalBlockNode
+                                (
+                                    null,
+                                    new List<IConstructNode>
+                                    {
+
+                                    },
+                                    Position(6, 5)
+                                )
+                            },
+                            Position(3, 5)
+                        )
+                    },
+                    Position(2, 1)
+                )
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
         #endregion
     }
 }
