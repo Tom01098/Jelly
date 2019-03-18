@@ -166,7 +166,6 @@ namespace Jelly.Core.Parsing
             }
 
             tokens.MoveNext();
-
             return new FunctionNode(identifier, parameters, constructs, position);
         }
 
@@ -191,7 +190,17 @@ namespace Jelly.Core.Parsing
         // mutation = identifier '=>' value;
         private MutationNode Mutation()
         {
-            throw new NotImplementedException();
+            var position = tokens.Current.Position;
+            var identifier = Identifier();
+
+            if (!IsSymbol(tokens.Current, SymbolType.Mutation))
+            {
+                throw new JellyException("Expected '=>'",
+                                         tokens.Current.Position);
+            }
+
+            tokens.MoveNext();
+            return new MutationNode(identifier, Value(), position);
         }
 
         // negative = '-' value;
@@ -205,14 +214,21 @@ namespace Jelly.Core.Parsing
             }
 
             tokens.MoveNext();
-
             return new NegativeNode(Value(), position);
         }
 
         // not = '!' value;
         private NotNode Not()
         {
-            throw new NotImplementedException();
+            var position = tokens.Current.Position;
+
+            if (!IsSymbol(tokens.Current, SymbolType.Exclamation))
+            {
+                throw new JellyException("Expected '!'", tokens.Current.Position);
+            }
+
+            tokens.MoveNext();
+            return new NotNode(Value(), position);
         }
 
         // number = ? NumberToken ?;
