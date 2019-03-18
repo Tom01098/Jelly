@@ -273,6 +273,245 @@ end";
 
             CollectionAssertUtility.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void FunctionWithEmptyCall()
+        {
+            var text = @"
+Main<>
+    Test<>
+end";
+
+            var actual = GetAST(text);
+
+            var expected = new List<FunctionNode>
+            {
+                new FunctionNode
+                (
+                    new IdentifierNode
+                    (
+                        "Main",
+                        Position(2, 1)
+                    ),
+                    new List<IdentifierNode>
+                    {
+
+                    },
+                    new List<IConstructNode>
+                    {
+                        new CallNode
+                        (
+                            new IdentifierNode
+                            (
+                                "Test",
+                                Position(3, 5)
+                            ),
+                            new List<ValueNode>
+                            {
+
+                            },
+                            Position(3, 5)
+                        )
+                    },
+                    Position(2, 1)
+                )
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void FunctionWithCallWithArguments()
+        {
+            var text = @"
+Main<>
+    Test<x, y>
+end";
+
+            var actual = GetAST(text);
+
+            var expected = new List<FunctionNode>
+            {
+                new FunctionNode
+                (
+                    new IdentifierNode
+                    (
+                        "Main",
+                        Position(2, 1)
+                    ),
+                    new List<IdentifierNode>
+                    {
+
+                    },
+                    new List<IConstructNode>
+                    {
+                        new CallNode
+                        (
+                            new IdentifierNode
+                            (
+                                "Test",
+                                Position(3, 5)
+                            ),
+                            new List<ValueNode>
+                            {
+                                new ValueNode
+                                (
+                                    new IdentifierNode
+                                    (
+                                        "x",
+                                        Position(3, 10)
+                                    ),
+                                    OperatorType.None,
+                                    null,
+                                    Position(3, 10)
+                                ),
+                                new ValueNode
+                                (
+                                    new IdentifierNode
+                                    (
+                                        "y",
+                                        Position(3, 13)
+                                    ),
+                                    OperatorType.None,
+                                    null,
+                                    Position(3, 13)
+                                )
+                            },
+                            Position(3, 5)
+                        )
+                    },
+                    Position(2, 1)
+                )
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void FunctionWithAssignmentToNegativeNumber()
+        {
+            var text = @"
+Main<>
+    x = -3
+end";
+
+            var actual = GetAST(text);
+
+            var expected = new List<FunctionNode>
+            {
+                new FunctionNode
+                (
+                    new IdentifierNode
+                    (
+                        "Main",
+                        Position(2, 1)
+                    ),
+                    new List<IdentifierNode>
+                    {
+
+                    },
+                    new List<IConstructNode>
+                    {
+                        new AssignmentNode
+                        (
+                            new IdentifierNode
+                            (
+                                "x",
+                                Position(3, 5)
+                            ),
+                            new ValueNode
+                            (
+                                new NegativeNode
+                                (
+                                    new ValueNode
+                                    (
+                                        new NumberNode
+                                        (
+                                            3,
+                                            Position(3, 10)
+                                        ),
+                                        OperatorType.None,
+                                        null,
+                                        Position(3, 10)
+                                    ),
+                                    Position(3, 9)
+                                ),
+                                OperatorType.None,
+                                null,
+                                Position(3, 9)
+                            ),
+                            Position(3, 5)
+                        )
+                    },
+                    Position(2, 1)
+                )
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void FunctionWithMutationToNotNumber()
+        {
+            var text = @"
+Main<>
+    x => !0
+end";
+
+            var actual = GetAST(text);
+
+            var expected = new List<FunctionNode>
+            {
+                new FunctionNode
+                (
+                    new IdentifierNode
+                    (
+                        "Main",
+                        Position(2, 1)
+                    ),
+                    new List<IdentifierNode>
+                    {
+
+                    },
+                    new List<IConstructNode>
+                    {
+                        new MutationNode
+                        (
+                            new IdentifierNode
+                            (
+                                "x",
+                                Position(3, 5)
+                            ),
+                            new ValueNode
+                            (
+                                new NotNode
+                                (
+                                    new ValueNode
+                                    (
+                                        new NumberNode
+                                        (
+                                            0,
+                                            Position(3, 11)
+                                        ),
+                                        OperatorType.None,
+                                        null,
+                                        Position(3, 11)
+                                    ),
+                                    Position(3, 10)
+                                ),
+                                OperatorType.None,
+                                null,
+                                Position(3, 10)
+                            ),
+                            Position(3, 5)
+                        )
+                    },
+                    Position(2, 1)
+                )
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
         #endregion
     }
 }
