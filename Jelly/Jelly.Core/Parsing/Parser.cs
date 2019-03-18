@@ -239,6 +239,11 @@ namespace Jelly.Core.Parsing
 
             tokens.MoveNext();
 
+            if (tokens.Current is EOLToken)
+            {
+                return new ReturnNode(null, position);
+            }
+
             return new ReturnNode(Value(), position);
         }
 
