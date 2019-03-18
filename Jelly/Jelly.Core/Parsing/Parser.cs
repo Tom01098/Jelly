@@ -79,7 +79,23 @@ namespace Jelly.Core.Parsing
         // construct = if_block | statement EOL;
         private IConstructNode Construct()
         {
-            throw new NotImplementedException();
+            if (IsKeyword(tokens.Current, KeywordType.If))
+            {
+                return IfBlock();
+            }
+            else
+            {
+                var statement = Statement();
+
+                if (!(tokens.Current is EOLToken))
+                {
+                    throw new JellyException("A statement must end with a newline",
+                                             tokens.Current.Position);
+                }
+
+                tokens.MoveNext();
+                return statement;
+            }
         }
 
         // {construct}
@@ -214,25 +230,96 @@ namespace Jelly.Core.Parsing
         // return = '~' [value];
         private ReturnNode Return()
         {
-            throw new NotImplementedException();
+            var position = tokens.Current.Position;
+
+            if (!IsSymbol(tokens.Current, SymbolType.Return))
+            {
+                throw new JellyException("Expected '~'", tokens.Current.Position);
+            }
+
+            tokens.MoveNext();
+
+            return new ReturnNode(Value(), position);
         }
 
         // statement = return | assignment | mutation | call;
         private IStatementNode Statement()
         {
-            throw new NotImplementedException();
+            if (IsSymbol(tokens.Current, SymbolType.Return))
+            {
+                return Return();
+            }
+            else if (IsSymbol(tokens.LookAhead(1), SymbolType.Assignment))
+            {
+                return Assignment();
+            }
+            else if (IsSymbol(tokens.LookAhead(1), SymbolType.Mutation))
+            {
+                return Mutation();
+            }
+            else if (IsSymbol(tokens.LookAhead(1), SymbolType.OpenAngleParenthesis))
+            {
+                return Call();
+            }
+            else
+            {
+                throw new JellyException("Only return, assignment, mutation, or call can be used as a statement",
+                                         tokens.Current.Position);
+            }
         }
 
         // term = '(' value ')' | not | negative | call | number | identifier;
         private ITermNode Term()
         {
-            throw new NotImplementedException();
+            if (IsSymbol(tokens.Current, SymbolType.OpenParenthesis))
+            {
+                var position = tokens.Current.Position;
+                tokens.MoveNext();
+                var value = Value();
+                value.Position = position;
+
+                if (!IsSymbol(tokens.Current, SymbolType.CloseParenthesis))
+                {
+                    throw new JellyException("Expected ')'", tokens.Current.Position);
+                }
+
+                tokens.MoveNext();
+                return value;
+            }
+            else if (IsSymbol(tokens.Current, SymbolType.Exclamation))
+            {
+                return Not();
+            }
+            else if (IsSymbol(tokens.Current, SymbolType.Subtract))
+            {
+                return Negative();
+            }
+            else if (IsSymbol(tokens.LookAhead(1), SymbolType.OpenAngleParenthesis))
+            {
+                return Call();
+            }
+            else if (tokens.Current is NumberToken)
+            {
+                return Number();
+            }
+            else if (tokens.Current is IdentifierToken)
+            {
+                return Identifier();
+            }
+            else
+            {
+                throw new JellyException("Only a parenthesised value, not, negative, call, number, or identifier can be used as a term.",
+                                         tokens.Current.Position);
+            }
         }
 
         // value = term {operator term};
         private ValueNode Value()
         {
-            throw new NotImplementedException();
+            var position = tokens.Current.Position;
+
+            // TODO Operator tree
+            return new ValueNode(Term(), OperatorType.None, null, position);
         }
     }
 }
