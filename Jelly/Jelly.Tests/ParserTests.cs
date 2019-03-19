@@ -742,7 +742,7 @@ end";
                                     {
 
                                     },
-                                    Position(3, 5)
+                                    Position(3, 8)
                                 )
                             },
                             Position(3, 5)
@@ -806,7 +806,7 @@ end";
                                     {
 
                                     },
-                                    Position(3, 5)
+                                    Position(3, 8)
                                 ),
                                 new ConditionalBlockNode
                                 (
@@ -815,7 +815,7 @@ end";
                                     {
 
                                     },
-                                    Position(6, 5)
+                                    Position(6, 9)
                                 )
                             },
                             Position(3, 5)
@@ -874,9 +874,15 @@ end";
                                             Position(3, 8)
                                         ),
                                         OperatorType.GreaterThan,
-                                        new NumberNode
+                                        new ValueNode
                                         (
-                                            5,
+                                            new NumberNode
+                                            (
+                                                5,
+                                                Position(3, 12)
+                                            ),
+                                            OperatorType.None,
+                                            null,
                                             Position(3, 12)
                                         ),
                                         Position(3, 8)
@@ -899,7 +905,7 @@ end";
                                             Position(4, 9)
                                         )
                                     },
-                                    Position(3, 5)
+                                    Position(3, 8)
                                 ),
                                 new ConditionalBlockNode
                                 (
@@ -921,17 +927,29 @@ end";
                                             OperatorType.Multiply,
                                             new ValueNode
                                             (
-                                                new NumberNode
+                                                new ValueNode
                                                 (
-                                                    5,
-                                                    Position(6, 21)
+                                                    new NumberNode
+                                                    (
+                                                        5,
+                                                        Position(6, 21)
+                                                    ),
+                                                    OperatorType.Divide,
+                                                    new ValueNode
+                                                    (
+                                                        new NumberNode
+                                                        (
+                                                            4,
+                                                            Position(6, 25)
+                                                        ),
+                                                        OperatorType.None,
+                                                        null,
+                                                        Position(6, 25)
+                                                    ),
+                                                    Position(6, 20)
                                                 ),
-                                                OperatorType.Divide,
-                                                new NumberNode
-                                                (
-                                                    4,
-                                                    Position(6, 25)
-                                                ),
+                                                OperatorType.None,
+                                                null,
                                                 Position(6, 20)
                                             ),
                                             Position(6, 15)

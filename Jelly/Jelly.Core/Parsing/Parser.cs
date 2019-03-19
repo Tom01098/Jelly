@@ -111,9 +111,34 @@ namespace Jelly.Core.Parsing
         }
 
         // conditional_block = value EOL {construct} end;
-        private ConditionalBlockNode ConditionalBlock()
+        private ConditionalBlockNode ConditionalBlock(bool isElse)
         {
-            throw new NotImplementedException();
+            var position = tokens.Current.Position;
+            var condition = isElse ? null : Value();
+
+            if (!(tokens.Current is EOLToken))
+            {
+                throw new JellyException("A conditional value must end with a newline",
+                                         tokens.Current.Position);
+            }
+
+            tokens.MoveNext();
+            var constructs = Constructs();
+
+            if (!IsKeyword(tokens.Current, KeywordType.End))
+            {
+                throw new JellyException("Expected 'end'", tokens.Current.Position);
+            }
+
+            tokens.MoveNext();
+
+            if(!(tokens.Current is EOLToken))
+            {
+                throw new JellyException("'end' must be followed by a newline", tokens.Current.Position);
+            }
+
+            tokens.MoveNext();
+            return new ConditionalBlockNode(condition, constructs, position);
         }
 
         // construct = if_block | statement EOL;
@@ -214,7 +239,30 @@ namespace Jelly.Core.Parsing
         // if_block = 'if' conditional_block {'elif' conditional_block} ['else' EOL {construct} end;
         private IfBlockNode IfBlock()
         {
-            throw new NotImplementedException();
+            var position = tokens.Current.Position;
+            var blocks = new List<ConditionalBlockNode>();
+
+            if (!IsKeyword(tokens.Current, KeywordType.If))
+            {
+                throw new JellyException("Expected 'if'", tokens.Current.Position);
+            }
+
+            tokens.MoveNext();
+            blocks.Add(ConditionalBlock(false));
+
+            while (IsKeyword(tokens.Current, KeywordType.Elif))
+            {
+                tokens.MoveNext();
+                blocks.Add(ConditionalBlock(false));
+            }
+
+            if (IsKeyword(tokens.Current, KeywordType.Else))
+            {
+                tokens.MoveNext();
+                blocks.Add(ConditionalBlock(true));
+            }
+
+            return new IfBlockNode(blocks, position);
         }
 
         // mutation = identifier '=>' value;
