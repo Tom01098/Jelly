@@ -634,9 +634,9 @@ end";
         }
 
         [TestMethod]
-        public void AssignmentWithCall()
+        public void AssignmentWithCallNoArguments()
         {
-            var text = @"
+           var text = @"
 Main<>
     result = Test<>
 end";
@@ -677,6 +677,88 @@ end";
                                     new List<ValueNode>
                                     {
 
+                                    },
+                                    Position(3, 14)
+                                ),
+                                OperatorType.None,
+                                null,
+                                Position(3, 14)
+                            ),
+                            Position(3, 5)
+                        )
+                    },
+                    Position(2, 1)
+                )
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void AssignmentWithCallWithArguments()
+        {
+            var text = @"
+Main<>
+    result = Test<3, a>
+end";
+
+            var actual = GetAST(text);
+
+            var expected = new List<FunctionNode>
+            {
+                new FunctionNode
+                (
+                    new IdentifierNode
+                    (
+                        "Main",
+                        Position(2, 1)
+                    ),
+                    new List<IdentifierNode>
+                    {
+
+                    },
+                    new List<IConstructNode>
+                    {
+                        new AssignmentNode
+                        (
+                            new IdentifierNode
+                            (
+                                "result",
+                                Position(3, 5)
+                            ),
+                            new ValueNode
+                            (
+                                new CallNode
+                                (
+                                    new IdentifierNode
+                                    (
+                                        "Test",
+                                        Position(3, 14)
+                                    ),
+                                    new List<ValueNode>
+                                    {
+                                        new ValueNode
+                                        (
+                                            new NumberNode
+                                            (
+                                                3,
+                                                Position(3, 19)
+                                            ),
+                                            OperatorType.None,
+                                            null,
+                                            Position(3, 19)
+                                        ),
+                                        new ValueNode
+                                        (
+                                            new IdentifierNode
+                                            (
+                                                "a",
+                                                Position(3, 22)
+                                            ),
+                                            OperatorType.None,
+                                            null,
+                                            Position(3, 22)
+                                        )
                                     },
                                     Position(3, 14)
                                 ),
@@ -1120,40 +1202,6 @@ end";
                             },
                             Position(3, 5)
                         )
-                    },
-                    Position(2, 1)
-                )
-            };
-
-            CollectionAssertUtility.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void NestedCalls()
-        {
-            var text = @"
-Main<>
-    Call<Pow<2, 4>, 2>
-end";
-
-            var actual = GetAST(text);
-
-            var expected = new List<FunctionNode>
-            {
-                new FunctionNode
-                (
-                    new IdentifierNode
-                    (
-                        "Main",
-                        Position(2, 1)
-                    ),
-                    new List<IdentifierNode>
-                    {
-
-                    },
-                    new List<IConstructNode>
-                    {
-                        
                     },
                     Position(2, 1)
                 )

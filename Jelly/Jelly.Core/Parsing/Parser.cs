@@ -477,12 +477,19 @@ namespace Jelly.Core.Parsing
 
             bool ShouldParseCall()
             {
-                if(!IsSymbol(tokens.LookAhead(1), SymbolType.OpenAngleParenthesis))
+                if(!(tokens.Current is IdentifierToken) 
+                    || !IsSymbol(tokens.LookAhead(1), SymbolType.OpenAngleParenthesis))
                 {
                     return false;
                 }
 
-                return IsSymbol(tokens.LookAhead(2), SymbolType.CloseAngleParenthesis);
+                if(IsSymbol(tokens.LookAhead(2), SymbolType.CloseAngleParenthesis)
+                    && !IsOperator(tokens.LookAhead(3)))
+                {
+                    return true;
+                }
+
+                return false;
             }
         }
 
