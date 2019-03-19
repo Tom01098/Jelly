@@ -178,7 +178,7 @@ namespace Jelly.Tests
                     var e = (NegativeNode)expected;
                     var a = (NegativeNode)actual;
 
-                    AreEqual(e.Value, a.Value);
+                    AreEqual((Node)e.Term, (Node)a.Term);
                 }
                 // NotNode
                 else if (expected is NotNode)
@@ -186,7 +186,7 @@ namespace Jelly.Tests
                     var e = (NotNode)expected;
                     var a = (NotNode)actual;
 
-                    AreEqual(e.Value, a.Value);
+                    AreEqual((Node)e.Term, (Node)a.Term);
                 }
                 // NumberNode
                 else if (expected is NumberNode)

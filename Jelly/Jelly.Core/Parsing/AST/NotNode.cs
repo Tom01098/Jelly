@@ -4,9 +4,9 @@ namespace Jelly.Core.Parsing.AST
 {
     public class NotNode : Node, ITermNode
     {
-        public ValueNode Value { get; }
+        public ITermNode Term { get; }
 
-        public NotNode(ValueNode value, Position position)
-            : base(position) => Value = value;
+        public NotNode(ITermNode term, Position position)
+            : base(position) => Term = term;
     }
 }

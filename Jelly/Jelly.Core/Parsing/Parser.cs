@@ -233,7 +233,7 @@ namespace Jelly.Core.Parsing
             return new MutationNode(identifier, Value(), position);
         }
 
-        // negative = '-' value;
+        // negative = '-' term;
         private NegativeNode Negative()
         {
             var position = tokens.Current.Position;
@@ -244,10 +244,10 @@ namespace Jelly.Core.Parsing
             }
 
             tokens.MoveNext();
-            return new NegativeNode(Value(), position);
+            return new NegativeNode(Term(), position);
         }
 
-        // not = '!' value;
+        // not = '!' term;
         private NotNode Not()
         {
             var position = tokens.Current.Position;
@@ -258,7 +258,7 @@ namespace Jelly.Core.Parsing
             }
 
             tokens.MoveNext();
-            return new NotNode(Value(), position);
+            return new NotNode(Term(), position);
         }
 
         // number = ? NumberToken ?;
