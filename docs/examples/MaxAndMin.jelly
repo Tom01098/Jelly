@@ -1,6 +1,6 @@
 @ Return the maximum of two numbers
 Max<x, y>
-	if x > y
+	if x >> y
 		~x
 	end
 
@@ -9,7 +9,7 @@ end
 
 @ Return the minimum of two numbers
 Min<x, y>
-	if x < y
+	if x << y
 		~x
 	end
 

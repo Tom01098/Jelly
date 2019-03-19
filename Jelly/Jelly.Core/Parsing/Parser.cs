@@ -45,8 +45,8 @@ namespace Jelly.Core.Parsing
                 s.Symbol == SymbolType.Modulo ||
                 s.Symbol == SymbolType.EqualTo ||
                 s.Symbol == SymbolType.UnequalTo ||
-                s.Symbol == SymbolType.OpenAngleParenthesis ||
-                s.Symbol == SymbolType.CloseAngleParenthesis ||
+                s.Symbol == SymbolType.LessThan ||
+                s.Symbol == SymbolType.GreaterThan ||
                 s.Symbol == SymbolType.LessThanOrEqualTo ||
                 s.Symbol == SymbolType.GreaterThanOrEqualTo);
         }
@@ -327,10 +327,10 @@ namespace Jelly.Core.Parsing
 
             switch (((SymbolToken)tokens.Current).Symbol)
             {
-                case SymbolType.OpenAngleParenthesis:
+                case SymbolType.LessThan:
                     op = OperatorType.LessThan;
                     break;
-                case SymbolType.CloseAngleParenthesis:
+                case SymbolType.GreaterThan:
                     op = OperatorType.GreaterThan;
                     break;
                 case SymbolType.EqualTo:
@@ -477,19 +477,8 @@ namespace Jelly.Core.Parsing
 
             bool ShouldParseCall()
             {
-                if(!(tokens.Current is IdentifierToken) 
-                    || !IsSymbol(tokens.LookAhead(1), SymbolType.OpenAngleParenthesis))
-                {
-                    return false;
-                }
-
-                if(IsSymbol(tokens.LookAhead(2), SymbolType.CloseAngleParenthesis)
-                    && !IsOperator(tokens.LookAhead(3)))
-                {
-                    return true;
-                }
-
-                return false;
+                return (tokens.Current is IdentifierToken)
+                    && IsSymbol(tokens.LookAhead(1), SymbolType.OpenAngleParenthesis);
             }
         }
 

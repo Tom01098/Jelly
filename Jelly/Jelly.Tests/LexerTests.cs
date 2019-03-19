@@ -254,6 +254,36 @@ namespace Jelly.Tests
         }
 
         [TestMethod]
+        public void GreaterThan()
+        {
+            var actual = GetTokens(">>");
+
+            var expected = new List<Token>
+            {
+                new SymbolToken(SymbolType.GreaterThan, Position(1, 1)),
+                new EOLToken(Position(1, 3)),
+                new EOFToken(Position(1, 3))
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void LessThan()
+        {
+            var actual = GetTokens("<<");
+
+            var expected = new List<Token>
+            {
+                new SymbolToken(SymbolType.LessThan, Position(1, 1)),
+                new EOLToken(Position(1, 3)),
+                new EOFToken(Position(1, 3))
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
         public void GreaterThanOrEqualTo()
         {
             var actual = GetTokens(">=");

@@ -19,7 +19,7 @@ call = identifier '<' [arguments] '>';
 return = '~' [value];
 
 value = term [operator value];
-operator = '+' | '-' | '*' | '/' | '%' | '==' | '!=' | '<' | '>' | '<=' | '>=';
+operator = '+' | '-' | '*' | '/' | '%' | '==' | '!=' | '<<' | '>>' | '<=' | '>=';
 term = '(' value ')' | not | negative | call | number | identifier;
 
 identifier = ? IdentifierToken ?;

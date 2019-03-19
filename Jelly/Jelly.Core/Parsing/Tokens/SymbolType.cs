@@ -9,6 +9,8 @@
         Return,
         EqualTo,
         UnequalTo,
+        GreaterThan,
+        LessThan,
         GreaterThanOrEqualTo,
         LessThanOrEqualTo,
         Modulo,

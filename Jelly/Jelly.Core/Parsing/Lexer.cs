@@ -82,7 +82,7 @@ namespace Jelly.Core.Parsing
                 {
                     tokens.Add(new SymbolToken(SymbolType.Return, GetPosition()));
                 }
-                // Open angle parenthesis / Less than or equal to
+                // Open angle parenthesis / Less than (or equal to)
                 else if (span[index] == '<')
                 {
                     var position = GetPosition();
@@ -92,13 +92,17 @@ namespace Jelly.Core.Parsing
                     {
                         tokens.Add(new SymbolToken(SymbolType.LessThanOrEqualTo, position));
                     }
+                    else if (index < span.Length && span[index] == '<')
+                    {
+                        tokens.Add(new SymbolToken(SymbolType.LessThan, position));
+                    }
                     else
                     {
                         tokens.Add(new SymbolToken(SymbolType.OpenAngleParenthesis, position));
                         continue;
                     }
                 }
-                // Close angle parenthesis / Greater than or equal to
+                // Close angle parenthesis / Greater than (or equal to)
                 else if (span[index] == '>')
                 {
                     var position = GetPosition();
@@ -107,6 +111,10 @@ namespace Jelly.Core.Parsing
                     if (index < span.Length && span[index] == '=')
                     {
                         tokens.Add(new SymbolToken(SymbolType.GreaterThanOrEqualTo, position));
+                    }
+                    else if (index < span.Length && span[index] == '>')
+                    {
+                        tokens.Add(new SymbolToken(SymbolType.GreaterThan, position));
                     }
                     else
                     {

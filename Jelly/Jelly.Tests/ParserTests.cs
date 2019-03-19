@@ -917,10 +917,10 @@ end";
         {
             var text = @"
 Main<>
-    if x > 5
+    if x >> 5
         ~x
     end
-    elif x < (2 * (5 / 4))
+    elif x << (2 * (5 / 4))
         ~
     end
 end";
@@ -961,11 +961,11 @@ end";
                                             new NumberNode
                                             (
                                                 5,
-                                                Position(3, 12)
+                                                Position(3, 13)
                                             ),
                                             OperatorType.None,
                                             null,
-                                            Position(3, 12)
+                                            Position(3, 13)
                                         ),
                                         Position(3, 8)
                                     ),
@@ -1006,7 +1006,7 @@ end";
                                                 new NumberNode
                                                 (
                                                     2,
-                                                    Position(6, 15)
+                                                    Position(6, 16)
                                                 ),
                                                 OperatorType.Multiply,
                                                 new ValueNode
@@ -1016,7 +1016,7 @@ end";
                                                         new NumberNode
                                                         (
                                                             5,
-                                                            Position(6, 20)
+                                                            Position(6, 21)
                                                         ),
                                                         OperatorType.Divide,
                                                         new ValueNode
@@ -1024,23 +1024,23 @@ end";
                                                             new NumberNode
                                                             (
                                                                 4,
-                                                                Position(6, 24)
+                                                                Position(6, 25)
                                                             ),
                                                             OperatorType.None,
                                                             null,
-                                                            Position(6, 24)
+                                                            Position(6, 25)
                                                         ),
-                                                        Position(6, 19)
+                                                        Position(6, 20)
                                                     ),
                                                     OperatorType.None,
                                                     null,
-                                                    Position(6, 19)
+                                                    Position(6, 20)
                                                 ),
-                                                Position(6, 14)
+                                                Position(6, 15)
                                             ),
                                             OperatorType.None,
                                             null,
-                                            Position(6, 14)
+                                            Position(6, 15)
                                         ),
                                         Position(6, 10)
                                     ),
@@ -1138,7 +1138,7 @@ end";
         {
             var text = @"
 Main<>
-    Call<x > 1, 2>
+    Call<x >> 1, 2>
 end";
 
             var actual = GetAST(text);
@@ -1180,11 +1180,11 @@ end";
                                         new NumberNode
                                         (
                                             1,
-                                            Position(3, 14)
+                                            Position(3, 15)
                                         ),
                                         OperatorType.None,
                                         null,
-                                        Position(3, 14)
+                                        Position(3, 15)
                                     ),
                                     Position(3, 10)
                                 ),
@@ -1193,11 +1193,11 @@ end";
                                     new NumberNode
                                     (
                                         2,
-                                        Position(3, 17)
+                                        Position(3, 18)
                                     ),
                                     OperatorType.None,
                                     null,
-                                    Position(3, 17)
+                                    Position(3, 18)
                                 )
                             },
                             Position(3, 5)
