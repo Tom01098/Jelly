@@ -423,15 +423,9 @@ end";
                             (
                                 new NegativeNode
                                 (
-                                    new ValueNode
+                                    new NumberNode
                                     (
-                                        new NumberNode
-                                        (
-                                            3,
-                                            Position(3, 10)
-                                        ),
-                                        OperatorType.None,
-                                        null,
+                                        3,
                                         Position(3, 10)
                                     ),
                                     Position(3, 9)
@@ -486,15 +480,9 @@ end";
                             (
                                 new NotNode
                                 (
-                                    new ValueNode
+                                    new NumberNode
                                     (
-                                        new NumberNode
-                                        (
-                                            0,
-                                            Position(3, 11)
-                                        ),
-                                        OperatorType.None,
-                                        null,
+                                        0,
                                         Position(3, 11)
                                     ),
                                     Position(3, 10)
