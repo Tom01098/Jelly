@@ -273,6 +273,52 @@ namespace Jelly.Core.Parsing
             throw new JellyException("Expected a number", tokens.Current.Position);
         }
 
+        // operator = '+' | '-' | '*' | '/' | '%' | '==' | '!=' | '<' | '>' | '<=' | '>=';
+        private OperatorType Operator()
+        {
+            var op = OperatorType.None;
+
+            switch (((SymbolToken)tokens.Current).Symbol)
+            {
+                case SymbolType.OpenAngleParenthesis:
+                    op = OperatorType.LessThan;
+                    break;
+                case SymbolType.CloseAngleParenthesis:
+                    op = OperatorType.GreaterThan;
+                    break;
+                case SymbolType.EqualTo:
+                    op = OperatorType.EqualTo;
+                    break;
+                case SymbolType.UnequalTo:
+                    op = OperatorType.UnequalTo;
+                    break;
+                case SymbolType.GreaterThanOrEqualTo:
+                    op = OperatorType.GreaterThanOrEqualTo;
+                    break;
+                case SymbolType.LessThanOrEqualTo:
+                    op = OperatorType.LessThanOrEqualTo;
+                    break;
+                case SymbolType.Modulo:
+                    op = OperatorType.Modulo;
+                    break;
+                case SymbolType.Add:
+                    op = OperatorType.Add;
+                    break;
+                case SymbolType.Subtract:
+                    op = OperatorType.Subtract;
+                    break;
+                case SymbolType.Multiply:
+                    op = OperatorType.Multiply;
+                    break;
+                case SymbolType.Divide:
+                    op = OperatorType.Divide;
+                    break;
+            }
+
+            tokens.MoveNext();
+            return op;
+        }
+
         // parameters = identifier {',' identifier};
         private List<IdentifierNode> Parameters()
         {
@@ -383,13 +429,22 @@ namespace Jelly.Core.Parsing
             }
         }
 
-        // value = term {operator term};
+        // value = term [operator value];
         private ValueNode Value()
         {
             var position = tokens.Current.Position;
 
-            // TODO Operator tree
-            return new ValueNode(Term(), OperatorType.None, null, position);
+            ITermNode lhs = Term();
+            OperatorType op = OperatorType.None;
+            ITermNode rhs = null;
+
+            if (IsOperator(tokens.Current))
+            {
+                op = Operator();
+                rhs = Value();
+            }
+
+            return new ValueNode(lhs, op, rhs, position);
         }
     }
 }

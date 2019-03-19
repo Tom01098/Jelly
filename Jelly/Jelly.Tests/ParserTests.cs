@@ -541,9 +541,15 @@ end";
                                     Position(3, 11)
                                 ),
                                 OperatorType.Modulo,
-                                new NumberNode
+                                new ValueNode
                                 (
-                                    4,
+                                    new NumberNode
+                                    (
+                                        4,
+                                        Position(3, 15)
+                                    ),
+                                    OperatorType.None,
+                                    null,
                                     Position(3, 15)
                                 ),
                                 Position(3, 11)
@@ -592,17 +598,29 @@ end";
                             ),
                             new ValueNode
                             (
-                                new NumberNode
+                                new ValueNode
                                 (
-                                    3,
-                                    Position(3, 12)
+                                    new NumberNode
+                                    (
+                                        3,
+                                        Position(3, 12)
+                                    ),
+                                    OperatorType.Multiply,
+                                    new ValueNode
+                                    (
+                                        new NumberNode
+                                        (
+                                            4,
+                                            Position(3, 16)
+                                        ),
+                                        OperatorType.None,
+                                        null,
+                                        Position(3, 16)
+                                    ),
+                                    Position(3, 11)
                                 ),
-                                OperatorType.Modulo,
-                                new NumberNode
-                                (
-                                    4,
-                                    Position(3, 16)
-                                ),
+                                OperatorType.None,
+                                null,
                                 Position(3, 11)
                             ),
                             Position(3, 5)
@@ -931,6 +949,74 @@ end";
                                     Position(6, 5)
                                 )
                             },
+                            Position(3, 5)
+                        )
+                    },
+                    Position(2, 1)
+                )
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void LongOperation()
+        {
+            var text = @"
+Main<>
+    ~4 + 5 / 2
+end";
+
+            var actual = GetAST(text);
+
+            var expected = new List<FunctionNode>
+            {
+                new FunctionNode
+                (
+                    new IdentifierNode
+                    (
+                        "Main",
+                        Position(2, 1)
+                    ),
+                    new List<IdentifierNode>
+                    {
+
+                    },
+                    new List<IConstructNode>
+                    {
+                        new ReturnNode
+                        (
+                            new ValueNode
+                            (
+                                new NumberNode
+                                (
+                                    4,
+                                    Position(3, 6)
+                                ),
+                                OperatorType.Add,
+                                new ValueNode
+                                (
+                                    new NumberNode
+                                    (
+                                        5,
+                                        Position(3, 10)
+                                    ),
+                                    OperatorType.Divide,
+                                    new ValueNode
+                                    (
+                                        new NumberNode
+                                        (
+                                            2,
+                                            Position(3, 14)
+                                        ),
+                                        OperatorType.None,
+                                        null,
+                                        Position(3, 14)
+                                    ),
+                                    Position(3, 10)
+                                ),
+                                Position(3, 6)
+                            ),
                             Position(3, 5)
                         )
                     },
