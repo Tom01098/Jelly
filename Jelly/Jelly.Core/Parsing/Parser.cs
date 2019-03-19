@@ -424,7 +424,7 @@ namespace Jelly.Core.Parsing
             }
             else
             {
-                throw new JellyException("Only a parenthesised value, not, negative, call, number, or identifier can be used as a term.",
+                throw new JellyException("Only a parenthesised value, not, negative, call, number, or identifier can be used as a term",
                                          tokens.Current.Position);
             }
         }
@@ -438,13 +438,25 @@ namespace Jelly.Core.Parsing
             OperatorType op = OperatorType.None;
             ITermNode rhs = null;
 
-            if (IsOperator(tokens.Current))
+            if (ShouldParseOpAndValue())
             {
                 op = Operator();
                 rhs = Value();
             }
 
             return new ValueNode(lhs, op, rhs, position);
+
+            bool ShouldParseOpAndValue()
+            {
+                if (IsSymbol(tokens.Current, SymbolType.CloseAngleParenthesis))
+                {
+                    return (tokens.LookAhead(1) is NumberToken)
+                        || (tokens.LookAhead(1) is IdentifierToken)
+                        || IsSymbol(tokens.LookAhead(1), SymbolType.Subtract);
+                }
+
+                return IsOperator(tokens.Current);
+            }
         }
     }
 }

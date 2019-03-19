@@ -1026,6 +1026,83 @@ end";
 
             CollectionAssertUtility.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void CallWithGreaterThan()
+        {
+            var text = @"
+Main<>
+    Call<x > 1, 2>
+end";
+
+            var actual = GetAST(text);
+
+            var expected = new List<FunctionNode>
+            {
+                new FunctionNode
+                (
+                    new IdentifierNode
+                    (
+                        "Main",
+                        Position(2, 1)
+                    ),
+                    new List<IdentifierNode>
+                    {
+
+                    },
+                    new List<IConstructNode>
+                    {
+                        new CallNode
+                        (
+                            new IdentifierNode
+                            (
+                                "Call",
+                                Position(3, 5)
+                            ),
+                            new List<ValueNode>
+                            {
+                                new ValueNode
+                                (
+                                    new IdentifierNode
+                                    (
+                                        "x",
+                                        Position(3, 10)
+                                    ),
+                                    OperatorType.GreaterThan,
+                                    new ValueNode
+                                    (
+                                        new NumberNode
+                                        (
+                                            1,
+                                            Position(3, 14)
+                                        ),
+                                        OperatorType.None,
+                                        null,
+                                        Position(3, 14)
+                                    ),
+                                    Position(3, 10)
+                                ),
+                                new ValueNode
+                                (
+                                    new NumberNode
+                                    (
+                                        2,
+                                        Position(3, 17)
+                                    ),
+                                    OperatorType.None,
+                                    null,
+                                    Position(3, 17)
+                                )
+                            },
+                            Position(3, 5)
+                        )
+                    },
+                    Position(2, 1)
+                )
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
         #endregion
     }
 }
