@@ -1,7 +1,6 @@
 ﻿using Jelly.Core.Parsing.AST;
 using Jelly.Core.Parsing.Tokens;
 using Jelly.Core.Utility;
-using System;
 using System.Collections.Generic;
 
 namespace Jelly.Core.Parsing
@@ -458,7 +457,7 @@ namespace Jelly.Core.Parsing
             {
                 return Negative();
             }
-            else if (IsSymbol(tokens.LookAhead(1), SymbolType.OpenAngleParenthesis))
+            else if (ShouldParseCall())
             {
                 return Call();
             }
@@ -474,6 +473,16 @@ namespace Jelly.Core.Parsing
             {
                 throw new JellyException("Only a parenthesised value, not, negative, call, number, or identifier can be used as a term",
                                          tokens.Current.Position);
+            }
+
+            bool ShouldParseCall()
+            {
+                if(!IsSymbol(tokens.LookAhead(1), SymbolType.OpenAngleParenthesis))
+                {
+                    return false;
+                }
+
+                return IsSymbol(tokens.LookAhead(2), SymbolType.CloseAngleParenthesis);
             }
         }
 

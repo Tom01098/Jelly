@@ -838,7 +838,7 @@ Main<>
     if x > 5
         ~x
     end
-    elif x <= (2 * (5 / 4))
+    elif x < (2 * (5 / 4))
         ~
     end
 end";
@@ -916,45 +916,51 @@ end";
                                             "x",
                                             Position(6, 10)
                                         ),
-                                        OperatorType.LessThanOrEqualTo,
+                                        OperatorType.LessThan,
                                         new ValueNode
                                         (
-                                            new NumberNode
-                                            (
-                                                2,
-                                                Position(6, 16)
-                                            ),
-                                            OperatorType.Multiply,
                                             new ValueNode
                                             (
+                                                new NumberNode
+                                                (
+                                                    2,
+                                                    Position(6, 15)
+                                                ),
+                                                OperatorType.Multiply,
                                                 new ValueNode
                                                 (
-                                                    new NumberNode
-                                                    (
-                                                        5,
-                                                        Position(6, 21)
-                                                    ),
-                                                    OperatorType.Divide,
                                                     new ValueNode
                                                     (
                                                         new NumberNode
                                                         (
-                                                            4,
-                                                            Position(6, 25)
+                                                            5,
+                                                            Position(6, 20)
                                                         ),
-                                                        OperatorType.None,
-                                                        null,
-                                                        Position(6, 25)
+                                                        OperatorType.Divide,
+                                                        new ValueNode
+                                                        (
+                                                            new NumberNode
+                                                            (
+                                                                4,
+                                                                Position(6, 24)
+                                                            ),
+                                                            OperatorType.None,
+                                                            null,
+                                                            Position(6, 24)
+                                                        ),
+                                                        Position(6, 19)
                                                     ),
-                                                    Position(6, 20)
+                                                    OperatorType.None,
+                                                    null,
+                                                    Position(6, 19)
                                                 ),
-                                                OperatorType.None,
-                                                null,
-                                                Position(6, 20)
+                                                Position(6, 14)
                                             ),
-                                            Position(6, 15)
+                                            OperatorType.None,
+                                            null,
+                                            Position(6, 14)
                                         ),
-                                        Position(6, 15)
+                                        Position(6, 10)
                                     ),
                                     new List<IConstructNode>
                                     {
@@ -964,7 +970,7 @@ end";
                                             Position(7, 9)
                                         )
                                     },
-                                    Position(6, 5)
+                                    Position(6, 10)
                                 )
                             },
                             Position(3, 5)
@@ -1114,6 +1120,40 @@ end";
                             },
                             Position(3, 5)
                         )
+                    },
+                    Position(2, 1)
+                )
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void NestedCalls()
+        {
+            var text = @"
+Main<>
+    Call<Pow<2, 4>, 2>
+end";
+
+            var actual = GetAST(text);
+
+            var expected = new List<FunctionNode>
+            {
+                new FunctionNode
+                (
+                    new IdentifierNode
+                    (
+                        "Main",
+                        Position(2, 1)
+                    ),
+                    new List<IdentifierNode>
+                    {
+
+                    },
+                    new List<IConstructNode>
+                    {
+                        
                     },
                     Position(2, 1)
                 )
