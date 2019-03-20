@@ -9,7 +9,7 @@ IntPow<x, n>
 
 	@ If n is negative, return 1 / x^|n|
 	elif n << 0
-		~1 / (Pow<x, Abs<n> - 1>)
+		~1 / (IntPow<x, Abs<n> - 1>)
 	end
 	
 	@ If n is 0, return 1

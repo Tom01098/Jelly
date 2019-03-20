@@ -11,11 +11,11 @@ namespace Jelly.Core.Interpreting
     public class Interpreter
     {
         private Dictionary<string, IFunction> functions;
-        private Stack<Dictionary<string, double>> values;
+        private ValueStack values;
 
         public void Interpret(List<FunctionNode> ast)
         {
-            values = new Stack<Dictionary<string, double>>();
+            values = new ValueStack();
             CreateFunctionDictionary(ast);
 
             ExecuteFunction(functions["Main"], new List<double> { });
@@ -48,35 +48,46 @@ namespace Jelly.Core.Interpreting
             var node = (FunctionNode)function;
 
             // Push the arguments to the call stack
-            var locals = new Dictionary<string, double>();
+            values.New();
 
             for (int i = 0; i < arguments.Count; i++)
             {
-                locals.Add(node.Parameters[i].Identifier, arguments[i]);
+                values.Add(node.Parameters[i].Identifier, arguments[i]);
             }
-
-            values.Push(locals);
 
             // Execute each construct
             foreach (var construct in node.Constructs)
             {
                 if (construct is IfBlockNode ifBlock)
                 {
-                    throw new NotImplementedException();
+                    foreach (var block in ifBlock.Blocks)
+                    {
+                        if (Evaluate(block.Condition) != 0)
+                        {
+                            values.NewInScope();
+
+
+
+                            values.Pop();
+                            break;
+                        }
+                    }
                 }
                 else if (construct is IStatementNode statement)
                 {
                     if (statement is ReturnNode returnNode)
                     {
-                        throw new NotImplementedException();
+                        var result = Evaluate(returnNode.Value);
+                        values.Pop();
+                        return result;
                     }
                     else if (statement is AssignmentNode assignmentNode)
                     {
-                        values.Peek().Add(assignmentNode.Identifier.Identifier, Evaluate(assignmentNode.Value));
+                        values.Add(assignmentNode.Identifier.Identifier, Evaluate(assignmentNode.Value));
                     }
                     else if (statement is MutationNode mutationNode)
                     {
-                        values.Peek()[mutationNode.Identifier.Identifier] = Evaluate(mutationNode.Value);
+                        values.Mutate(mutationNode.Identifier.Identifier, Evaluate(mutationNode.Value));
                     }
                     else if (statement is CallNode callNode)
                     {
@@ -151,7 +162,14 @@ namespace Jelly.Core.Interpreting
             }
             else if (term is CallNode callNode)
             {
-                throw new NotImplementedException();
+                var args = new List<double>();
+
+                foreach (var arg in callNode.Arguments)
+                {
+                    args.Add(Evaluate(arg));
+                }
+
+                return ExecuteFunction(functions[callNode.Identifier.Identifier], args);
             }
             else if (term is NumberNode numberNode)
             {
@@ -159,7 +177,7 @@ namespace Jelly.Core.Interpreting
             }
             else if (term is IdentifierNode identifierNode)
             {
-                return values.Peek()[identifierNode.Identifier];
+                return values[identifierNode.Identifier];
             }
             else
             {

@@ -1,3 +1,6 @@
 ﻿Main<>
-	~-.4 * (-Factorial<Pow<2, -4> - (Pow<3, !2> * 9)> / 22)
+	x = 5
+	Write<x + 3>
+	x => 7
+	Write<x / 4>
 end

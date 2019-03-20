@@ -257,6 +257,107 @@ end";
 
             Interpret(text, expected);
         }
+
+        [TestMethod]
+        public void Arithmetic()
+        {
+            var text = @"
+Main<>
+    Write<3 * ((5 + 7) / 2)>
+end";
+
+            var expected = @"18
+";
+
+            Interpret(text, expected);
+        }
+
+        [TestMethod]
+        public void Arithmetic2()
+        {
+            var text = @"
+Main<>
+    Write<4 + 6 * 7>
+end";
+
+            var expected = @"46
+";
+
+            Interpret(text, expected);
+        }
+
+        [TestMethod]
+        public void If()
+        {
+            var text = @"
+Main<>
+    if 1
+        Write<7>
+    end
+end";
+
+            var expected = @"46
+";
+
+            Interpret(text, expected);
+        }
+
+        [TestMethod]
+        public void IfElif()
+        {
+            var text = @"
+Main<>
+    if 0
+        Write<7>
+    end
+    elif 1
+        Write<4>
+    end
+end";
+
+            var expected = @"4
+";
+
+            Interpret(text, expected);
+        }
+        #endregion
+
+        #region Two Functions
+        [TestMethod]
+        public void Return()
+        {
+            var text = @"
+Main<>
+    Write< Value<> >
+end
+
+Value<>
+    ~7
+end";
+
+            var expected = @"7
+";
+
+            Interpret(text, expected);
+        }
+
+        [TestMethod]
+        public void ReturnArgument()
+        {
+            var text = @"
+Main<>
+    Write< Value<2> >
+end
+
+Value<x>
+    ~x
+end";
+
+            var expected = @"2
+";
+
+            Interpret(text, expected);
+        }
         #endregion
     }
 }
