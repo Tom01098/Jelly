@@ -9,7 +9,7 @@ end
 @ Produce the factorial of a number
 Factorial<num>
   @ If it is not an integer or less than 0, return NaN
-	if num % 1 != 0
+	if (num % 1) != 0
 		~
 	end
 	elif num << 0
