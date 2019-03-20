@@ -17,8 +17,8 @@ IntPow<x, n>
 		~1
 	end
 
-	@ Calculate the power like normal
+	@ Calculate the power recursively
 	else
-		~Pow<x, n - 1>
+		~IntPow<x, n - 1>
 	end
 end
