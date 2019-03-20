@@ -1,15 +1,16 @@
 program = {function} ? EOFToken ?;
 
-function = signature {construct} end;
+function = signature constructs end;
 signature = identifier '<' [parameters] '>' EOL;
 
 arguments = value {',' value};
 parameters = identifier {',' identifier};
 
+constructs = {construct};
 construct = if_block | statement EOL;
 
-if_block = 'if' conditional_block {'elif' conditional_block} ['else' EOL {construct} end];
-conditional_block = value EOL {construct} end;
+if_block = 'if' conditional_block {'elif' conditional_block} ['else' EOL constructs end];
+conditional_block = value EOL constructs end;
 
 statement = return | assignment | mutation | call;
 

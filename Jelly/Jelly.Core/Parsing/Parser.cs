@@ -51,6 +51,11 @@ namespace Jelly.Core.Parsing
                 s.Symbol == SymbolType.GreaterThanOrEqualTo);
         }
 
+        private bool IsEOL(Token token)
+        {
+            return token is EOLToken;
+        }
+
         // assignment = identifier '=' value;
         private AssignmentNode Assignment()
         {
@@ -115,7 +120,7 @@ namespace Jelly.Core.Parsing
             var position = tokens.Current.Position;
             var condition = isElse ? null : Value();
 
-            if (!(tokens.Current is EOLToken))
+            if (!IsEOL(tokens.Current))
             {
                 throw new JellyException("A conditional value must end with a newline",
                                          tokens.Current.Position);
@@ -123,20 +128,7 @@ namespace Jelly.Core.Parsing
 
             tokens.MoveNext();
             var constructs = Constructs();
-
-            if (!IsKeyword(tokens.Current, KeywordType.End))
-            {
-                throw new JellyException("Expected 'end'", tokens.Current.Position);
-            }
-
-            tokens.MoveNext();
-
-            if(!(tokens.Current is EOLToken))
-            {
-                throw new JellyException("'end' must be followed by a newline", tokens.Current.Position);
-            }
-
-            tokens.MoveNext();
+            End();
             return new ConditionalBlockNode(condition, constructs, position);
         }
 
@@ -151,7 +143,7 @@ namespace Jelly.Core.Parsing
             {
                 var statement = Statement();
 
-                if (!(tokens.Current is EOLToken))
+                if (!IsEOL(tokens.Current))
                 {
                     throw new JellyException("A statement must end with a newline",
                                              tokens.Current.Position);
@@ -162,7 +154,7 @@ namespace Jelly.Core.Parsing
             }
         }
 
-        // {construct}
+        // constructs = {construct}
         private List<IConstructNode> Constructs()
         {
             var constructs = new List<IConstructNode>();
@@ -173,6 +165,24 @@ namespace Jelly.Core.Parsing
             }
 
             return constructs;
+        }
+
+        // end = 'end' EOL
+        private void End()
+        {
+            if (!IsKeyword(tokens.Current, KeywordType.End))
+            {
+                throw new JellyException("Expected 'end'", tokens.Current.Position);
+            }
+
+            tokens.MoveNext();
+
+            if (!IsEOL(tokens.Current))
+            {
+                throw new JellyException("'end' must be followed by a newline", tokens.Current.Position);
+            }
+
+            tokens.MoveNext();
         }
 
         // function = signature {construct} end;
@@ -197,7 +207,7 @@ namespace Jelly.Core.Parsing
 
             tokens.MoveNext();
 
-            if (!(tokens.Current is EOLToken))
+            if (!IsEOL(tokens.Current))
             {
                 throw new JellyException("A function signature must end with a newline",
                                          tokens.Current.Position);
@@ -205,21 +215,7 @@ namespace Jelly.Core.Parsing
 
             tokens.MoveNext();
             var constructs = Constructs();
-
-            if (!IsKeyword(tokens.Current, KeywordType.End))
-            {
-                throw new JellyException("Expected 'end'", tokens.Current.Position);
-            }
-
-            tokens.MoveNext();
-
-            if (!(tokens.Current is EOLToken))
-            {
-                throw new JellyException("'end' must be followed by a newline",
-                                         tokens.Current.Position);
-            }
-
-            tokens.MoveNext();
+            End();
             return new FunctionNode(identifier, parameters, constructs, position);
         }
 
@@ -397,7 +393,7 @@ namespace Jelly.Core.Parsing
 
             tokens.MoveNext();
 
-            if (tokens.Current is EOLToken)
+            if (IsEOL(tokens.Current))
             {
                 return new ReturnNode(null, position);
             }
