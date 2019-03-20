@@ -1,7 +1,9 @@
-﻿using System;
-using System.IO;
-using Jelly.Core.Parsing;
+﻿using Jelly.Core.Parsing;
+using Jelly.Core.Parsing.AST;
 using Jelly.Core.Utility;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Jelly
 {
@@ -11,12 +13,10 @@ namespace Jelly
         {
             try
             {
-                Console.WriteLine($"Begin reading from {args[0]}");
-                var text = File.ReadAllText(args[0]);
-                Console.WriteLine("Begin lexing");
-                var tokens = new Lexer().Lex(text, args[0]);
-                Console.WriteLine("Begin parsing");
-                var ast = new Parser().Parse(tokens);
+                var files = FindFiles(args[0]);
+
+                var ast = GetAST(files, args[0]);
+
                 Console.WriteLine("Success");
             }
             catch (JellyException e)
@@ -29,6 +29,38 @@ namespace Jelly
             }
 
             Console.ReadKey();
+        }
+
+        private static string[] FindFiles(string folder)
+        {
+            Console.WriteLine("Searching directory for .jelly files");
+            var files = Directory.GetFiles(folder, "*.jelly");
+            Console.WriteLine("Found:");
+
+            for (int i = 0; i < files.Length; i++)
+            {
+                files[i] = files[i].Replace(folder, "");
+                Console.WriteLine($"    {files[i]}");
+            }
+
+            return files;
+        }
+
+        private static List<FunctionNode> GetAST(string[] files, string folder)
+        {
+            Console.WriteLine("Parsing files");
+
+            var ast = new List<FunctionNode>();
+
+            foreach (var file in files)
+            {
+                var contents = File.ReadAllText(folder + file);
+
+                ast.AddRange(new Parser().Parse(
+                    new Lexer().Lex(contents, file)));
+            }
+
+            return ast;
         }
     }
 }
