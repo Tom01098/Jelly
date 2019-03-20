@@ -1,0 +1,17 @@
+﻿@ Get the factorial of an integer
+Factorial<n>
+	@ If n is not an integer, return NaN
+	if !IsInt<n>
+		~
+	end
+
+	@ Return 1 for the base case of 0
+	elif !n
+		~1
+	end
+
+	@ Recursively call
+	else
+		~n * Factorial<n - 1>
+	end
+end
