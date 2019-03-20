@@ -145,6 +145,118 @@ end";
 
             Interpret(text, expected);
         }
+
+        [TestMethod]
+        public void Modulo()
+        {
+            var text = @"
+Main<>
+    Write<5 % 3>
+end";
+
+            var expected = @"2
+";
+
+            Interpret(text, expected);
+        }
+
+        [TestMethod]
+        public void EqualTo()
+        {
+            var text = @"
+Main<>
+    Write<6 == 2>
+end";
+
+            var expected = @"0
+";
+
+            Interpret(text, expected);
+        }
+
+        [TestMethod]
+        public void UnequalTo()
+        {
+            var text = @"
+Main<>
+    Write<6 == 2>
+end";
+
+            var expected = @"0
+";
+
+            Interpret(text, expected);
+        }
+
+        [TestMethod]
+        public void LessThan()
+        {
+            var text = @"
+Main<>
+    Write<6 << 2>
+end";
+
+            var expected = @"0
+";
+
+            Interpret(text, expected);
+        }
+
+        [TestMethod]
+        public void GreaterThan()
+        {
+            var text = @"
+Main<>
+    Write<6 >> 2>
+end";
+
+            var expected = @"1
+";
+
+            Interpret(text, expected);
+        }
+
+        [TestMethod]
+        public void LessThanOrEqualTo()
+        {
+            var text = @"
+Main<>
+    Write<6 <= 2>
+end";
+
+            var expected = @"0
+";
+
+            Interpret(text, expected);
+        }
+
+        [TestMethod]
+        public void GreaterThanOrEqualTo()
+        {
+            var text = @"
+Main<>
+    Write<6 >= 2>
+end";
+
+            var expected = @"1
+";
+
+            Interpret(text, expected);
+        }
+
+        [TestMethod]
+        public void Not()
+        {
+            var text = @"
+Main<>
+    Write<!0>
+end";
+
+            var expected = @"1
+";
+
+            Interpret(text, expected);
+        }
         #endregion
     }
 }

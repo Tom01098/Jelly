@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Jelly.Core.Parsing.AST
 {
-    public class FunctionNode : Node
+    public class FunctionNode : Node, IFunction
     {
         public IdentifierNode Identifier { get; }
         public List<IdentifierNode> Parameters { get; }
