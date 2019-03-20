@@ -1,0 +1,24 @@
+﻿@ Calculate x to the power of n
+@ Integers only
+IntPow<x, n>
+	@ If n isn't an integer, return NaN as this routine
+	@ can't calculate it
+	if !IsInt<n>
+		~
+	end
+
+	@ If n is negative, return 1 / x^|n|
+	elif n << 0
+		~1 / (Pow<x, Abs<n> - 1>)
+	end
+	
+	@ If n is 0, return 1
+	elif !n
+		~1
+	end
+
+	@ Calculate the power like normal
+	else
+		~Pow<x, n - 1>
+	end
+end

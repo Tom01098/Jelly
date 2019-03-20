@@ -1,0 +1,4 @@
+﻿@ Is the given number an integer?
+IsInt<x>
+	~(x % 1) == 0
+end

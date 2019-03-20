@@ -21,10 +21,12 @@ namespace Jelly
             }
             catch (JellyException e)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(e.Message);
             }
             catch (Exception e)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"Unhandled error: {e}");
             }
 
@@ -34,13 +36,13 @@ namespace Jelly
         private static string[] FindFiles(string folder)
         {
             Console.WriteLine("Searching directory for .jelly files");
-            var files = Directory.GetFiles(folder, "*.jelly");
-            Console.WriteLine("Found:");
+            var files = Directory.GetFiles(folder, "*.jelly", SearchOption.AllDirectories);
+            Console.WriteLine("    Found:");
 
             for (int i = 0; i < files.Length; i++)
             {
                 files[i] = files[i].Replace(folder, "");
-                Console.WriteLine($"    {files[i]}");
+                Console.WriteLine($"        {files[i]}");
             }
 
             return files;
@@ -59,6 +61,8 @@ namespace Jelly
                 ast.AddRange(new Parser().Parse(
                     new Lexer().Lex(contents, file)));
             }
+
+            Console.WriteLine($"    Found {ast.Count} functions");
 
             return ast;
         }

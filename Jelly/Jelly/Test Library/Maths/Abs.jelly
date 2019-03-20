@@ -1,0 +1,9 @@
+﻿@ Get the absolute value of a number
+@ eg: |-1| = 1
+Abs<x>
+	if x >= 0
+		~x
+	end
+
+	~x - (2 * x)
+end

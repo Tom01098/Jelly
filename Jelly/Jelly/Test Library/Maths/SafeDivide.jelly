@@ -1,0 +1,8 @@
+﻿@ Safely divide, returning NaN if bottom is 0
+SafeDivide<top, bottom>
+	if !bottom
+		~
+	end
+
+	~top / bottom
+end
