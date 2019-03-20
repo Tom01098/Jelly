@@ -1,4 +1,5 @@
-﻿using Jelly.Core.Parsing;
+﻿using Jelly.Core.Interpreting;
+using Jelly.Core.Parsing;
 using Jelly.Core.Parsing.AST;
 using Jelly.Core.Utility;
 using System;
@@ -14,10 +15,8 @@ namespace Jelly
             try
             {
                 var files = FindFiles(args[0]);
-
                 var ast = GetAST(files, args[0]);
-
-                Console.WriteLine("Success");
+                Interpret(ast);
             }
             catch (JellyException e)
             {
@@ -65,6 +64,13 @@ namespace Jelly
             Console.WriteLine($"    Found {ast.Count} functions");
 
             return ast;
+        }
+
+        private static void Interpret(List<FunctionNode> ast)
+        {
+            Console.WriteLine("START PROGRAM\n");
+            new Interpreter().Interpret(ast);
+            Console.WriteLine("\nEND PROGRAM");
         }
     }
 }
