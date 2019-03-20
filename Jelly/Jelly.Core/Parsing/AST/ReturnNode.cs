@@ -4,9 +4,9 @@ namespace Jelly.Core.Parsing.AST
 {
     public class ReturnNode : Node, IStatementNode
     {
-        public ValueNode Value { get; }
+        public ITermNode Value { get; }
 
-        public ReturnNode(ValueNode value, Position position)
+        public ReturnNode(ITermNode value, Position position)
             : base(position) => Value = value;
     }
 }

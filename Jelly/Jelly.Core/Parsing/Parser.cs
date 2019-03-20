@@ -68,9 +68,9 @@ namespace Jelly.Core.Parsing
         }
 
         // arguments = value {',' value};
-        private List<ValueNode> Arguments()
+        private List<ITermNode> Arguments()
         {
-            var arguments = new List<ValueNode>();
+            var arguments = new List<ITermNode>();
 
             if (!IsSymbol(tokens.Current, SymbolType.CloseAngleParenthesis))
             {
@@ -439,7 +439,6 @@ namespace Jelly.Core.Parsing
                 var position = tokens.Current.Position;
                 tokens.MoveNext();
                 var value = Value();
-                value.Position = position;
 
                 if (!IsSymbol(tokens.Current, SymbolType.CloseParenthesis))
                 {
@@ -483,33 +482,18 @@ namespace Jelly.Core.Parsing
         }
 
         // value = term [operator value];
-        private ValueNode Value()
+        private ITermNode Value()
         {
             var position = tokens.Current.Position;
 
             ITermNode lhs = Term();
-            OperatorType op = OperatorType.None;
-            ITermNode rhs = null;
 
-            if (ShouldParseOpAndValue())
+            if (IsOperator(tokens.Current))
             {
-                op = Operator();
-                rhs = Value();
+                return new ValueNode(lhs, Operator(), Value(), position);
             }
 
-            return new ValueNode(lhs, op, rhs, position);
-
-            bool ShouldParseOpAndValue()
-            {
-                if (IsSymbol(tokens.Current, SymbolType.CloseAngleParenthesis))
-                {
-                    return (tokens.LookAhead(1) is NumberToken)
-                        || (tokens.LookAhead(1) is IdentifierToken)
-                        || IsSymbol(tokens.LookAhead(1), SymbolType.Subtract);
-                }
-
-                return IsOperator(tokens.Current);
-            }
+            return lhs;
         }
     }
 }

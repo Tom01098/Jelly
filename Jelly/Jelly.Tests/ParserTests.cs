@@ -167,15 +167,9 @@ end";
                     {
                         new ReturnNode
                         (
-                            new ValueNode
+                            new NumberNode
                             (
-                                new NumberNode
-                                (
-                                    4,
-                                    Position(3, 6)
-                                ),
-                                OperatorType.None,
-                                null,
+                                4,
                                 Position(3, 6)
                             ),
                             Position(3, 5)
@@ -306,7 +300,7 @@ end";
                                 "Test",
                                 Position(3, 5)
                             ),
-                            new List<ValueNode>
+                            new List<ITermNode>
                             {
 
                             },
@@ -352,30 +346,18 @@ end";
                                 "Test",
                                 Position(3, 5)
                             ),
-                            new List<ValueNode>
+                            new List<ITermNode>
                             {
-                                new ValueNode
+                                new IdentifierNode
                                 (
-                                    new IdentifierNode
-                                    (
-                                        "x",
-                                        Position(3, 10)
-                                    ),
-                                    OperatorType.None,
-                                    null,
+                                    "x",
                                     Position(3, 10)
                                 ),
-                                new ValueNode
+                                new IdentifierNode
                                 (
-                                    new IdentifierNode
-                                    (
-                                        "y",
-                                        Position(3, 13)
-                                    ),
-                                    OperatorType.None,
-                                    null,
+                                    "y",
                                     Position(3, 13)
-                                )
+                                ),
                             },
                             Position(3, 5)
                         )
@@ -419,19 +401,13 @@ end";
                                 "x",
                                 Position(3, 5)
                             ),
-                            new ValueNode
+                            new NegativeNode
                             (
-                                new NegativeNode
+                                new NumberNode
                                 (
-                                    new NumberNode
-                                    (
-                                        3,
-                                        Position(3, 10)
-                                    ),
-                                    Position(3, 9)
+                                    3,
+                                    Position(3, 10)
                                 ),
-                                OperatorType.None,
-                                null,
                                 Position(3, 9)
                             ),
                             Position(3, 5)
@@ -476,19 +452,13 @@ end";
                                 "x",
                                 Position(3, 5)
                             ),
-                            new ValueNode
+                            new NotNode
                             (
-                                new NotNode
+                                new NumberNode
                                 (
-                                    new NumberNode
-                                    (
-                                        0,
-                                        Position(3, 11)
-                                    ),
-                                    Position(3, 10)
+                                    0,
+                                    Position(3, 11)
                                 ),
-                                OperatorType.None,
-                                null,
                                 Position(3, 10)
                             ),
                             Position(3, 5)
@@ -541,15 +511,9 @@ end";
                                     Position(3, 11)
                                 ),
                                 OperatorType.Modulo,
-                                new ValueNode
+                                new NumberNode
                                 (
-                                    new NumberNode
-                                    (
-                                        4,
-                                        Position(3, 15)
-                                    ),
-                                    OperatorType.None,
-                                    null,
+                                    4,
                                     Position(3, 15)
                                 ),
                                 Position(3, 11)
@@ -598,30 +562,18 @@ end";
                             ),
                             new ValueNode
                             (
-                                new ValueNode
+                                new NumberNode
                                 (
-                                    new NumberNode
-                                    (
-                                        3,
-                                        Position(3, 12)
-                                    ),
-                                    OperatorType.Multiply,
-                                    new ValueNode
-                                    (
-                                        new NumberNode
-                                        (
-                                            4,
-                                            Position(3, 16)
-                                        ),
-                                        OperatorType.None,
-                                        null,
-                                        Position(3, 16)
-                                    ),
-                                    Position(3, 11)
+                                    3,
+                                    Position(3, 12)
                                 ),
-                                OperatorType.None,
-                                null,
-                                Position(3, 11)
+                                OperatorType.Multiply,
+                                new NumberNode
+                                (
+                                    4,
+                                    Position(3, 16)
+                                ),
+                                Position(3, 12)
                             ),
                             Position(3, 5)
                         )
@@ -665,23 +617,17 @@ end";
                                 "result",
                                 Position(3, 5)
                             ),
-                            new ValueNode
+                            new CallNode
                             (
-                                new CallNode
+                                new IdentifierNode
                                 (
-                                    new IdentifierNode
-                                    (
-                                        "Test",
-                                        Position(3, 14)
-                                    ),
-                                    new List<ValueNode>
-                                    {
-
-                                    },
+                                    "Test",
                                     Position(3, 14)
                                 ),
-                                OperatorType.None,
-                                null,
+                                new List<ITermNode>
+                                {
+
+                                },
                                 Position(3, 14)
                             ),
                             Position(3, 5)
@@ -726,44 +672,26 @@ end";
                                 "result",
                                 Position(3, 5)
                             ),
-                            new ValueNode
+                            new CallNode
                             (
-                                new CallNode
+                                new IdentifierNode
                                 (
-                                    new IdentifierNode
-                                    (
-                                        "Test",
-                                        Position(3, 14)
-                                    ),
-                                    new List<ValueNode>
-                                    {
-                                        new ValueNode
-                                        (
-                                            new NumberNode
-                                            (
-                                                3,
-                                                Position(3, 19)
-                                            ),
-                                            OperatorType.None,
-                                            null,
-                                            Position(3, 19)
-                                        ),
-                                        new ValueNode
-                                        (
-                                            new IdentifierNode
-                                            (
-                                                "a",
-                                                Position(3, 22)
-                                            ),
-                                            OperatorType.None,
-                                            null,
-                                            Position(3, 22)
-                                        )
-                                    },
+                                    "Test",
                                     Position(3, 14)
                                 ),
-                                OperatorType.None,
-                                null,
+                                new List<ITermNode>
+                                {
+                                    new NumberNode
+                                    (
+                                        3,
+                                        Position(3, 19)
+                                    ),
+                                    new IdentifierNode
+                                    (
+                                        "a",
+                                        Position(3, 22)
+                                    ),
+                                },
                                 Position(3, 14)
                             ),
                             Position(3, 5)
@@ -809,15 +737,9 @@ end";
                             {
                                 new ConditionalBlockNode
                                 (
-                                    new ValueNode
+                                    new NumberNode
                                     (
-                                        new NumberNode
-                                        (
-                                            1,
-                                            Position(3, 8)
-                                        ),
-                                        OperatorType.None,
-                                        null,
+                                        1,
                                         Position(3, 8)
                                     ),
                                     new List<IConstructNode>
@@ -873,15 +795,9 @@ end";
                             {
                                 new ConditionalBlockNode
                                 (
-                                    new ValueNode
+                                    new NumberNode
                                     (
-                                        new NumberNode
-                                        (
-                                            1,
-                                            Position(3, 8)
-                                        ),
-                                        OperatorType.None,
-                                        null,
+                                        1,
                                         Position(3, 8)
                                     ),
                                     new List<IConstructNode>
@@ -956,15 +872,9 @@ end";
                                             Position(3, 8)
                                         ),
                                         OperatorType.GreaterThan,
-                                        new ValueNode
+                                        new NumberNode
                                         (
-                                            new NumberNode
-                                            (
-                                                5,
-                                                Position(3, 13)
-                                            ),
-                                            OperatorType.None,
-                                            null,
+                                            5,
                                             Position(3, 13)
                                         ),
                                         Position(3, 8)
@@ -973,15 +883,9 @@ end";
                                     {
                                         new ReturnNode
                                         (
-                                            new ValueNode
+                                            new IdentifierNode
                                             (
-                                                new IdentifierNode
-                                                (
-                                                    "x",
-                                                    Position(4, 10)
-                                                ),
-                                                OperatorType.None,
-                                                null,
+                                                "x",
                                                 Position(4, 10)
                                             ),
                                             Position(4, 9)
@@ -1001,46 +905,28 @@ end";
                                         OperatorType.LessThan,
                                         new ValueNode
                                         (
+                                            new NumberNode
+                                            (
+                                                2,
+                                                Position(6, 16)
+                                            ),
+                                            OperatorType.Multiply,
                                             new ValueNode
                                             (
                                                 new NumberNode
                                                 (
-                                                    2,
-                                                    Position(6, 16)
+                                                    5,
+                                                    Position(6, 21)
                                                 ),
-                                                OperatorType.Multiply,
-                                                new ValueNode
+                                                OperatorType.Divide,
+                                                new NumberNode
                                                 (
-                                                    new ValueNode
-                                                    (
-                                                        new NumberNode
-                                                        (
-                                                            5,
-                                                            Position(6, 21)
-                                                        ),
-                                                        OperatorType.Divide,
-                                                        new ValueNode
-                                                        (
-                                                            new NumberNode
-                                                            (
-                                                                4,
-                                                                Position(6, 25)
-                                                            ),
-                                                            OperatorType.None,
-                                                            null,
-                                                            Position(6, 25)
-                                                        ),
-                                                        Position(6, 20)
-                                                    ),
-                                                    OperatorType.None,
-                                                    null,
-                                                    Position(6, 20)
+                                                    4,
+                                                    Position(6, 25)
                                                 ),
-                                                Position(6, 15)
+                                                Position(6, 21)
                                             ),
-                                            OperatorType.None,
-                                            null,
-                                            Position(6, 15)
+                                            Position(6, 16)
                                         ),
                                         Position(6, 10)
                                     ),
@@ -1108,15 +994,9 @@ end";
                                         Position(3, 10)
                                     ),
                                     OperatorType.Divide,
-                                    new ValueNode
+                                    new NumberNode
                                     (
-                                        new NumberNode
-                                        (
-                                            2,
-                                            Position(3, 14)
-                                        ),
-                                        OperatorType.None,
-                                        null,
+                                        2,
                                         Position(3, 14)
                                     ),
                                     Position(3, 10)
@@ -1165,7 +1045,7 @@ end";
                                 "Call",
                                 Position(3, 5)
                             ),
-                            new List<ValueNode>
+                            new List<ITermNode>
                             {
                                 new ValueNode
                                 (
@@ -1175,30 +1055,18 @@ end";
                                         Position(3, 10)
                                     ),
                                     OperatorType.GreaterThan,
-                                    new ValueNode
+                                    new NumberNode
                                     (
-                                        new NumberNode
-                                        (
-                                            1,
-                                            Position(3, 15)
-                                        ),
-                                        OperatorType.None,
-                                        null,
+                                        1,
                                         Position(3, 15)
                                     ),
                                     Position(3, 10)
                                 ),
-                                new ValueNode
+                                new NumberNode
                                 (
-                                    new NumberNode
-                                    (
-                                        2,
-                                        Position(3, 18)
-                                    ),
-                                    OperatorType.None,
-                                    null,
+                                    2,
                                     Position(3, 18)
-                                )
+                                ),
                             },
                             Position(3, 5)
                         )

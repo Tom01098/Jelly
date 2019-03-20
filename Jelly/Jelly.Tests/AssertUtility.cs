@@ -73,7 +73,7 @@ namespace Jelly.Tests
                     var a = (AssignmentNode)actual;
 
                     AreEqual(e.Identifier, a.Identifier);
-                    AreEqual(e.Value, a.Value);
+                    AreEqual((Node)e.Value, (Node)a.Value);
                 }
                 // CallNode
                 else if (expected is CallNode)
@@ -90,7 +90,7 @@ namespace Jelly.Tests
 
                     for (int i = 0; i < e.Arguments.Count; i++)
                     {
-                        AreEqual(e.Arguments[i], a.Arguments[i]);
+                        AreEqual((Node)e.Arguments[i], (Node)a.Arguments[i]);
                     }
                 }
                 // ConditionalBlockNode
@@ -99,7 +99,7 @@ namespace Jelly.Tests
                     var e = (ConditionalBlockNode)expected;
                     var a = (ConditionalBlockNode)actual;
 
-                    AreEqual(e.Condition, a.Condition);
+                    AreEqual((Node)e.Condition, (Node)a.Condition);
 
                     if (e.Constructs.Count != a.Constructs.Count)
                     {
@@ -170,7 +170,7 @@ namespace Jelly.Tests
                     var a = (MutationNode)actual;
 
                     AreEqual(e.Identifier, a.Identifier);
-                    AreEqual(e.Value, a.Value);
+                    AreEqual((Node)e.Value, (Node)a.Value);
                 }
                 // NegativeNode
                 else if (expected is NegativeNode)
@@ -202,7 +202,7 @@ namespace Jelly.Tests
                     var e = (ReturnNode)expected;
                     var a = (ReturnNode)actual;
 
-                    AreEqual(e.Value, a.Value);
+                    AreEqual((Node)e.Value, (Node)a.Value);
                 }
                 // ValueNode
                 else if (expected is ValueNode)

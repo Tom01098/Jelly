@@ -5,10 +5,10 @@ namespace Jelly.Core.Parsing.AST
 {
     public class ConditionalBlockNode : Node
     {
-        public ValueNode Condition { get; }
+        public ITermNode Condition { get; }
         public List<IConstructNode> Constructs { get; }
 
-        public ConditionalBlockNode(ValueNode condition,
+        public ConditionalBlockNode(ITermNode condition,
                                     List<IConstructNode> constructs,
                                     Position position)
             : base(position) => 
