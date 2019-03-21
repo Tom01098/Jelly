@@ -12,22 +12,22 @@ namespace Jelly
     {
         private static void Main(string[] args)
         {
-            try
-            {
+            //try
+            //{
                 var files = FindFiles(args[0]);
                 var ast = GetAST(files, args[0]);
                 Interpret(ast);
-            }
-            catch (JellyException e)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(e.Message);
-            }
-            catch (Exception e)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"Unhandled error: {e}");
-            }
+            //}
+            //catch (JellyException e)
+            //{
+            //    Console.ForegroundColor = ConsoleColor.Red;
+            //    Console.WriteLine(e.Message);
+            //}
+            //catch (Exception e)
+            //{
+            //    Console.ForegroundColor = ConsoleColor.Red;
+            //    Console.WriteLine($"Unhandled error: {e}");
+            //}
 
             Console.ReadKey();
         }

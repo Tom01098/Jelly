@@ -1,6 +1,4 @@
 ﻿Main<>
-	x = 5
-	Write<x + 3>
-	x => 7
-	Write<x / 4>
+	x = SafeDivide<-4 / 3>
+	Write<x>
 end

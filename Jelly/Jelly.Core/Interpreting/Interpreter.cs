@@ -48,48 +48,72 @@ namespace Jelly.Core.Interpreting
             var node = (FunctionNode)function;
 
             // Push the arguments to the call stack
-            values.New();
+            values.PushNewFrame();
 
             for (int i = 0; i < arguments.Count; i++)
             {
                 values.Add(node.Parameters[i].Identifier, arguments[i]);
             }
 
-            // Execute each construct
-            foreach (var construct in node.Constructs)
+            // Execute the constructs in the function
+            var returnValue = ExecuteConstructs(node.Constructs);
+            values.PopWholeFrame();
+
+            // If there was a return value, return it as the result of
+            // the function
+            if (!(returnValue is null))
             {
-                if (construct is IfBlockNode ifBlock)
+                return returnValue.Value;
+            }
+
+            // No return, so return NaN
+            return double.NaN;
+        }
+
+        // Execute constructs and return the returned number (or null)
+        public double? ExecuteConstructs(List<IConstructNode> constructs)
+        {
+            foreach (var construct in constructs)
+            {
+                if (construct is IfBlockNode ifBlockNode)
                 {
-                    foreach (var block in ifBlock.Blocks)
+                    foreach (var block in ifBlockNode.Blocks)
                     {
-                        if (Evaluate(block.Condition) != 0)
+                        if ((block.Condition is null) || Evaluate(block.Condition) != 0)
                         {
-                            values.NewInScope();
+                            values.PushNewFrameInScope();
+                            var returnValue = ExecuteConstructs(block.Constructs);
+                            values.PopFrame();
 
+                            if (!(returnValue is null))
+                            {
+                                return returnValue;
+                            }
 
-
-                            values.Pop();
                             break;
                         }
                     }
                 }
-                else if (construct is IStatementNode statement)
+                else if (construct is IStatementNode statementNode)
                 {
-                    if (statement is ReturnNode returnNode)
+                    if (statementNode is ReturnNode returnNode)
                     {
-                        var result = Evaluate(returnNode.Value);
-                        values.Pop();
-                        return result;
+                        if (returnNode.Value is null)
+                        {
+                            return double.NaN;
+                        }
+
+                        return Evaluate(returnNode.Value);
                     }
-                    else if (statement is AssignmentNode assignmentNode)
+                    else if (statementNode is AssignmentNode assignmentNode)
                     {
                         values.Add(assignmentNode.Identifier.Identifier, Evaluate(assignmentNode.Value));
                     }
-                    else if (statement is MutationNode mutationNode)
+                    else if (statementNode is MutationNode mutationNode)
                     {
                         values.Mutate(mutationNode.Identifier.Identifier, Evaluate(mutationNode.Value));
                     }
-                    else if (statement is CallNode callNode)
+                    else if (statementNode is CallNode callNode)
                     {
                         var args = new List<double>();
 
@@ -102,18 +126,17 @@ namespace Jelly.Core.Interpreting
                     }
                     else
                     {
-                        throw new Exception($"Cannot execute {statement}");
+                        throw new Exception($"Could not execute {statementNode}");
                     }
                 }
                 else
                 {
-                    throw new Exception($"Cannot execute {construct}");
+                    throw new Exception($"Could not execute {construct}");
                 }
             }
 
-            // No return, so return NaN
-            values.Pop();
-            return double.NaN;
+            // No value returned
+            return null;
         }
 
         // Evaluate a value

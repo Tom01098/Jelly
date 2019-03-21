@@ -296,7 +296,7 @@ Main<>
     end
 end";
 
-            var expected = @"46
+            var expected = @"7
 ";
 
             Interpret(text, expected);

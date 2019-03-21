@@ -19,6 +19,6 @@ IntPow<x, n>
 
 	@ Calculate the power recursively
 	else
-		~IntPow<x, n - 1>
+		~x * IntPow<x, n - 1>
 	end
 end
