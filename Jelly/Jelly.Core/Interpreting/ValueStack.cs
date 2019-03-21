@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Jelly.Core.Interpreting
 {
@@ -41,7 +42,7 @@ namespace Jelly.Core.Interpreting
 
         public void Mutate(string name, double value)
         {
-            values.Peek()[name] = value;
+            values.Peek().Mutate(name, value);
         }
 
         private class ValueStackFrame
@@ -122,6 +123,12 @@ namespace Jelly.Core.Interpreting
             {
                 if (nested is null)
                 {
+                    // TODO Remove this check when the verifier is built
+                    if (!values.ContainsKey(name))
+                    {
+                        throw new Exception("Mutating undefined variable");
+                    }
+
                     values[name] = value;
                 }
                 else

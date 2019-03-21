@@ -29,6 +29,7 @@ namespace Jelly
                 Console.WriteLine($"Unhandled error: {e}");
             }
 
+            Console.ForegroundColor = ConsoleColor.White;
             Console.ReadKey();
         }
 
