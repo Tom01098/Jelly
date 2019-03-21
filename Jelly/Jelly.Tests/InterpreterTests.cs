@@ -28,7 +28,7 @@ namespace Jelly.Tests
         {
             var text = @"
 Main<>
-    Write<1>
+    WriteLine<1>
 end";
 
             var expected = @"1
@@ -42,10 +42,10 @@ end";
         {
             var text = @"
 Main<>
-    Write<1>
-    Write<-2>
-    Write<-71.5>
-    Write<4.09>
+    WriteLine<1>
+    WriteLine<-2>
+    WriteLine<-71.5>
+    WriteLine<4.09>
 end";
 
             var expected = @"1
@@ -63,7 +63,7 @@ end";
             var text = @"
 Main<>
     x = 5
-    Write<x>
+    WriteLine<x>
 end";
 
             var expected = @"5
@@ -78,9 +78,9 @@ end";
             var text = @"
 Main<>
     x = 5
-    Write<x>
+    WriteLine<x>
     x => 7.4
-    Write<x>
+    WriteLine<x>
 end";
 
             var expected = @"5
@@ -95,7 +95,7 @@ end";
         {
             var text = @"
 Main<>
-    Write<5 + 6>
+    WriteLine<5 + 6>
 end";
 
             var expected = @"11
@@ -109,7 +109,7 @@ end";
         {
             var text = @"
 Main<>
-    Write<5 - 6>
+    WriteLine<5 - 6>
 end";
 
             var expected = @"-1
@@ -123,7 +123,7 @@ end";
         {
             var text = @"
 Main<>
-    Write<5 * 6>
+    WriteLine<5 * 6>
 end";
 
             var expected = @"30
@@ -137,7 +137,7 @@ end";
         {
             var text = @"
 Main<>
-    Write<6 / 2>
+    WriteLine<6 / 2>
 end";
 
             var expected = @"3
@@ -151,7 +151,7 @@ end";
         {
             var text = @"
 Main<>
-    Write<5 % 3>
+    WriteLine<5 % 3>
 end";
 
             var expected = @"2
@@ -165,7 +165,7 @@ end";
         {
             var text = @"
 Main<>
-    Write<6 == 2>
+    WriteLine<6 == 2>
 end";
 
             var expected = @"0
@@ -179,7 +179,7 @@ end";
         {
             var text = @"
 Main<>
-    Write<6 == 2>
+    WriteLine<6 == 2>
 end";
 
             var expected = @"0
@@ -193,7 +193,7 @@ end";
         {
             var text = @"
 Main<>
-    Write<6 << 2>
+    WriteLine<6 << 2>
 end";
 
             var expected = @"0
@@ -207,7 +207,7 @@ end";
         {
             var text = @"
 Main<>
-    Write<6 >> 2>
+    WriteLine<6 >> 2>
 end";
 
             var expected = @"1
@@ -221,7 +221,7 @@ end";
         {
             var text = @"
 Main<>
-    Write<6 <= 2>
+    WriteLine<6 <= 2>
 end";
 
             var expected = @"0
@@ -235,7 +235,7 @@ end";
         {
             var text = @"
 Main<>
-    Write<6 >= 2>
+    WriteLine<6 >= 2>
 end";
 
             var expected = @"1
@@ -249,7 +249,7 @@ end";
         {
             var text = @"
 Main<>
-    Write<!0>
+    WriteLine<!0>
 end";
 
             var expected = @"1
@@ -263,7 +263,7 @@ end";
         {
             var text = @"
 Main<>
-    Write<3 * ((5 + 7) / 2)>
+    WriteLine<3 * ((5 + 7) / 2)>
 end";
 
             var expected = @"18
@@ -277,7 +277,7 @@ end";
         {
             var text = @"
 Main<>
-    Write<4 + 6 * 7>
+    WriteLine<4 + 6 * 7>
 end";
 
             var expected = @"46
@@ -292,7 +292,7 @@ end";
             var text = @"
 Main<>
     if 1
-        Write<7>
+        WriteLine<7>
     end
 end";
 
@@ -308,10 +308,10 @@ end";
             var text = @"
 Main<>
     if 0
-        Write<7>
+        WriteLine<7>
     end
     elif 1
-        Write<4>
+        WriteLine<4>
     end
 end";
 
@@ -327,7 +327,7 @@ end";
             var text = @"
 Main<>
     x = 3
-    Write<x>    
+    WriteLine<x>    
 
     if 1
         if !1
@@ -335,13 +335,13 @@ Main<>
         end
         else
             x => 6
-            Write<x>
+            WriteLine<x>
         end
 
-        Write<x>
+        WriteLine<x>
     end
 
-    Write<x>
+    WriteLine<x>
 end";
 
             var expected = @"3
@@ -360,7 +360,7 @@ end";
         {
             var text = @"
 Main<>
-    Write< Value<> >
+    WriteLine< Value<> >
 end
 
 Value<>
@@ -378,7 +378,7 @@ end";
         {
             var text = @"
 Main<>
-    Write< Value<2> >
+    WriteLine< Value<2> >
 end
 
 Value<x>
@@ -400,9 +400,9 @@ Main<>
 end
 
 WriteThree<x, y, z>
-    Write<x>
-    Write<y>
-    Write<z>
+    WriteLine<x>
+    WriteLine<y>
+    WriteLine<z>
 end";
 
             var expected = @"2

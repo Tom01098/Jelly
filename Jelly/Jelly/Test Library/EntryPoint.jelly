@@ -1,8 +1,3 @@
 ﻿Main<>
-	top = (5 * 6) + 2
-	bottom = IntPow<Abs<-2>, 2>
-
-	result = SafeDivide<top, bottom>
-
-	Write<result>
+	WriteLine< Pow<3, 5.5> >
 end

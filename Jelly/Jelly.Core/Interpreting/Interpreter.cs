@@ -1,8 +1,8 @@
 ﻿using Jelly.Core.Parsing.AST;
 using Jelly.Core.Parsing.Tokens;
-using Jelly.Core.StandardLibrary.Internal;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Jelly.Core.Interpreting
 {
@@ -32,9 +32,27 @@ namespace Jelly.Core.Interpreting
                 functions.Add(node.Identifier.Identifier, node);
             }
 
-            // TODO This needs to be made general rather than a special case
-            // through reflection in the InternalFunction class
-            functions.Add("Write", new InternalFunction(new Write()));
+            // Get Internal library functions
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                foreach (var type in assembly.GetTypes())
+                {
+                    foreach (var method in type.GetRuntimeMethods())
+                    {
+                        if (!method.IsStatic)
+                        {
+                            continue;
+                        }
+
+                        var attribute = method.GetCustomAttribute<InternalFunctionAttribute>();
+
+                        if (!(attribute is null))
+                        {
+                            functions.Add(method.Name, new InternalFunction(method));
+                        }
+                    } 
+                }
+            }
         }
 
         // Execute a function with the given arguments

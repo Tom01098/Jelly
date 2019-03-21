@@ -1,21 +1,22 @@
 ﻿using Jelly.Core.Parsing.AST;
-using Jelly.Core.StandardLibrary.Internal;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace Jelly.Core.Interpreting
 {
     public class InternalFunction : IFunction
     {
-        private Write obj;
+        private MethodInfo info;
 
-        public InternalFunction(Write obj)
+        public InternalFunction(MethodInfo info)
         {
-            this.obj = obj;
+            this.info = info;
         }
 
         public double Execute(List<double> arguments)
         {
-            return obj.Execute(arguments[0]);
+            return (double)info.Invoke(null, arguments.Cast<object>().ToArray());
         }
     }
 }
