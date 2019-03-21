@@ -30,25 +30,14 @@ namespace Jelly.Core.Parsing
             return token is SymbolToken s && s.Symbol == type;
         }
 
+        private bool IsOperator(Token token, OperatorType type)
+        {
+            return token is OperatorToken o && o.Operator == type;
+        }
+
         private bool IsKeyword(Token token, KeywordType type)
         {
             return token is KeywordToken k && k.Keyword == type;
-        }
-
-        private bool IsOperator(Token token)
-        {
-            return token is SymbolToken s && (
-                s.Symbol == SymbolType.Add ||
-                s.Symbol == SymbolType.Subtract ||
-                s.Symbol == SymbolType.Multiply ||
-                s.Symbol == SymbolType.Divide ||
-                s.Symbol == SymbolType.Modulo ||
-                s.Symbol == SymbolType.EqualTo ||
-                s.Symbol == SymbolType.UnequalTo ||
-                s.Symbol == SymbolType.LessThan ||
-                s.Symbol == SymbolType.GreaterThan ||
-                s.Symbol == SymbolType.LessThanOrEqualTo ||
-                s.Symbol == SymbolType.GreaterThanOrEqualTo);
         }
 
         private bool IsEOL(Token token)
@@ -281,7 +270,7 @@ namespace Jelly.Core.Parsing
         {
             var position = tokens.Current.Position;
 
-            if (!IsSymbol(tokens.Current, SymbolType.Subtract))
+            if (!IsOperator(tokens.Current, OperatorType.Subtract))
             {
                 throw new JellyException("Expected '-'", tokens.Current.Position);
             }
@@ -314,52 +303,6 @@ namespace Jelly.Core.Parsing
             }
 
             throw new JellyException("Expected a number", tokens.Current.Position);
-        }
-
-        // operator = '+' | '-' | '*' | '/' | '%' | '==' | '!=' | '<' | '>' | '<=' | '>=';
-        private OperatorType Operator()
-        {
-            var op = OperatorType.None;
-
-            switch (((SymbolToken)tokens.Current).Symbol)
-            {
-                case SymbolType.LessThan:
-                    op = OperatorType.LessThan;
-                    break;
-                case SymbolType.GreaterThan:
-                    op = OperatorType.GreaterThan;
-                    break;
-                case SymbolType.EqualTo:
-                    op = OperatorType.EqualTo;
-                    break;
-                case SymbolType.UnequalTo:
-                    op = OperatorType.UnequalTo;
-                    break;
-                case SymbolType.GreaterThanOrEqualTo:
-                    op = OperatorType.GreaterThanOrEqualTo;
-                    break;
-                case SymbolType.LessThanOrEqualTo:
-                    op = OperatorType.LessThanOrEqualTo;
-                    break;
-                case SymbolType.Modulo:
-                    op = OperatorType.Modulo;
-                    break;
-                case SymbolType.Add:
-                    op = OperatorType.Add;
-                    break;
-                case SymbolType.Subtract:
-                    op = OperatorType.Subtract;
-                    break;
-                case SymbolType.Multiply:
-                    op = OperatorType.Multiply;
-                    break;
-                case SymbolType.Divide:
-                    op = OperatorType.Divide;
-                    break;
-            }
-
-            tokens.MoveNext();
-            return op;
         }
 
         // parameters = identifier {',' identifier};
@@ -448,7 +391,7 @@ namespace Jelly.Core.Parsing
             {
                 return Not();
             }
-            else if (IsSymbol(tokens.Current, SymbolType.Subtract))
+            else if (IsOperator(tokens.Current, OperatorType.Subtract))
             {
                 return Negative();
             }
@@ -484,9 +427,10 @@ namespace Jelly.Core.Parsing
 
             ITermNode lhs = Term();
 
-            if (IsOperator(tokens.Current))
+            if (tokens.Current is OperatorToken op)
             {
-                return new ValueNode(lhs, Operator(), Value(), position);
+                tokens.MoveNext();
+                return new ValueNode(lhs, op.Operator, Value(), position);
             }
 
             return lhs;

@@ -90,11 +90,11 @@ namespace Jelly.Core.Parsing
 
                     if (index < span.Length && span[index] == '=')
                     {
-                        tokens.Add(new SymbolToken(SymbolType.LessThanOrEqualTo, position));
+                        tokens.Add(new OperatorToken(OperatorType.LessThanOrEqualTo, position));
                     }
                     else if (index < span.Length && span[index] == '<')
                     {
-                        tokens.Add(new SymbolToken(SymbolType.LessThan, position));
+                        tokens.Add(new OperatorToken(OperatorType.LessThan, position));
                     }
                     else
                     {
@@ -110,11 +110,11 @@ namespace Jelly.Core.Parsing
 
                     if (index < span.Length && span[index] == '=')
                     {
-                        tokens.Add(new SymbolToken(SymbolType.GreaterThanOrEqualTo, position));
+                        tokens.Add(new OperatorToken(OperatorType.GreaterThanOrEqualTo, position));
                     }
                     else if (index < span.Length && span[index] == '>')
                     {
-                        tokens.Add(new SymbolToken(SymbolType.GreaterThan, position));
+                        tokens.Add(new OperatorToken(OperatorType.GreaterThan, position));
                     }
                     else
                     {
@@ -134,7 +134,7 @@ namespace Jelly.Core.Parsing
                     }
                     else if (index < span.Length && span[index] == '=')
                     {
-                        tokens.Add(new SymbolToken(SymbolType.EqualTo, position));
+                        tokens.Add(new OperatorToken(OperatorType.EqualTo, position));
                     }
                     else
                     {
@@ -150,7 +150,7 @@ namespace Jelly.Core.Parsing
 
                     if (index < span.Length && span[index] == '=')
                     {
-                        tokens.Add(new SymbolToken(SymbolType.UnequalTo, position));
+                        tokens.Add(new OperatorToken(OperatorType.UnequalTo, position));
                     }
                     else
                     {
@@ -171,27 +171,27 @@ namespace Jelly.Core.Parsing
                 // Add
                 else if (span[index] == '+')
                 {
-                    tokens.Add(new SymbolToken(SymbolType.Add, GetPosition()));
+                    tokens.Add(new OperatorToken(OperatorType.Add, GetPosition()));
                 }
                 // Subtract
                 else if (span[index] == '-')
                 {
-                    tokens.Add(new SymbolToken(SymbolType.Subtract, GetPosition()));
+                    tokens.Add(new OperatorToken(OperatorType.Subtract, GetPosition()));
                 }
                 // Multiply
                 else if (span[index] == '*')
                 {
-                    tokens.Add(new SymbolToken(SymbolType.Multiply, GetPosition()));
+                    tokens.Add(new OperatorToken(OperatorType.Multiply, GetPosition()));
                 }
                 // Divide
                 else if (span[index] == '/')
                 {
-                    tokens.Add(new SymbolToken(SymbolType.Divide, GetPosition()));
+                    tokens.Add(new OperatorToken(OperatorType.Divide, GetPosition()));
                 }
                 // Modulo
                 else if (span[index] == '%')
                 {
-                    tokens.Add(new SymbolToken(SymbolType.Modulo, GetPosition()));
+                    tokens.Add(new OperatorToken(OperatorType.Modulo, GetPosition()));
                 }
                 // Comma
                 else if (span[index] == ',')

@@ -1,8 +1,7 @@
-﻿namespace Jelly.Core.Parsing.AST
+﻿namespace Jelly.Core.Parsing.Tokens
 {
     public enum OperatorType
     {
-        None,
         Add,
         Subtract,
         Multiply,

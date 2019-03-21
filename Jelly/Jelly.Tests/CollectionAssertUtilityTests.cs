@@ -1,4 +1,5 @@
 ﻿using Jelly.Core.Parsing.AST;
+using Jelly.Core.Parsing.Tokens;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using static Jelly.Tests.TestUtility;
@@ -79,15 +80,9 @@ namespace Jelly.Tests
                                     {
                                         new ReturnNode
                                         (
-                                            new ValueNode
+                                            new IdentifierNode
                                             (
-                                                new IdentifierNode
-                                                (
-                                                    "x",
-                                                    Position(4, 10)
-                                                ),
-                                                OperatorType.None,
-                                                null,
+                                                "x",
                                                 Position(4, 10)
                                             ),
                                             Position(4, 9)
@@ -193,16 +188,10 @@ namespace Jelly.Tests
                     {
                         new ReturnNode
                         (
-                            new ValueNode
+                            new NumberNode
                             (
-                                new NumberNode
-                                (
-                                    1,
-                                    Position(1, 2)
-                                ),
-                                OperatorType.None,
-                                null,
-                                Position(2, 7)
+                                1,
+                                Position(1, 2)
                             ),
                             Position(2, 5)
                         )
@@ -251,15 +240,9 @@ namespace Jelly.Tests
                                         Position(3, 10)
                                     ),
                                     OperatorType.Divide,
-                                    new ValueNode
+                                    new NumberNode
                                     (
-                                        new NumberNode
-                                        (
-                                            2,
-                                            Position(3, 14)
-                                        ),
-                                        OperatorType.None,
-                                        null,
+                                        2,
                                         Position(3, 14)
                                     ),
                                     Position(3, 10)

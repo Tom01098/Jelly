@@ -230,7 +230,7 @@ namespace Jelly.Tests
 
             var expected = new List<Token>
             {
-                new SymbolToken(SymbolType.EqualTo, Position(1, 1)),
+                new OperatorToken(OperatorType.EqualTo, Position(1, 1)),
                 new EOLToken(Position(1, 3)),
                 new EOFToken(Position(1, 3))
             };
@@ -245,7 +245,7 @@ namespace Jelly.Tests
 
             var expected = new List<Token>
             {
-                new SymbolToken(SymbolType.UnequalTo, Position(1, 1)),
+                new OperatorToken(OperatorType.UnequalTo, Position(1, 1)),
                 new EOLToken(Position(1, 3)),
                 new EOFToken(Position(1, 3))
             };
@@ -260,7 +260,7 @@ namespace Jelly.Tests
 
             var expected = new List<Token>
             {
-                new SymbolToken(SymbolType.GreaterThan, Position(1, 1)),
+                new OperatorToken(OperatorType.GreaterThan, Position(1, 1)),
                 new EOLToken(Position(1, 3)),
                 new EOFToken(Position(1, 3))
             };
@@ -275,7 +275,7 @@ namespace Jelly.Tests
 
             var expected = new List<Token>
             {
-                new SymbolToken(SymbolType.LessThan, Position(1, 1)),
+                new OperatorToken(OperatorType.LessThan, Position(1, 1)),
                 new EOLToken(Position(1, 3)),
                 new EOFToken(Position(1, 3))
             };
@@ -290,7 +290,7 @@ namespace Jelly.Tests
 
             var expected = new List<Token>
             {
-                new SymbolToken(SymbolType.GreaterThanOrEqualTo, Position(1, 1)),
+                new OperatorToken(OperatorType.GreaterThanOrEqualTo, Position(1, 1)),
                 new EOLToken(Position(1, 3)),
                 new EOFToken(Position(1, 3))
             };
@@ -305,7 +305,7 @@ namespace Jelly.Tests
 
             var expected = new List<Token>
             {
-                new SymbolToken(SymbolType.LessThanOrEqualTo, Position(1, 1)),
+                new OperatorToken(OperatorType.LessThanOrEqualTo, Position(1, 1)),
                 new EOLToken(Position(1, 3)),
                 new EOFToken(Position(1, 3))
             };
@@ -320,7 +320,7 @@ namespace Jelly.Tests
 
             var expected = new List<Token>
             {
-                new SymbolToken(SymbolType.Modulo, Position(1, 1)),
+                new OperatorToken(OperatorType.Modulo, Position(1, 1)),
                 new EOLToken(Position(1, 2)),
                 new EOFToken(Position(1, 2))
             };
@@ -335,7 +335,7 @@ namespace Jelly.Tests
 
             var expected = new List<Token>
             {
-                new SymbolToken(SymbolType.Add, Position(1, 1)),
+                new OperatorToken(OperatorType.Add, Position(1, 1)),
                 new EOLToken(Position(1, 2)),
                 new EOFToken(Position(1, 2))
             };
@@ -350,7 +350,7 @@ namespace Jelly.Tests
 
             var expected = new List<Token>
             {
-                new SymbolToken(SymbolType.Subtract, Position(1, 1)),
+                new OperatorToken(OperatorType.Subtract, Position(1, 1)),
                 new EOLToken(Position(1, 2)),
                 new EOFToken(Position(1, 2))
             };
@@ -365,7 +365,7 @@ namespace Jelly.Tests
 
             var expected = new List<Token>
             {
-                new SymbolToken(SymbolType.Multiply, Position(1, 1)),
+                new OperatorToken(OperatorType.Multiply, Position(1, 1)),
                 new EOLToken(Position(1, 2)),
                 new EOFToken(Position(1, 2))
             };
@@ -380,7 +380,7 @@ namespace Jelly.Tests
 
             var expected = new List<Token>
             {
-                new SymbolToken(SymbolType.Divide, Position(1, 1)),
+                new OperatorToken(OperatorType.Divide, Position(1, 1)),
                 new EOLToken(Position(1, 2)),
                 new EOFToken(Position(1, 2))
             };
@@ -506,7 +506,7 @@ end";
                 new EOLToken(Position(3, 24)),
                 new KeywordToken(KeywordType.If, Position(4, 5)),
                 new IdentifierToken("bottom", Position(4, 8)),
-                new SymbolToken(SymbolType.EqualTo, Position(4, 15)),
+                new OperatorToken(OperatorType.EqualTo, Position(4, 15)),
                 new NumberToken(0, Position(4, 18)),
                 new EOLToken(Position(4, 19)),
                 new SymbolToken(SymbolType.Return, Position(5, 9)),
@@ -515,7 +515,7 @@ end";
                 new EOLToken(Position(6, 8)),
                 new SymbolToken(SymbolType.Return, Position(8, 5)),
                 new IdentifierToken("top", Position(8, 6)),
-                new SymbolToken(SymbolType.Divide, Position(8, 10)),
+                new OperatorToken(OperatorType.Divide, Position(8, 10)),
                 new IdentifierToken("bottom", Position(8, 12)),
                 new EOLToken(Position(8, 19)),
                 new KeywordToken(KeywordType.End, Position(9, 1)),
@@ -563,7 +563,7 @@ x
                 new IdentifierToken("xSquared", Position(2, 1)),
                 new SymbolToken(SymbolType.Assignment, Position(2, 10)),
                 new IdentifierToken("x", Position(2, 12)),
-                new SymbolToken(SymbolType.Multiply, Position(2, 14)),
+                new OperatorToken(OperatorType.Multiply, Position(2, 14)),
                 new IdentifierToken("x", Position(3, 1)),
                 new EOLToken(Position(3, 2)),
                 new EOFToken(Position(4, 1))
