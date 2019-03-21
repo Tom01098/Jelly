@@ -21,17 +21,17 @@ namespace Jelly.Core.Interpreting
 
         public void PopWholeFrame()
         {
-            var locals = values.Pop();
+            values.Pop();
         }
 
         public void PushNewFrameInScope()
         {
-            
+            values.Peek().Push();
         }
 
         public void PopFrame()
         {
-
+            values.Peek().Pop();
         }
 
         public void Add(string name, double value)
@@ -53,32 +53,78 @@ namespace Jelly.Core.Interpreting
             {
                 get
                 {
-                    return values[index];
+                    if (nested is null)
+                    {
+                        return values[index];
+                    }
+                    else
+                    {
+                        return nested[index];
+                    }
                 }
                 set
                 {
-                    values[index] = value;
+                    if (nested is null)
+                    {
+                        values[index] = value;
+                    }
+                    else
+                    {
+                        nested[index] = value;
+                    }
                 }
             }
 
             public void Push()
             {
-                nested = new ValueStackFrame();
+                nested = new ValueStackFrame
+                {
+                    values = new Dictionary<string, double>(values)
+                };
             }
 
             public void Pop()
             {
-                nested = null;
+                if (!(nested.values is null))
+                {
+                    foreach (var value in nested.values)
+                    {
+                        if (values.ContainsKey(value.Key))
+                        {
+                            values[value.Key] = value.Value;
+                        }
+                    }
+
+                    nested = null;
+                }
+                else
+                {
+                    nested.Pop();
+                }
             }
 
             public void Add(string name, double value)
             {
-                values.Add(name, value);
+                if (nested is null)
+                {
+                    values.Add(name, value);
+                }
+                else
+                {
+                    nested.Add(name, value);
+                }
             }
 
             public void Mutate(string name, double value)
             {
-                values[name] = value;
+                if (nested is null)
+                {
+                    values[name] = value;
+                }
+                else
+                {
+                    nested.Mutate(name, value);
+                }
             }
         }
     }
