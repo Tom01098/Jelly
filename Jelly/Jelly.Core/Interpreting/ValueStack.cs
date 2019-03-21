@@ -85,21 +85,24 @@ namespace Jelly.Core.Interpreting
 
             public void Pop()
             {
-                if (!(nested.values is null))
+                if (!(nested is null))
                 {
-                    foreach (var value in nested.values)
+                    if (!(nested.values is null))
                     {
-                        if (values.ContainsKey(value.Key))
+                        foreach (var value in nested.values)
                         {
-                            values[value.Key] = value.Value;
+                            if (values.ContainsKey(value.Key))
+                            {
+                                values[value.Key] = value.Value;
+                            }
                         }
-                    }
 
-                    nested = null;
-                }
-                else
-                {
-                    nested.Pop();
+                        nested = null;
+                    }
+                    else
+                    {
+                        nested.Pop();
+                    }
                 }
             }
 

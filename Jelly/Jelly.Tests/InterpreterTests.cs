@@ -320,6 +320,38 @@ end";
 
             Interpret(text, expected);
         }
+
+        [TestMethod]
+        public void NestedIf()
+        {
+            var text = @"
+Main<>
+    x = 3
+    Write<x>    
+
+    if 1
+        if !1
+            x => 5
+        end
+        else
+            x => 6
+            Write<x>
+        end
+
+        Write<x>
+    end
+
+    Write<x>
+end";
+
+            var expected = @"3
+6
+6
+6
+";
+
+            Interpret(text, expected);
+        }
         #endregion
 
         #region Two Functions
@@ -354,6 +386,28 @@ Value<x>
 end";
 
             var expected = @"2
+";
+
+            Interpret(text, expected);
+        }
+
+        [TestMethod]
+        public void WriteInOtherFunction()
+        {
+            var text = @"
+Main<>
+    WriteThree<2, 6, -9>
+end
+
+WriteThree<x, y, z>
+    Write<x>
+    Write<y>
+    Write<z>
+end";
+
+            var expected = @"2
+6
+-9
 ";
 
             Interpret(text, expected);
