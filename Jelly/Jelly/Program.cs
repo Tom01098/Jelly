@@ -36,14 +36,11 @@ namespace Jelly
 
         private static string[] FindFiles(string folder)
         {
-            Console.WriteLine("Searching directory for .jelly files");
             var files = Directory.GetFiles(folder, "*.jelly", SearchOption.AllDirectories);
-            Console.WriteLine("    Found:");
 
             for (int i = 0; i < files.Length; i++)
             {
                 files[i] = files[i].Replace(folder, "");
-                Console.WriteLine($"        {files[i]}");
             }
 
             return files;
@@ -51,8 +48,6 @@ namespace Jelly
 
         private static List<IFunction> GetAST(string[] files, string folder)
         {
-            Console.WriteLine("Parsing files");
-
             var ast = new List<FunctionNode>();
 
             foreach (var file in files)
@@ -62,8 +57,6 @@ namespace Jelly
                 ast.AddRange(new Parser().Parse(
                     new Lexer().Lex(contents, file)));
             }
-
-            Console.WriteLine($"    Found {ast.Count} functions");
 
             return new Linker().LinkAST(ast);
         }

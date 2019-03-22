@@ -1,7 +1,9 @@
 ﻿using Jelly.Core.Interpreting;
+using Jelly.Core.Parsing;
 using Jelly.Core.Parsing.AST;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -14,11 +16,12 @@ namespace Jelly.Core.Linking
     {
         public List<IFunction> LinkAST(List<FunctionNode> userAST)
         {
-            var internals = GetInternalFunctions();
+            var libraryFunctions = GetInternalFunctions();
 
-            internals.AddRange(userAST.Cast<IFunction>().ToList());
+            libraryFunctions.AddRange(GetPureFunctions());
+            libraryFunctions.AddRange(userAST.Cast<IFunction>().ToList());
 
-            return internals;
+            return libraryFunctions;
         }
 
         private List<IFunction> GetInternalFunctions()
@@ -52,7 +55,19 @@ namespace Jelly.Core.Linking
 
         private List<IFunction> GetPureFunctions()
         {
-            throw new NotImplementedException();
+            var directory = Path.Combine(Environment.CurrentDirectory, "StandardLibrary/Pure");
+            var files = Directory.GetFiles(directory, "*.jelly", SearchOption.AllDirectories);
+
+            var functions = new List<IFunction>();
+
+            foreach (var file in files)
+            {
+                var text = File.ReadAllText(file);
+
+                functions.AddRange(new Parser().Parse(new Lexer().Lex(text, "Standard Library")));
+            }
+
+            return functions;
         }
     }
 }
