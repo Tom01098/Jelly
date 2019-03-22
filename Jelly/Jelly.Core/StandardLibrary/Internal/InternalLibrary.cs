@@ -29,7 +29,7 @@ namespace Jelly.Core.StandardLibrary.Internal
         [InternalFunction]
         public static double WriteChar(double value)
         {
-            Console.Write(char.ConvertFromUtf32((int)value));
+            Console.Write((char)value);
             return double.NaN;
         }
 
@@ -43,12 +43,6 @@ namespace Jelly.Core.StandardLibrary.Internal
         public static double Pow(double a, double b)
         {
             return Math.Pow(a, b);
-        }
-
-        [InternalFunction]
-        public static double Sqrt(double x)
-        {
-            return Math.Sqrt(x);
         }
 
         [InternalFunction]
