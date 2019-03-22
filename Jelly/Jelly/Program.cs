@@ -1,4 +1,5 @@
 ﻿using Jelly.Core.Interpreting;
+using Jelly.Core.Linking;
 using Jelly.Core.Parsing;
 using Jelly.Core.Parsing.AST;
 using Jelly.Core.Utility;
@@ -48,7 +49,7 @@ namespace Jelly
             return files;
         }
 
-        private static List<FunctionNode> GetAST(string[] files, string folder)
+        private static List<IFunction> GetAST(string[] files, string folder)
         {
             Console.WriteLine("Parsing files");
 
@@ -64,10 +65,10 @@ namespace Jelly
 
             Console.WriteLine($"    Found {ast.Count} functions");
 
-            return ast;
+            return new Linker().LinkAST(ast);
         }
 
-        private static void Interpret(List<FunctionNode> ast)
+        private static void Interpret(List<IFunction> ast)
         {
             Console.WriteLine("START PROGRAM\n");
             new Interpreter().Interpret(ast);

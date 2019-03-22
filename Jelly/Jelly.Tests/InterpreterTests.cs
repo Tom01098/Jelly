@@ -1,4 +1,5 @@
 ﻿using Jelly.Core.Interpreting;
+using Jelly.Core.Linking;
 using Jelly.Core.Parsing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -15,7 +16,7 @@ namespace Jelly.Tests
             {
                 Console.SetOut(writer);
 
-                new Interpreter().Interpret(new Parser().Parse(new Lexer().Lex(text, "test")));
+                new Interpreter().Interpret(new Linker().LinkAST(new Parser().Parse(new Lexer().Lex(text, "test"))));
 
                 Console.OpenStandardOutput();
                 Assert.AreEqual(expected, writer.ToString());

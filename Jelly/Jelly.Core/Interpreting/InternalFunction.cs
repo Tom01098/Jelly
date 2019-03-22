@@ -9,6 +9,8 @@ namespace Jelly.Core.Interpreting
     {
         private MethodInfo info;
 
+        public string Name => info.Name;
+
         public InternalFunction(MethodInfo info)
         {
             this.info = info;

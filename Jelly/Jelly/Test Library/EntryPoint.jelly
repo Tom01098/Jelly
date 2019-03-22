@@ -1,3 +1,8 @@
 ﻿Main<>
-	WriteLine< Pow<3, 5.5> >
+	x = Read<>
+	y = Read<>
+
+	result = Pow<x, y>
+
+	WriteLine<result>
 end

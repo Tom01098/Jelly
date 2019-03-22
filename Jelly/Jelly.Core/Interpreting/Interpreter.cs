@@ -2,7 +2,6 @@
 using Jelly.Core.Parsing.Tokens;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace Jelly.Core.Interpreting
 {
@@ -14,7 +13,7 @@ namespace Jelly.Core.Interpreting
         private Dictionary<string, IFunction> functions;
         private ValueStack values;
 
-        public void Interpret(List<FunctionNode> ast)
+        public void Interpret(List<IFunction> ast)
         {
             values = new ValueStack();
             CreateFunctionDictionary(ast);
@@ -22,35 +21,20 @@ namespace Jelly.Core.Interpreting
             ExecuteFunction(functions["Main"], new List<double> { });
         }
 
-        // Create a dictionary of functions from the AST and the internal functions
-        private void CreateFunctionDictionary(List<FunctionNode> ast)
+        // Create a dictionary of functions from the AST
+        private void CreateFunctionDictionary(List<IFunction> ast)
         {
             functions = new Dictionary<string, IFunction>();
 
             foreach (var node in ast)
             {
-                functions.Add(node.Identifier.Identifier, node);
-            }
-
-            // Get Internal library functions
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                foreach (var type in assembly.GetTypes())
+                if (node is FunctionNode fn)
                 {
-                    foreach (var method in type.GetRuntimeMethods())
-                    {
-                        if (!method.IsStatic)
-                        {
-                            continue;
-                        }
-
-                        var attribute = method.GetCustomAttribute<InternalFunctionAttribute>();
-
-                        if (!(attribute is null))
-                        {
-                            functions.Add(method.Name, new InternalFunction(method));
-                        }
-                    } 
+                    functions.Add(fn.Identifier.Identifier, node);
+                }
+                else if (node is InternalFunction func)
+                {
+                    functions.Add(func.Name, node);
                 }
             }
         }
