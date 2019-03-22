@@ -1,8 +1,9 @@
 ﻿Main<>
-	x = Read<>
-	y = Read<>
+	WriteChar<65>
+	WriteNewLine<>
+	WriteLine< IsNaN< NaN<> > >
+end
 
-	result = Pow<x, y>
-
-	WriteLine<result>
+NaN<>
+	~
 end
