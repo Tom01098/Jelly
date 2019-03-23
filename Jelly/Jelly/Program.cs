@@ -26,11 +26,13 @@ namespace Jelly
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(e.Message);
+                Console.ReadKey();
             }
             catch (Exception e)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"Unhandled error: {e}");
+                Console.ReadKey();
             }
 
             Console.ForegroundColor = ConsoleColor.White;

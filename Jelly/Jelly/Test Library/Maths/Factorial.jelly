@@ -5,13 +5,12 @@ Factorial<n>
 		~
 	end
 
-	@ Return 1 for the base case of 0
-	elif !n
-		~1
+	result = n
+
+	loop n >> 1
+		n => n - 1
+		result => result * n
 	end
 
-	@ Recursively call
-	else
-		~n * Factorial<n - 1>
-	end
+	~result
 end

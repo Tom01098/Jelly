@@ -1,8 +1,14 @@
 ﻿Main<>
-	Execute< Read<> >
+	count = Read<>
+	n = 1
+
+	loop n <= count
+		FizzBuzzNumber<n>
+		n => n + 1
+	end
 end
 
-Execute<x>
+FizzBuzzNumber<x>
 	Write<x>
 	WriteChar<58>
 	WriteChar<32>

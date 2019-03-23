@@ -97,6 +97,20 @@ namespace Jelly.Core.Interpreting
                         }
                     }
                 }
+                else if (construct is LoopBlockNode loopBlockNode)
+                {
+                    while (Evaluate(loopBlockNode.Block.Condition) != 0)
+                    {
+                        values.PushNewFrameInScope();
+                        var returnValue = ExecuteConstructs(loopBlockNode.Block.Constructs);
+                        values.PopFrame();
+
+                        if (!(returnValue is null))
+                        {
+                            return returnValue;
+                        }
+                    }
+                }
                 else if (construct is IStatementNode statementNode)
                 {
                     if (statementNode is ReturnNode returnNode)

@@ -375,7 +375,7 @@ end";
 Main<>
     x = 4
 
-    loop !x
+    loop x
         WriteLine<x>
         x => x - 1
     end
@@ -385,6 +385,60 @@ end";
 3
 2
 1
+";
+
+            Interpret(text, expected);
+        }
+
+        [TestMethod]
+        public void NestedLoops()
+        {
+            var text = @"
+Main<>
+    x = 3
+
+    loop x
+        y = x
+        x => x - 1
+
+        loop y
+            WriteLine<y>
+            y => y - 1
+        end
+    end
+end";
+
+            var expected = @"3
+2
+1
+2
+1
+1
+";
+
+            Interpret(text, expected);
+        }
+
+        [TestMethod]
+        public void NestedIfInLoop()
+        {
+            var text = @"
+Main<>
+    x = 1
+
+    loop x << 10
+        if (x % 2) == 0
+            WriteLine<x>
+        end
+
+        x => x + 1
+    end
+end";
+
+            var expected = @"2
+4
+6
+8
 ";
 
             Interpret(text, expected);
