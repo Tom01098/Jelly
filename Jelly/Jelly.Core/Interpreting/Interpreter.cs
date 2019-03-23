@@ -51,7 +51,7 @@ namespace Jelly.Core.Interpreting
             var node = (FunctionNode)function;
 
             // Push the arguments to the call stack
-            values.PushNewFrame();
+            values.PushIndependentFrame();
 
             for (int i = 0; i < arguments.Count; i++)
             {
@@ -60,7 +60,7 @@ namespace Jelly.Core.Interpreting
 
             // Execute the constructs in the function
             var returnValue = ExecuteConstructs(node.Constructs);
-            values.PopWholeFrame();
+            values.PopIndependentFrame();
 
             // If there was a return value, return it as the result of
             // the function
@@ -84,9 +84,9 @@ namespace Jelly.Core.Interpreting
                     {
                         if ((block.Condition is null) || Evaluate(block.Condition) != 0)
                         {
-                            values.PushNewFrameInScope();
+                            values.PushRelativeFrame();
                             var returnValue = ExecuteConstructs(block.Constructs);
-                            values.PopFrame();
+                            values.PopRelativeFrame();
 
                             if (!(returnValue is null))
                             {
@@ -101,9 +101,9 @@ namespace Jelly.Core.Interpreting
                 {
                     while (Evaluate(loopBlockNode.Block.Condition) != 0)
                     {
-                        values.PushNewFrameInScope();
+                        values.PushRelativeFrame();
                         var returnValue = ExecuteConstructs(loopBlockNode.Block.Constructs);
-                        values.PopFrame();
+                        values.PopRelativeFrame();
 
                         if (!(returnValue is null))
                         {
