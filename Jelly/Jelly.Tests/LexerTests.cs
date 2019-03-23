@@ -447,6 +447,21 @@ namespace Jelly.Tests
 
             CollectionAssertUtility.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void Pipe()
+        {
+            var actual = GetTokens("|");
+
+            var expected = new List<Token>
+            {
+                new SymbolToken(SymbolType.Pipe, Position(1, 1)),
+                new EOLToken(Position(1, 2)),
+                new EOFToken(Position(1, 2))
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
         #endregion
 
         #region Multiple

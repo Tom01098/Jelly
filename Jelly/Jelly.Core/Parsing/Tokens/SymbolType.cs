@@ -11,5 +11,6 @@
         OpenParenthesis,
         CloseParenthesis,
         Exclamation,
+        Pipe
     }
 }

@@ -21,12 +21,13 @@ return = '~' [value];
 
 value = term [operator value];
 operator = '+' | '-' | '*' | '/' | '%' | '==' | '!=' | '<<' | '>>' | '<=' | '>=';
-term = '(' value ')' | not | negative | call | number | identifier;
+term = '(' value ')' | absolute | not | negative | call | number | identifier;
 
 identifier = ? IdentifierToken ?;
 number = ? NumberToken ?;
 not = '!' term;
 negative = '-' term;
+absolute = '|' value '|'
 
 EOL = ? EOLToken ?;
 end = 'end' EOL;

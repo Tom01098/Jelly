@@ -184,6 +184,52 @@ end";
         }
 
         [TestMethod]
+        public void FunctionWithAbsoluteNumber()
+        {
+            var text = @"
+Main<>
+    ~|5|
+end";
+
+            var actual = GetAST(text);
+
+            var expected = new List<FunctionNode>
+            {
+                new FunctionNode
+                (
+                    new IdentifierNode
+                    (
+                        "Main",
+                        Position(2, 1)
+                    ),
+                    new List<IdentifierNode>
+                    {
+
+                    },
+                    new List<IConstructNode>
+                    {
+                        new ReturnNode
+                        (
+                            new AbsoluteNode
+                            (
+                                new NumberNode
+                                (
+                                    4,
+                                    Position(3, 7)
+                                ),
+                                Position(3, 6)
+                            ),
+                            Position(3, 5)
+                        )
+                    },
+                    Position(2, 1)
+                )
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
         public void EmptyFunctionWithParameter()
         {
             var text = @"

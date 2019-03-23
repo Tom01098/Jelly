@@ -246,6 +246,20 @@ end";
         }
 
         [TestMethod]
+        public void Absolute()
+        {
+            var text = @"
+Main<>
+    WriteLine<|-5|>
+end";
+
+            var expected = @"5
+";
+
+            Interpret(text, expected);
+        }
+
+        [TestMethod]
         public void Not()
         {
             var text = @"
