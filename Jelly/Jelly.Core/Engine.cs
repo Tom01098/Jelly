@@ -53,7 +53,7 @@ namespace Jelly.Core
 
         public static void WriteDiagnostic(string str)
         {
-            diagnostic(str);
+            diagnostic?.Invoke(str);
         }
     }
 }
