@@ -34,7 +34,7 @@ namespace Jelly.Core.Parsing
                     {
                         NextChar();
                     }
-                    while (index < span.Length && (IsLetter(span[index]) || span[index] == '_'));
+                    while (index < span.Length && (IsLetter(span[index]) || IsDigit(span[index]) || span[index] == '_'));
 
                     var identifier = span.Slice(start, index - start).ToString();
 

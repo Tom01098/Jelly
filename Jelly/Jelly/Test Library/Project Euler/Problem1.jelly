@@ -1,0 +1,17 @@
+﻿Problem1<>
+	result = 0
+	n = 3
+
+	loop n << 1000
+		three = (n % 3) == 0
+		five = (n % 5) == 0
+
+		if three + five
+			result => result + n
+		end
+
+		n => n + 1
+	end
+
+	WriteLine<result>
+end
