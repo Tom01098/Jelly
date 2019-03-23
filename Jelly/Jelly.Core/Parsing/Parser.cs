@@ -45,6 +45,30 @@ namespace Jelly.Core.Parsing
             return token is EOLToken;
         }
 
+        // absolute = '|' value '|'
+        private AbsoluteNode Absolute()
+        {
+            var position = tokens.Current.Position;
+
+            if (!IsSymbol(tokens.Current, SymbolType.Pipe))
+            {
+                throw new JellyException("Expected '|'", 
+                                         tokens.Current.Position);
+            }
+
+            tokens.MoveNext();
+            var value = Value();
+
+            if (!IsSymbol(tokens.Current, SymbolType.Pipe))
+            {
+                throw new JellyException("Expected '|'",
+                                         tokens.Current.Position);
+            }
+
+            tokens.MoveNext();
+            return new AbsoluteNode(value, position);
+        }
+
         // assignment = identifier '=' value;
         private AssignmentNode Assignment()
         {
@@ -370,7 +394,7 @@ namespace Jelly.Core.Parsing
             }
         }
 
-        // term = '(' value ')' | not | negative | call | number | identifier;
+        // term = '(' value ')' | absolute | not | negative | call | number | identifier;
         private ITermNode Term()
         {
             if (IsSymbol(tokens.Current, SymbolType.OpenParenthesis))
@@ -386,6 +410,10 @@ namespace Jelly.Core.Parsing
 
                 tokens.MoveNext();
                 return value;
+            }
+            else if (IsSymbol(tokens.Current, SymbolType.Pipe))
+            {
+                return Absolute();
             }
             else if (IsSymbol(tokens.Current, SymbolType.Exclamation))
             {

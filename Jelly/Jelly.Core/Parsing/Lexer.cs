@@ -198,6 +198,11 @@ namespace Jelly.Core.Parsing
                 {
                     tokens.Add(new SymbolToken(SymbolType.Comma, GetPosition()));
                 }
+                // Pipe
+                else if (span[index] == '|')
+                {
+                    tokens.Add(new SymbolToken(SymbolType.Pipe, GetPosition()));
+                }
                 // Newline
                 else if (span[index] == '\r')
                 {

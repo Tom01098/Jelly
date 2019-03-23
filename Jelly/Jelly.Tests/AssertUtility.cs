@@ -66,8 +66,16 @@ namespace Jelly.Tests
             // Types are equal, so recursively check its members
             if (expected != null && actual != null && expected.GetType() == actual.GetType())
             {
+                // AbsoluteNode
+                if (expected is AbsoluteNode)
+                {
+                    var e = (AbsoluteNode)expected;
+                    var a = (AbsoluteNode)actual;
+                    
+                    AreEqual((Node)e.Value, (Node)a.Value);
+                }
                 // AssignmentNode
-                if (expected is AssignmentNode)
+                else if (expected is AssignmentNode)
                 {
                     var e = (AssignmentNode)expected;
                     var a = (AssignmentNode)actual;

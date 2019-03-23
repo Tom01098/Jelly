@@ -178,6 +178,10 @@ namespace Jelly.Core.Interpreting
                         throw new Exception($"Invalid operator {valueNode.Operator}");
                 }
             }
+            else if (term is AbsoluteNode absoluteNode)
+            {
+                return Math.Abs(Evaluate(absoluteNode.Value));
+            }
             else if (term is NotNode notNode)
             {
                 return Evaluate(notNode.Term) == 0 ? 1 : 0;

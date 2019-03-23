@@ -214,7 +214,7 @@ end";
                             (
                                 new NumberNode
                                 (
-                                    4,
+                                    5,
                                     Position(3, 7)
                                 ),
                                 Position(3, 6)
