@@ -1,6 +1,7 @@
 ﻿using Jelly.Core.Interpreting;
 using Jelly.Core.Parsing;
 using Jelly.Core.Parsing.AST;
+using Jelly.Core.Utility;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -50,13 +51,15 @@ namespace Jelly.Core.Linking
                 }
             }
 
+            Engine.WriteDiagnostic($"Found {functions.Count} internal standard functions.");
+
             return functions;
         }
 
         private List<IFunction> GetPureFunctions()
         {
             var directory = Path.Combine(Environment.CurrentDirectory, "StandardLibrary/Pure");
-            var files = Directory.GetFiles(directory, "*.jelly", SearchOption.AllDirectories);
+            var files = FileUtility.FindJellyFiles(directory);
 
             var functions = new List<IFunction>();
 
@@ -66,6 +69,8 @@ namespace Jelly.Core.Linking
 
                 functions.AddRange(new Parser().Parse(new Lexer().Lex(text, "Standard Library")));
             }
+
+            Engine.WriteDiagnostic($"Found {functions.Count} pure standard functions.");
 
             return functions;
         }

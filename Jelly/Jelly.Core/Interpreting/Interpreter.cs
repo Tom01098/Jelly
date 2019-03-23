@@ -74,7 +74,7 @@ namespace Jelly.Core.Interpreting
         }
 
         // Execute constructs and return the returned number (or null)
-        public double? ExecuteConstructs(List<IConstructNode> constructs)
+        private double? ExecuteConstructs(List<IConstructNode> constructs)
         {
             foreach (var construct in constructs)
             {
