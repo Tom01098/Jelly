@@ -52,6 +52,9 @@ namespace Jelly.Core.Parsing
                         case "end":
                             tokens.Add(new KeywordToken(KeywordType.End, position));
                             break;
+                        case "loop":
+                            tokens.Add(new KeywordToken(KeywordType.Loop, position));
+                            break;
                         default:
                             tokens.Add(new IdentifierToken(identifier, position));
                             break;

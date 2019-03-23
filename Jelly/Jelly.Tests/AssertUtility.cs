@@ -172,10 +172,10 @@ namespace Jelly.Tests
                     }
                 }
                 // LoopNode
-                else if (expected is LoopNode)
+                else if (expected is LoopBlockNode)
                 {
-                    var e = (LoopNode)expected;
-                    var a = (LoopNode)actual;
+                    var e = (LoopBlockNode)expected;
+                    var a = (LoopBlockNode)actual;
 
                     AreEqual(e.Block, a.Block);
                 }

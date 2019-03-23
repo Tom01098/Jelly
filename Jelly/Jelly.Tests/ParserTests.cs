@@ -900,7 +900,7 @@ end";
                     },
                     new List<IConstructNode>
                     {
-                        new LoopNode
+                        new LoopBlockNode
                         (
                             new ConditionalBlockNode
                             (

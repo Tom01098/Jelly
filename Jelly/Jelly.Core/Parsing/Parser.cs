@@ -145,12 +145,16 @@ namespace Jelly.Core.Parsing
             return new ConditionalBlockNode(condition, constructs, position);
         }
 
-        // construct = if_block | statement EOL;
+        // construct = if_block | loop_block | statement EOL;
         private IConstructNode Construct()
         {
             if (IsKeyword(tokens.Current, KeywordType.If))
             {
                 return IfBlock();
+            }
+            else if (IsKeyword(tokens.Current, KeywordType.Loop))
+            {
+                return LoopBlock();
             }
             else
             {
@@ -271,6 +275,21 @@ namespace Jelly.Core.Parsing
             }
 
             return new IfBlockNode(blocks, position);
+        }
+
+        // loop_block = 'loop' conditional_block;
+        private LoopBlockNode LoopBlock()
+        {
+            var position = tokens.Current.Position;
+
+            if (!IsKeyword(tokens.Current, KeywordType.Loop))
+            {
+                throw new JellyException("Expected 'loop'", 
+                                         tokens.Current.Position);
+            }
+
+            tokens.MoveNext();
+            return new LoopBlockNode(ConditionalBlock(false), position);
         }
 
         // mutation = identifier '=>' value;
