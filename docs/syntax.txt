@@ -7,9 +7,10 @@ arguments = value {',' value};
 parameters = identifier {',' identifier};
 
 constructs = {construct};
-construct = if_block | statement EOL;
+construct = if_block | loop_block | statement EOL;
 
 if_block = 'if' conditional_block {'elif' conditional_block} ['else' EOL constructs end];
+loop_block = 'loop' conditional_block;
 conditional_block = value EOL constructs end;
 
 statement = return | assignment | mutation | call;

@@ -367,6 +367,28 @@ end";
 
             Interpret(text, expected);
         }
+
+        [TestMethod]
+        public void Loop()
+        {
+            var text = @"
+Main<>
+    x = 4
+
+    loop !x
+        WriteLine<x>
+        x => x - 1
+    end
+end";
+
+            var expected = @"4
+3
+2
+1
+";
+
+            Interpret(text, expected);
+        }
         #endregion
 
         #region Two Functions

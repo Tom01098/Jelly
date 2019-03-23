@@ -149,6 +149,21 @@ namespace Jelly.Tests
         }
 
         [TestMethod]
+        public void Loop()
+        {
+            var actual = GetTokens("loop");
+
+            var expected = new List<Token>
+            {
+                new KeywordToken(KeywordType.Loop, Position(1, 1)),
+                new EOLToken(Position(1, 5)),
+                new EOFToken(Position(1, 5))
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
         public void OpenAngleParenthesis()
         {
             var actual = GetTokens("<");

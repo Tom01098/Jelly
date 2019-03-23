@@ -5,6 +5,7 @@
         End,
         If,
         Elif,
-        Else
+        Else,
+        Loop
     }
 }

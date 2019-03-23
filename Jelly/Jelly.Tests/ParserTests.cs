@@ -872,6 +872,58 @@ end";
 
             CollectionAssertUtility.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void EmptyLoop()
+        {
+            var text = @"
+Main<>
+    loop 1
+
+    end
+end";
+
+            var actual = GetAST(text);
+
+            var expected = new List<FunctionNode>
+            {
+                new FunctionNode
+                (
+                    new IdentifierNode
+                    (
+                        "Main",
+                        Position(2, 1)
+                    ),
+                    new List<IdentifierNode>
+                    {
+
+                    },
+                    new List<IConstructNode>
+                    {
+                        new LoopNode
+                        (
+                            new ConditionalBlockNode
+                            (
+                                new NumberNode
+                                (
+                                    1,
+                                    Position(3, 10)
+                                ),
+                                new List<IConstructNode>
+                                {
+
+                                },
+                                Position(3, 10)
+                            ),
+                            Position(3, 5)
+                        )
+                    },
+                    Position(2, 1)
+                )
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
         #endregion
 
         #region Complex
