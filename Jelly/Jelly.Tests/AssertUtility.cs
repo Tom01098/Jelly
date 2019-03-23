@@ -171,6 +171,14 @@ namespace Jelly.Tests
                         AreEqual(e.Blocks[i], a.Blocks[i]);
                     }
                 }
+                // LoopNode
+                else if (expected is LoopNode)
+                {
+                    var e = (LoopNode)expected;
+                    var a = (LoopNode)actual;
+
+                    AreEqual(e.Block, a.Block);
+                }
                 // MutationNode
                 else if (expected is MutationNode)
                 {
