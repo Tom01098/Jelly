@@ -3,17 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Jelly.Core.Interpreting
+namespace Jelly.Core.Linking
 {
     public class InternalFunction : IFunction
     {
-        private MethodInfo info;
+        public string Name { get; }
+        public int ParameterCount { get; }
 
-        public string Name => info.Name;
+        private MethodInfo info;
 
         public InternalFunction(MethodInfo info)
         {
             this.info = info;
+            Name = info.Name;
+            ParameterCount = info.GetParameters().Length;
         }
 
         public double Execute(List<double> arguments)

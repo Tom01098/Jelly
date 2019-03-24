@@ -1,4 +1,5 @@
-﻿using Jelly.Core.Parsing.AST;
+﻿using Jelly.Core.Linking;
+using Jelly.Core.Parsing.AST;
 using Jelly.Core.Parsing.Tokens;
 using System;
 using System.Collections.Generic;
