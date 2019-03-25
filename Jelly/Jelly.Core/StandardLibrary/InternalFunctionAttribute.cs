@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Jelly.Core.Interpreting
+namespace Jelly.Core.StandardLibrary
 {
     [AttributeUsage(AttributeTargets.Method)]
     public class InternalFunctionAttribute : Attribute
