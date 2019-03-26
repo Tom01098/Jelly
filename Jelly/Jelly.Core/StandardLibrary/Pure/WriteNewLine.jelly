@@ -1,0 +1,4 @@
+﻿@ Write a newline character to the console
+WriteNewLine<>
+	WriteChar<10>
+end

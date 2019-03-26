@@ -19,13 +19,6 @@ namespace Jelly.Core.StandardLibrary.Internal
         }
 
         [InternalFunction]
-        public static double WriteNewLine()
-        {
-            Console.WriteLine();
-            return double.NaN;
-        }
-
-        [InternalFunction]
         public static double WriteChar(double value)
         {
             Console.Write((char)value);
