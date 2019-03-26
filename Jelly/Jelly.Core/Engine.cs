@@ -15,11 +15,12 @@ namespace Jelly.Core
     public static class Engine
     {
         private static Action<string> diagnostic;
+        private static bool importantOnly;
 
         public static List<IFunction> GetAST(string folder)
         {
             var files = FileUtility.FindJellyFiles(folder);
-            WriteDiagnostic($"Found {files.Length} files.");
+            WriteDiagnostic($"Found {files.Length} files.", false);
 
             var ast = new List<FunctionNode>();
 
@@ -34,7 +35,7 @@ namespace Jelly.Core
                 ast.AddRange(functions);
             }
 
-            WriteDiagnostic($"Found {ast.Count} user functions.");
+            WriteDiagnostic($"Found {ast.Count} user functions.", false);
 
             return new Linker().LinkAST(ast);
         }
@@ -46,14 +47,18 @@ namespace Jelly.Core
             WriteDiagnostic("\nEND PROGRAM");
         }
 
-        public static void SetDiagnosticOut(Action<string> action)
+        public static void SetDiagnosticOut(Action<string> diagnostic, bool importantOnly = false)
         {
-            diagnostic = action;
+            Engine.diagnostic = diagnostic;
+            Engine.importantOnly = importantOnly;
         }
 
-        public static void WriteDiagnostic(string str)
+        public static void WriteDiagnostic(string str, bool important = true)
         {
-            diagnostic?.Invoke(str);
+            if (important || !importantOnly)
+            {
+                diagnostic?.Invoke(str);
+            }
         }
     }
 }

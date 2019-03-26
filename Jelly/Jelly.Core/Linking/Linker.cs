@@ -51,7 +51,7 @@ namespace Jelly.Core.Linking
                 }
             }
 
-            Engine.WriteDiagnostic($"Found {functions.Count} internal standard functions.");
+            Engine.WriteDiagnostic($"Found {functions.Count} internal standard functions.", false);
 
             return functions;
         }
@@ -70,7 +70,7 @@ namespace Jelly.Core.Linking
                 functions.AddRange(new Parser().Parse(new Lexer().Lex(text, "Standard Library")));
             }
 
-            Engine.WriteDiagnostic($"Found {functions.Count} pure standard functions.");
+            Engine.WriteDiagnostic($"Found {functions.Count} pure standard functions.", false);
 
             return functions;
         }

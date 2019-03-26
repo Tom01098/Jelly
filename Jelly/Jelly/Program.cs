@@ -12,15 +12,13 @@ namespace Jelly
             {
                 Engine.SetDiagnosticOut(x => Console.WriteLine(x));
                 var ast = Engine.GetAST(args[0]);
-                char key = 'y';
 
                 do
                 {
                     Engine.Execute(ast);
                     Console.WriteLine("Press 'y' to execute again, any other key to exit.");
-                    key = Console.ReadKey(true).KeyChar;
                 }
-                while (key == 'y' || key == 'Y');
+                while (char.ToLower(Console.ReadKey(true).KeyChar) == 'y');
             }
             catch (JellyException e)
             {
