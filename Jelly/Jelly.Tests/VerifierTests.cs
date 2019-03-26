@@ -61,6 +61,22 @@ end";
         #region Invalid
         [TestMethod]
         [ExpectedException(typeof(JellyException))]
+        public void MultipleNamedFunctions()
+        {
+            var text = @"
+Main<>
+    
+end
+
+Main<>
+
+end";
+
+            Verify(text);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(JellyException))]
         public void UsingUndefinedVariable()
         {
             var text = @"
