@@ -3,6 +3,7 @@ using Jelly.Core.Linking;
 using Jelly.Core.Parsing;
 using Jelly.Core.Parsing.AST;
 using Jelly.Core.Utility;
+using Jelly.Core.Verifying;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -38,6 +39,11 @@ namespace Jelly.Core
             WriteDiagnostic($"Found {ast.Count} user functions.", false);
 
             return new Linker().LinkAST(ast);
+        }
+
+        public static void Verify(List<IFunction> ast)
+        {
+            Verifier.Verify(ast);
         }
 
         public static void Execute(List<IFunction> ast)

@@ -12,6 +12,7 @@ namespace Jelly
             {
                 Engine.SetDiagnosticOut(x => Console.WriteLine(x));
                 var ast = Engine.GetAST(args[0]);
+                Engine.Verify(ast);
 
                 do
                 {
