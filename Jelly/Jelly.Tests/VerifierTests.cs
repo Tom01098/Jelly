@@ -114,6 +114,31 @@ end";
 
         [TestMethod]
         [ExpectedException(typeof(JellyException))]
+        public void UsingUndefinedVariable2()
+        {
+            var text = @"
+Main<>
+    x = |y|
+end";
+
+            Verify(text);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(JellyException))]
+        public void UsingUndefinedVariable3()
+        {
+            var text = @"
+Main<>
+    x = 4
+    x => 6 + ((12 / 3) - y)
+end";
+
+            Verify(text);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(JellyException))]
         public void CallingUndefinedFunction()
         {
             var text = @"

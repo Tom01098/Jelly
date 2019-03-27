@@ -121,9 +121,24 @@ namespace Jelly.Core.Verifying
 
                 VerifyTerm(mutation.Value, definedVariables);
             }
-            else if (statement is CallNode)
+            else if (statement is CallNode call)
             {
-                // TODO Call
+                if (!functionInfos.ContainsKey(call.Identifier.Identifier))
+                {
+                    throw new JellyException($"{call.Identifier.Identifier} is not defined",
+                                             call.Position);
+                }
+
+                if (call.Arguments.Count != functionInfos[call.Identifier.Identifier].ParameterCount)
+                {
+                    throw new JellyException($"Expected {functionInfos[call.Identifier.Identifier].ParameterCount} arguments",
+                                             call.Position);
+                }
+
+                foreach (var arg in call.Arguments)
+                {
+                    VerifyTerm(arg, definedVariables);
+                }
             }
         }
 
