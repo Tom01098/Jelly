@@ -68,6 +68,23 @@ end";
 
             Verify(text);
         }
+
+        [TestMethod]
+        public void UsingVariableInIfScope()
+        {
+            var text = @"
+Main<>
+    x = 3
+
+    if x
+        x => 4
+    end
+
+    Write<x>
+end";
+
+            Verify(text);
+        }
         #endregion
 
         #region Invalid
@@ -204,6 +221,68 @@ end";
             var text = @"
 Main<x>
     
+end";
+
+            Verify(text);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(JellyException))]
+        public void UsingIfVariableOutsideScope()
+        {
+            var text = @"
+Main<>
+    if 1
+        x = 4
+    end
+
+    x => 3
+end";
+
+            Verify(text);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(JellyException))]
+        public void DeclaringVariableAgainInIfScope()
+        {
+            var text = @"
+Main<>
+    x = 5
+
+    if 1
+        x = 4
+    end
+end";
+
+            Verify(text);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(JellyException))]
+        public void UndefinedIfCondition()
+        {
+            var text = @"
+Main<>
+    if x
+        
+    end
+end";
+
+            Verify(text);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(JellyException))]
+        public void UsingVariableOutOfLoop()
+        {
+            var text = @"
+Main<>
+    loop 1
+
+    end
+
+    ~x
 end";
 
             Verify(text);

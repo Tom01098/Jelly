@@ -91,14 +91,18 @@ namespace Jelly.Core.Verifying
         {
             foreach (var construct in constructs)
             {
-                // TODO Construct blocks
                 if (construct is IfBlockNode ifBlockNode)
                 {
-
+                    foreach (var block in ifBlockNode.Blocks)
+                    {
+                        VerifyTerm(block.Condition, definedVariables);
+                        VerifyConstructs(block.Constructs, new List<string>(definedVariables));
+                    }
                 }
                 else if (construct is LoopBlockNode loopBlockNode)
                 {
-
+                    VerifyTerm(loopBlockNode.Block.Condition, definedVariables);
+                    VerifyConstructs(loopBlockNode.Block.Constructs, new List<string>(definedVariables));
                 }
                 else
                 {
