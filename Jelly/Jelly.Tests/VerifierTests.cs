@@ -31,6 +31,18 @@ end";
         }
 
         [TestMethod]
+        public void MultipleDifferentVariables()
+        {
+            var text = @"
+Main<>
+    x = 3
+    y = 50
+end";
+
+            Verify(text);
+        }
+
+        [TestMethod]
         public void CallingFunction()
         {
             var text = @"
@@ -70,6 +82,19 @@ end
 
 Main<>
 
+end";
+
+            Verify(text);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(JellyException))]
+        public void MultipleAssignments()
+        {
+            var text = @"
+Main<>
+    x = 3
+    x = 50
 end";
 
             Verify(text);
