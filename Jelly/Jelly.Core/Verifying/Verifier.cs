@@ -70,6 +70,12 @@ namespace Jelly.Core.Verifying
             {
                 throw new JellyException("No Main function", new Position());
             }
+
+            if (functionInfos["Main"].ParameterCount != 0)
+            {
+                throw new JellyException("Main cannot have any parameters",
+                                         functionInfos["Main"].Position);
+            }
         }
 
         // Verify the constructs in a function
@@ -101,6 +107,7 @@ namespace Jelly.Core.Verifying
             }
         }
 
+        // Verify a statement
         private static void VerifyStatement(IStatementNode statement,
                                             List<string> definedVariables)
         {
@@ -139,6 +146,7 @@ namespace Jelly.Core.Verifying
             }
         }
 
+        // Verify a term
         private static void VerifyTerm(ITermNode term,
                                        List<string> definedVariables)
         {
@@ -169,6 +177,9 @@ namespace Jelly.Core.Verifying
             }
         }
 
+        // Verify a call
+        // This has been refactored because it would be duplicated in
+        // statement and term
         private static void VerifyCall(CallNode call,
                                        List<string> definedVariables)
         {

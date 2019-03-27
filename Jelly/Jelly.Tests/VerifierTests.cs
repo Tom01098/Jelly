@@ -196,6 +196,18 @@ end";
 
             Verify(text);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(JellyException))]
+        public void MainWithParameters()
+        {
+            var text = @"
+Main<x>
+    
+end";
+
+            Verify(text);
+        }
         #endregion
     }
 }
