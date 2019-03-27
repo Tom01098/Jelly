@@ -65,6 +65,11 @@ namespace Jelly.Core.Verifying
 
                 functionInfos.Add(info.Name, info);
             }
+
+            if (!functionInfos.ContainsKey("Main"))
+            {
+                throw new JellyException("No Main function", new Position());
+            }
         }
 
         // Verify the constructs in a function
