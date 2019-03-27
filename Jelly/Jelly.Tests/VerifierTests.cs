@@ -172,6 +172,18 @@ end";
 
             Verify(text);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(JellyException))]
+        public void ReturnUndefinedVariable()
+        {
+            var text = @"
+Main<>
+    ~x
+end";
+
+            Verify(text);
+        }
         #endregion
     }
 }

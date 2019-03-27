@@ -123,21 +123,13 @@ namespace Jelly.Core.Verifying
             }
             else if (statement is CallNode call)
             {
-                if (!functionInfos.ContainsKey(call.Identifier.Identifier))
+                VerifyCall(call, definedVariables);
+            }
+            else if (statement is ReturnNode @return)
+            {
+                if (!(@return.Value is null))
                 {
-                    throw new JellyException($"{call.Identifier.Identifier} is not defined",
-                                             call.Position);
-                }
-
-                if (call.Arguments.Count != functionInfos[call.Identifier.Identifier].ParameterCount)
-                {
-                    throw new JellyException($"Expected {functionInfos[call.Identifier.Identifier].ParameterCount} arguments",
-                                             call.Position);
-                }
-
-                foreach (var arg in call.Arguments)
-                {
-                    VerifyTerm(arg, definedVariables);
+                    VerifyTerm(@return.Value, definedVariables);
                 }
             }
         }
@@ -145,7 +137,52 @@ namespace Jelly.Core.Verifying
         private static void VerifyTerm(ITermNode term,
                                        List<string> definedVariables)
         {
-            // TODO Verify Term
+            if (term is IdentifierNode identifier)
+            {
+                if (!definedVariables.Contains(identifier.Identifier))
+                {
+                    throw new JellyException($"{identifier.Identifier} is undefined",
+                                             identifier.Position);
+                }
+            }
+            else if (term is CallNode call)
+            {
+                VerifyCall(call, definedVariables);
+            }
+            else if (term is AbsoluteNode abs)
+            {
+                VerifyTerm(abs.Value, definedVariables);
+            }
+            else if (term is NegativeNode neg)
+            {
+                VerifyTerm(neg.Term, definedVariables);
+            }
+            else if (term is ValueNode value)
+            {
+                VerifyTerm(value.LHS, definedVariables);
+                VerifyTerm(value.RHS, definedVariables);
+            }
+        }
+
+        private static void VerifyCall(CallNode call,
+                                       List<string> definedVariables)
+        {
+            if (!functionInfos.ContainsKey(call.Identifier.Identifier))
+            {
+                throw new JellyException($"{call.Identifier.Identifier} is not defined",
+                                         call.Position);
+            }
+
+            if (call.Arguments.Count != functionInfos[call.Identifier.Identifier].ParameterCount)
+            {
+                throw new JellyException($"Expected {functionInfos[call.Identifier.Identifier].ParameterCount} arguments",
+                                         call.Position);
+            }
+
+            foreach (var arg in call.Arguments)
+            {
+                VerifyTerm(arg, definedVariables);
+            }
         }
     }
 }
