@@ -55,6 +55,12 @@ namespace Jelly.Core.Parsing
                         case "loop":
                             tokens.Add(new KeywordToken(KeywordType.Loop, position));
                             break;
+                        case "NaN":
+                            tokens.Add(new NumberToken(double.NaN, position));
+                            break;
+                        case "Infinity":
+                            tokens.Add(new NumberToken(double.PositiveInfinity, position));
+                            break;
                         default:
                             tokens.Add(new IdentifierToken(identifier, position));
                             break;

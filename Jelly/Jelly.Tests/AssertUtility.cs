@@ -30,7 +30,10 @@ namespace Jelly.Tests
             }
             else if (expected is NumberToken)
             {
-                if (((NumberToken)expected).Number != ((NumberToken)actual).Number)
+                var eNum = ((NumberToken)expected).Number;
+                var aNum = ((NumberToken)actual).Number;
+
+                if (eNum != aNum && !(double.IsNaN(aNum) || double.IsNaN(eNum)))
                 {
                     throw new AssertFailedException("Different numbers");
                 }

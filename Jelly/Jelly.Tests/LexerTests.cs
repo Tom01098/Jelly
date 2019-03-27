@@ -477,6 +477,36 @@ namespace Jelly.Tests
 
             CollectionAssertUtility.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void NaN()
+        {
+            var actual = GetTokens("NaN");
+
+            var expected = new List<Token>
+            {
+                new NumberToken(double.NaN, Position(1, 1)),
+                new EOLToken(Position(1, 4)),
+                new EOFToken(Position(1, 4))
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void Infinity()
+        {
+            var actual = GetTokens("Infinity");
+
+            var expected = new List<Token>
+            {
+                new NumberToken(double.PositiveInfinity, Position(1, 1)),
+                new EOLToken(Position(1, 9)),
+                new EOFToken(Position(1, 9))
+            };
+
+            CollectionAssertUtility.AreEqual(expected, actual);
+        }
         #endregion
 
         #region Multiple
