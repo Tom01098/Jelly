@@ -81,7 +81,19 @@ namespace Jelly.Core.Verifying
         // Verify the constructs in a function
         private static void VerifyFunction(FunctionNode node)
         {
-            var parameters = node.Parameters.ConvertAll(x => x.Identifier);
+            var parameters = new List<string>();
+
+            foreach (var parameter in node.Parameters)
+            {
+                if (parameters.Contains(parameter.Identifier))
+                {
+                    throw new JellyException($"Multiple parameters called {parameter.Identifier}",
+                                             parameter.Position);
+                }
+
+                parameters.Add(parameter.Identifier);
+            }
+
             VerifyConstructs(node.Constructs, parameters);
         }
 

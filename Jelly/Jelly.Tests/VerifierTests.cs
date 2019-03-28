@@ -119,6 +119,22 @@ end";
 
         [TestMethod]
         [ExpectedException(typeof(JellyException))]
+        public void MultipleParametersSameName()
+        {
+            var text = @"
+Main<>
+    
+end
+
+Do<a, b, a>
+    
+end";
+
+            Verify(text);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(JellyException))]
         public void UsingUndefinedVariable()
         {
             var text = @"
