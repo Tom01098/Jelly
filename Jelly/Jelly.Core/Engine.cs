@@ -16,6 +16,7 @@ namespace Jelly.Core
     public static class Engine
     {
         private static Action<string> diagnostic;
+        private static Action<string> error;
         private static bool importantOnly;
 
         public static List<IFunction> GetAST(string folder)
@@ -59,12 +60,22 @@ namespace Jelly.Core
             Engine.importantOnly = importantOnly;
         }
 
+        public static void SetErrorOut(Action<string> error)
+        {
+            Engine.error = error;
+        }
+
         public static void WriteDiagnostic(string str, bool important = true)
         {
             if (important || !importantOnly)
             {
                 diagnostic?.Invoke(str);
             }
+        }
+
+        public static void WriteError(string str)
+        {
+            error?.Invoke(str);
         }
     }
 }

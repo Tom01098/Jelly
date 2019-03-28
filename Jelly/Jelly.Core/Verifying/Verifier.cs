@@ -1,7 +1,6 @@
 ﻿using Jelly.Core.Linking;
 using Jelly.Core.Parsing.AST;
 using Jelly.Core.Utility;
-using System;
 using System.Collections.Generic;
 
 namespace Jelly.Core.Verifying
@@ -12,6 +11,7 @@ namespace Jelly.Core.Verifying
     public static class Verifier
     {
         private static Dictionary<string, FunctionInfo> functionInfos;
+        private static List<Diagnostic> diagnostics;
 
         /// <summary>
         /// Verifies an AST to ensure that errors which can be caught at
@@ -19,6 +19,8 @@ namespace Jelly.Core.Verifying
         /// </summary>
         public static void Verify(List<IFunction> ast)
         {
+            diagnostics = new List<Diagnostic>();
+
             GetFunctionInformation(ast);
 
             foreach (var function in ast)
@@ -27,6 +29,16 @@ namespace Jelly.Core.Verifying
                 {
                     VerifyFunction(node);
                 }
+            }
+
+            if (diagnostics.Count != 0)
+            {
+                foreach (var diag in diagnostics)
+                {
+                    Engine.WriteError(diag.ToString());
+                }
+
+                throw new JellyException();
             }
         }
 
@@ -54,27 +66,29 @@ namespace Jelly.Core.Verifying
                 }
                 else
                 {
-                    throw new Exception($"Unrecognised function type {function}");
+                    AddDiagnostic($"Unrecognised function type {function}", null);
+                    continue;
                 }
 
                 if (functionInfos.ContainsKey(info.Name))
                 {
-                    throw new JellyException($"Multiple functions called {info.Name}",
-                                             info.Position);
+                    AddDiagnostic($"Multiple functions called {info.Name}",
+                                  info.Position);
                 }
-
-                functionInfos.Add(info.Name, info);
+                else
+                {
+                    functionInfos.Add(info.Name, info);
+                }
             }
 
             if (!functionInfos.ContainsKey("Main"))
             {
-                throw new JellyException("No Main function", new Position());
+                AddDiagnostic("No Main function", null);
             }
-
-            if (functionInfos["Main"].ParameterCount != 0)
+            else if (functionInfos["Main"].ParameterCount != 0)
             {
-                throw new JellyException("Main cannot have any parameters",
-                                         functionInfos["Main"].Position);
+                AddDiagnostic("Main cannot have any parameters",
+                              functionInfos["Main"].Position);
             }
         }
 
@@ -87,11 +101,13 @@ namespace Jelly.Core.Verifying
             {
                 if (parameters.Contains(parameter.Identifier))
                 {
-                    throw new JellyException($"Multiple parameters called {parameter.Identifier}",
-                                             parameter.Position);
+                    AddDiagnostic($"Multiple parameters called {parameter.Identifier}",
+                                  parameter.Position);
                 }
-
-                parameters.Add(parameter.Identifier);
+                else
+                {
+                    parameters.Add(parameter.Identifier);
+                }
             }
 
             VerifyConstructs(node.Constructs, parameters);
@@ -131,8 +147,8 @@ namespace Jelly.Core.Verifying
             {
                 if (definedVariables.Contains(assignment.Identifier.Identifier))
                 {
-                    throw new JellyException($"Assigning to an already assigned variable", 
-                                             assignment.Position);
+                    AddDiagnostic($"Assigning to an already assigned variable", 
+                                  assignment.Position);
                 }
 
                 VerifyTerm(assignment.Value, definedVariables);
@@ -143,8 +159,8 @@ namespace Jelly.Core.Verifying
             {
                 if (!definedVariables.Contains(mutation.Identifier.Identifier))
                 {
-                    throw new JellyException($"Mutating an undefined variable",
-                                             mutation.Position);
+                    AddDiagnostic($"Mutating an undefined variable",
+                                  mutation.Position);
                 }
 
                 VerifyTerm(mutation.Value, definedVariables);
@@ -170,8 +186,8 @@ namespace Jelly.Core.Verifying
             {
                 if (!definedVariables.Contains(identifier.Identifier))
                 {
-                    throw new JellyException($"{identifier.Identifier} is undefined",
-                                             identifier.Position);
+                    AddDiagnostic($"{identifier.Identifier} is undefined",
+                                  identifier.Position);
                 }
             }
             else if (term is CallNode call)
@@ -201,19 +217,45 @@ namespace Jelly.Core.Verifying
         {
             if (!functionInfos.ContainsKey(call.Identifier.Identifier))
             {
-                throw new JellyException($"{call.Identifier.Identifier} is not defined",
-                                         call.Position);
+                AddDiagnostic($"{call.Identifier.Identifier} is not defined",
+                              call.Position);
             }
-
-            if (call.Arguments.Count != functionInfos[call.Identifier.Identifier].ParameterCount)
+            else if (call.Arguments.Count != functionInfos[call.Identifier.Identifier].ParameterCount)
             {
-                throw new JellyException($"Expected {functionInfos[call.Identifier.Identifier].ParameterCount} arguments",
-                                         call.Position);
+                AddDiagnostic($"Expected {functionInfos[call.Identifier.Identifier].ParameterCount} arguments",
+                              call.Position);
             }
 
             foreach (var arg in call.Arguments)
             {
                 VerifyTerm(arg, definedVariables);
+            }
+        }
+
+        private static void AddDiagnostic(string message, Position? position)
+            => diagnostics.Add(new Diagnostic(message, position));
+
+        /// <summary>
+        /// An error diagnostic from the <see cref="Verifier"/>.
+        /// </summary>
+        private class Diagnostic
+        {
+            public string Message { get; }
+            public Position? Position { get; }
+
+            public Diagnostic(string message, Position? position)
+                => (Message, Position) = (message, position);
+
+            public override string ToString()
+            {
+                if (Position is null)
+                {
+                    return Message;
+                }
+                else
+                {
+                    return $"{Message} at {Position}";
+                }
             }
         }
     }

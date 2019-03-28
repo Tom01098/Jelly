@@ -8,7 +8,8 @@ namespace Jelly.Core.Utility
     [Serializable]
     public class JellyException : Exception
     {
-        public JellyException() { }
+        public JellyException() 
+            : base("") { }
 
         public JellyException(string message, Position position) 
             : base($"{message} at {position}") { }

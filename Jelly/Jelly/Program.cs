@@ -10,7 +10,18 @@ namespace Jelly
         {
             try
             {
-                Engine.SetDiagnosticOut(x => Console.WriteLine(x));
+                Engine.SetDiagnosticOut(x =>
+                {
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine(x);
+                });
+
+                Engine.SetErrorOut(x =>
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine(x);
+                });
+
                 var ast = Engine.GetAST(args[0]);
                 Engine.Verify(ast);
 
@@ -23,8 +34,12 @@ namespace Jelly
             }
             catch (JellyException e)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(e.Message);
+                if (e.Message != "")
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine(e.Message);
+                }
+
                 Console.ReadKey();
             }
             catch (Exception e)
@@ -36,6 +51,7 @@ namespace Jelly
 
             Console.ForegroundColor = ConsoleColor.White;
             Engine.SetDiagnosticOut(null);
+            Engine.SetErrorOut(null);
         }
     }
 }
