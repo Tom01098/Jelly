@@ -45,6 +45,22 @@ namespace Jelly.Core.Linking
 
                         if (!(attribute is null))
                         {
+                            // Verify that it has a double return value and arguments
+                            if (method.ReturnType != typeof(double))
+                            {
+                                throw new JellyException($"Internal functions must have a return type of double",
+                                                         new Position(method.Name, 0, 0));
+                            }
+
+                            foreach (var parameter in method.GetParameters())
+                            {
+                                if (parameter.ParameterType != typeof(double))
+                                {
+                                    throw new JellyException($"Internal functions must only have arguments of type double",
+                                                             new Position(method.Name, 0, 0));
+                                }
+                            }
+
                             functions.Add(new InternalFunction(method));
                         }
                     }
@@ -56,6 +72,7 @@ namespace Jelly.Core.Linking
             return functions;
         }
 
+        // Get pure (written in jelly) library functions and parse them
         private List<IFunction> GetPureFunctions()
         {
             var directory = Path.Combine(Environment.CurrentDirectory, "StandardLibrary/Pure");
