@@ -45,6 +45,18 @@ namespace Jelly.Core.StandardLibrary.Internal
         {
             return double.IsNaN(x) ? 1 : 0;
         }
+
+        [InternalFunction]
+        public static double Ceil(double x)
+        {
+            return Math.Ceiling(x);
+        }
+
+        [InternalFunction]
+        public static double Floor(double x)
+        {
+            return Math.Floor(x);
+        }
         #endregion
 
         #region Random

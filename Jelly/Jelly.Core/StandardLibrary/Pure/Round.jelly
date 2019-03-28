@@ -1,0 +1,9 @@
+﻿@ Round the number to the nearest integer
+Round<num>
+	if (num % 1) << .5
+		~Floor<num>
+	end
+	else
+		~Ceil<num>
+	end
+end
