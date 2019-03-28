@@ -31,15 +31,15 @@ namespace Jelly.Core.StandardLibrary.Internal
         {
             return double.Parse(Console.ReadLine());
         }
+        #endregion
 
+        #region Number Utility
         [InternalFunction]
         public static double Pow(double a, double b)
         {
             return Math.Pow(a, b);
         }
-        #endregion
 
-        #region Number Utility
         [InternalFunction]
         public static double IsNaN(double x)
         {
@@ -60,22 +60,24 @@ namespace Jelly.Core.StandardLibrary.Internal
         #endregion
 
         #region Random
+        private static readonly Random random = new Random();
+
         [InternalFunction]
         public static double RandomInt()
         {
-            return new Random().Next();
+            return random.Next();
         }
 
         [InternalFunction]
         public static double RandomIntBetween(double min, double max)
         {
-            return new Random().Next((int)min, (int)max);
+            return random.Next((int)min, (int)max);
         }
 
         [InternalFunction]
         public static double Random()
         {
-            return new Random().NextDouble();
+            return random.NextDouble();
         }
         #endregion
     }
