@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Jelly.Core.Interpreting
 {
@@ -141,13 +140,6 @@ namespace Jelly.Core.Interpreting
             {
                 if (nested is null)
                 {
-                    // TODO Remove this check when the verifier is built
-                    // as that will prevent this case from occurring.
-                    if (!values.ContainsKey(name))
-                    {
-                        throw new Exception("Mutating undefined variable");
-                    }
-
                     values[name] = value;
                 }
                 else
