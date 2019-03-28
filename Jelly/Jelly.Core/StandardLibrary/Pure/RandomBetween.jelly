@@ -1,0 +1,4 @@
+﻿@ Return a random number between two numbers
+RandomBetween<min, max>
+	~min + (Random<> * (max - min))
+end

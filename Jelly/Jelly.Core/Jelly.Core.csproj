@@ -6,6 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Update="StandardLibrary\Pure\RandomBetween.jelly">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="StandardLibrary\Pure\WriteNewLine.jelly">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
