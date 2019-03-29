@@ -1,6 +1,8 @@
 ﻿using Jelly.Core.Interpreting;
 using Jelly.Core.Linking;
+using Jelly.Core.Optimising;
 using Jelly.Core.Parsing;
+using Jelly.Core.Verifying;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
@@ -16,7 +18,12 @@ namespace Jelly.Tests
             {
                 Console.SetOut(writer);
 
-                new Interpreter().Interpret(new Linker().LinkAST(new Parser().Parse(new Lexer().Lex(text, "test"))));
+                var tokens = new Lexer().Lex(text, "test");
+                var ast = new Parser().Parse(tokens);
+                var linkedAST = new Linker().LinkAST(ast);
+                Verifier.Verify(linkedAST);
+                var optimisedAST = new Optimiser().Optimise(linkedAST);
+                new Interpreter().Interpret(optimisedAST);
 
                 Console.OpenStandardOutput();
                 Assert.AreEqual(expected, writer.ToString());
