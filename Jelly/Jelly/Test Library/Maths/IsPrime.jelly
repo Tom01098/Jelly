@@ -1,0 +1,15 @@
+﻿@ Is this number prime?
+IsPrime<x>
+	sqrt = Sqrt<x>
+	n = 2
+
+	loop n <= sqrt
+		if (x % n) == 0
+			~0
+		end
+
+		n => n + 1
+	end
+
+	~1
+end

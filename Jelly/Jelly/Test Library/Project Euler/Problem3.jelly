@@ -1,0 +1,16 @@
+﻿Problem3<>
+	n = 600851475143
+	x = 3
+
+	loop x << n
+		if IsPrime<x>
+			loop (n % x) == 0
+				n => n / x
+			end
+		end
+
+		x => x + 2
+	end
+
+	WriteLine<n>
+end
