@@ -1,7 +1,6 @@
-﻿using Jelly.Core.Parsing.AST;
-using System;
+﻿using Jelly.Core.Linking;
+using Jelly.Core.Parsing.AST;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Jelly.Core.Optimising
 {
@@ -11,32 +10,50 @@ namespace Jelly.Core.Optimising
     /// </summary>
     public class Optimiser
     {
-        private Dictionary<string, IFunction> functions = new Dictionary<string, IFunction>();
-        private List<IFunction> usedFunctions = new List<IFunction>();
+        private Dictionary<string, OptimisedFunction> functions = new Dictionary<string, OptimisedFunction>();
 
         public List<IFunction> Optimise(List<IFunction> ast)
         {
             // Setup dictionary of available functions
             foreach (var func in ast)
             {
-                functions.Add(func.Name, func);
+                functions.Add(func.Name, 
+                              new OptimisedFunction(func, func is InternalFunction));
             }
 
             // Optimise the Main function, this will also determine all of the functions
             // used throughout the program
-            OptimiseFunction(functions["Main"]);
+            functions["Main"].TimesUsed++;
+            functions["Main"].HasStartedOptimisation = true;
+            OptimiseFunction((FunctionNode)functions["Main"].Function);
 
-            // TODO Remove this, change for usedFunctions return
+            // TODO Replace
             return ast;
         }
 
-        private IFunction OptimiseFunction(IFunction function)
+        private FunctionNode OptimiseFunction(FunctionNode function)
         {
-            return function;
+            // Initialise parameter values to null as, without calling
+            // context, the values are unknown.
+            var variables = new Dictionary<string, double?>();
+
+            foreach (var param in function.Parameters)
+            {
+                variables.Add(param.Identifier, null);
+            }
+
+            // Optimise the constructs within the function
+            var constructs = OptimiseConstructs(function.Constructs, variables);
+
+            // Put the function back together and return it
+            return new FunctionNode(function.Identifier, 
+                                    function.Parameters, 
+                                    constructs, 
+                                    function.Position);
         }
 
-        private List<IConstructNode> OptimiseConstructs(List<IConstructNode> constructs,
-                                                        Dictionary<string, double?> variables)
+        private IConstructNode[] OptimiseConstructs(IConstructNode[] constructs,
+                                                    Dictionary<string, double?> variables)
         {
             return constructs;
         }
