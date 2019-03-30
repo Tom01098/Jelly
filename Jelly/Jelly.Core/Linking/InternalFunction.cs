@@ -8,15 +8,18 @@ namespace Jelly.Core.Linking
     public class InternalFunction : IFunction
     {
         public string Name { get; }
+        public bool Deterministic { get; }
         public int ParameterCount { get; }
 
         private MethodInfo info;
 
-        public InternalFunction(MethodInfo info)
+        public InternalFunction(MethodInfo info, bool deterministic)
         {
-            this.info = info;
             Name = info.Name;
+            Deterministic = deterministic;
             ParameterCount = info.GetParameters().Length;
+
+            this.info = info;
         }
 
         public double Execute(List<double> arguments)

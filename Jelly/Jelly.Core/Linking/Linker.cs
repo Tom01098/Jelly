@@ -61,7 +61,7 @@ namespace Jelly.Core.Linking
                                 }
                             }
 
-                            functions.Add(new InternalFunction(method));
+                            functions.Add(new InternalFunction(method, attribute.Deterministic));
                         }
                     }
                 }

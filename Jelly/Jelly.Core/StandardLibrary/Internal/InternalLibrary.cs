@@ -34,25 +34,25 @@ namespace Jelly.Core.StandardLibrary.Internal
         #endregion
 
         #region Number Utility
-        [InternalFunction]
+        [InternalFunction(true)]
         public static double Pow(double a, double b)
         {
             return Math.Pow(a, b);
         }
 
-        [InternalFunction]
+        [InternalFunction(true)]
         public static double IsNaN(double x)
         {
             return double.IsNaN(x) ? 1 : 0;
         }
 
-        [InternalFunction]
+        [InternalFunction(true)]
         public static double Ceil(double x)
         {
             return Math.Ceiling(x);
         }
 
-        [InternalFunction]
+        [InternalFunction(true)]
         public static double Floor(double x)
         {
             return Math.Floor(x);
