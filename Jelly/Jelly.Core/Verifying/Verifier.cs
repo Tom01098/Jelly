@@ -50,25 +50,7 @@ namespace Jelly.Core.Verifying
 
             foreach (var function in ast)
             {
-                FunctionInfo info;
-
-                if (function is InternalFunction func)
-                {
-                    info = new FunctionInfo(func.Name, 
-                                            func.ParameterCount,
-                                            new Position("Internal", 0, 0));
-                }
-                else if (function is FunctionNode node)
-                {
-                    info = new FunctionInfo(node.Identifier.Identifier,
-                                            node.Parameters.Length,
-                                            node.Position);
-                }
-                else
-                {
-                    AddDiagnostic($"Unrecognised function type {function}", null);
-                    continue;
-                }
+                var info = new FunctionInfo(function.Name, function.ParameterCount, function.Position);
 
                 if (functionInfos.ContainsKey(info.Name))
                 {

@@ -1,5 +1,6 @@
 ﻿using Jelly.Core.Interpreting;
 using Jelly.Core.Linking;
+using Jelly.Core.Optimising;
 using Jelly.Core.Parsing;
 using Jelly.Core.Parsing.AST;
 using Jelly.Core.Utility;
@@ -39,7 +40,9 @@ namespace Jelly.Core
 
             WriteDiagnostic($"Found {ast.Count} user functions.", false);
 
-            return new Linker().LinkAST(ast);
+            var linkedAST = new Linker().LinkAST(ast);
+
+            return new Optimiser().Optimise(linkedAST);
         }
 
         public static void Verify(List<IFunction> ast)
