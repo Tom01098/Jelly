@@ -33,11 +33,11 @@ end";
                         "Main",
                         Position(2, 1)
                     ),
-                    new List<IdentifierNode>
+                    new IdentifierNode[]
                     {
 
                     },
-                    new List<IConstructNode>
+                    new IConstructNode[]
                     {
 
                     },
@@ -71,11 +71,11 @@ end";
                         "Main",
                         Position(2, 1)
                     ),
-                    new List<IdentifierNode>
+                    new IdentifierNode[]
                     {
 
                     },
-                    new List<IConstructNode>
+                    new IConstructNode[]
                     {
 
                     },
@@ -88,11 +88,11 @@ end";
                         "Test",
                         Position(6, 1)
                     ),
-                    new List<IdentifierNode>
+                    new IdentifierNode[]
                     {
 
                     },
-                    new List<IConstructNode>
+                    new IConstructNode[]
                     {
 
                     },
@@ -122,11 +122,11 @@ end";
                         "Main",
                         Position(2, 1)
                     ),
-                    new List<IdentifierNode>
+                    new IdentifierNode[]
                     {
 
                     },
-                    new List<IConstructNode>
+                    new IConstructNode[]
                     {
                         new ReturnNode
                         (
@@ -160,11 +160,11 @@ end";
                         "Main",
                         Position(2, 1)
                     ),
-                    new List<IdentifierNode>
+                    new IdentifierNode[]
                     {
 
                     },
-                    new List<IConstructNode>
+                    new IConstructNode[]
                     {
                         new ReturnNode
                         (
@@ -202,11 +202,11 @@ end";
                         "Main",
                         Position(2, 1)
                     ),
-                    new List<IdentifierNode>
+                    new IdentifierNode[]
                     {
 
                     },
-                    new List<IConstructNode>
+                    new IConstructNode[]
                     {
                         new ReturnNode
                         (
@@ -248,7 +248,7 @@ end";
                         "Main",
                         Position(2, 1)
                     ),
-                    new List<IdentifierNode>
+                    new IdentifierNode[]
                     {
                         new IdentifierNode
                         (
@@ -256,7 +256,7 @@ end";
                             Position(2, 6)
                         )
                     },
-                    new List<IConstructNode>
+                    new IConstructNode[]
                     {
 
                     },
@@ -286,7 +286,7 @@ end";
                         "Main",
                         Position(2, 1)
                     ),
-                    new List<IdentifierNode>
+                    new IdentifierNode[]
                     {
                         new IdentifierNode
                         (
@@ -304,7 +304,7 @@ end";
                             Position(2, 16)
                         )
                     },
-                    new List<IConstructNode>
+                    new IConstructNode[]
                     {
 
                     },
@@ -334,11 +334,11 @@ end";
                         "Main",
                         Position(2, 1)
                     ),
-                    new List<IdentifierNode>
+                    new IdentifierNode[]
                     {
 
                     },
-                    new List<IConstructNode>
+                    new IConstructNode[]
                     {
                         new CallNode
                         (
@@ -380,11 +380,11 @@ end";
                         "Main",
                         Position(2, 1)
                     ),
-                    new List<IdentifierNode>
+                    new IdentifierNode[]
                     {
 
                     },
-                    new List<IConstructNode>
+                    new IConstructNode[]
                     {
                         new CallNode
                         (
@@ -435,11 +435,11 @@ end";
                         "Main",
                         Position(2, 1)
                     ),
-                    new List<IdentifierNode>
+                    new IdentifierNode[]
                     {
 
                     },
-                    new List<IConstructNode>
+                    new IConstructNode[]
                     {
                         new AssignmentNode
                         (
@@ -486,11 +486,11 @@ end";
                         "Main",
                         Position(2, 1)
                     ),
-                    new List<IdentifierNode>
+                    new IdentifierNode[]
                     {
 
                     },
-                    new List<IConstructNode>
+                    new IConstructNode[]
                     {
                         new MutationNode
                         (
@@ -537,11 +537,11 @@ end";
                         "Main",
                         Position(2, 1)
                     ),
-                    new List<IdentifierNode>
+                    new IdentifierNode[]
                     {
 
                     },
-                    new List<IConstructNode>
+                    new IConstructNode[]
                     {
                         new AssignmentNode
                         (
@@ -594,11 +594,11 @@ end";
                         "Main",
                         Position(2, 1)
                     ),
-                    new List<IdentifierNode>
+                    new IdentifierNode[]
                     {
 
                     },
-                    new List<IConstructNode>
+                    new IConstructNode[]
                     {
                         new AssignmentNode
                         (
@@ -651,11 +651,11 @@ end";
                         "Main",
                         Position(2, 1)
                     ),
-                    new List<IdentifierNode>
+                    new IdentifierNode[]
                     {
 
                     },
-                    new List<IConstructNode>
+                    new IConstructNode[]
                     {
                         new AssignmentNode
                         (
@@ -706,11 +706,11 @@ end";
                         "Main",
                         Position(2, 1)
                     ),
-                    new List<IdentifierNode>
+                    new IdentifierNode[]
                     {
 
                     },
-                    new List<IConstructNode>
+                    new IConstructNode[]
                     {
                         new AssignmentNode
                         (
@@ -772,15 +772,15 @@ end";
                         "Main",
                         Position(2, 1)
                     ),
-                    new List<IdentifierNode>
+                    new IdentifierNode[]
                     {
 
                     },
-                    new List<IConstructNode>
+                    new IConstructNode[]
                     {
                         new IfBlockNode
                         (
-                            new List<ConditionalBlockNode>
+                            new ConditionalBlockNode[]
                             {
                                 new ConditionalBlockNode
                                 (
@@ -789,7 +789,7 @@ end";
                                         1,
                                         Position(3, 8)
                                     ),
-                                    new List<IConstructNode>
+                                    new IConstructNode[]
                                     {
 
                                     },
@@ -830,15 +830,15 @@ end";
                         "Main",
                         Position(2, 1)
                     ),
-                    new List<IdentifierNode>
+                    new IdentifierNode[]
                     {
 
                     },
-                    new List<IConstructNode>
+                    new IConstructNode[]
                     {
                         new IfBlockNode
                         (
-                            new List<ConditionalBlockNode>
+                            new ConditionalBlockNode[]
                             {
                                 new ConditionalBlockNode
                                 (
@@ -847,7 +847,7 @@ end";
                                         1,
                                         Position(3, 8)
                                     ),
-                                    new List<IConstructNode>
+                                    new IConstructNode[]
                                     {
 
                                     },
@@ -856,7 +856,7 @@ end";
                                 new ConditionalBlockNode
                                 (
                                     null,
-                                    new List<IConstructNode>
+                                    new IConstructNode[]
                                     {
 
                                     },
@@ -894,11 +894,11 @@ end";
                         "Main",
                         Position(2, 1)
                     ),
-                    new List<IdentifierNode>
+                    new IdentifierNode[]
                     {
 
                     },
-                    new List<IConstructNode>
+                    new IConstructNode[]
                     {
                         new LoopBlockNode
                         (
@@ -909,7 +909,7 @@ end";
                                     1,
                                     Position(3, 10)
                                 ),
-                                new List<IConstructNode>
+                                new IConstructNode[]
                                 {
 
                                 },
@@ -951,15 +951,15 @@ end";
                         "Main",
                         Position(2, 1)
                     ),
-                    new List<IdentifierNode>
+                    new IdentifierNode[]
                     {
 
                     },
-                    new List<IConstructNode>
+                    new IConstructNode[]
                     {
                         new IfBlockNode
                         (
-                            new List<ConditionalBlockNode>
+                            new ConditionalBlockNode[]
                             {
                                 new ConditionalBlockNode
                                 (
@@ -978,7 +978,7 @@ end";
                                         ),
                                         Position(3, 8)
                                     ),
-                                    new List<IConstructNode>
+                                    new IConstructNode[]
                                     {
                                         new ReturnNode
                                         (
@@ -1029,7 +1029,7 @@ end";
                                         ),
                                         Position(6, 10)
                                     ),
-                                    new List<IConstructNode>
+                                    new IConstructNode[]
                                     {
                                         new ReturnNode
                                         (
@@ -1069,11 +1069,11 @@ end";
                         "Main",
                         Position(2, 1)
                     ),
-                    new List<IdentifierNode>
+                    new IdentifierNode[]
                     {
 
                     },
-                    new List<IConstructNode>
+                    new IConstructNode[]
                     {
                         new ReturnNode
                         (
@@ -1131,11 +1131,11 @@ end";
                         "Main",
                         Position(2, 1)
                     ),
-                    new List<IdentifierNode>
+                    new IdentifierNode[]
                     {
 
                     },
-                    new List<IConstructNode>
+                    new IConstructNode[]
                     {
                         new CallNode
                         (

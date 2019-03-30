@@ -18,11 +18,11 @@ namespace Jelly.Tests
                 new FunctionNode
                 (
                     new IdentifierNode("Main", Position(1, 1)),
-                    new List<IdentifierNode>
+                    new IdentifierNode[]
                     {
 
                     },
-                    new List<IConstructNode>
+                    new IConstructNode[]
                     {
                         new ReturnNode
                         (
@@ -49,15 +49,15 @@ namespace Jelly.Tests
                         "Main",
                         Position(2, 1)
                     ),
-                    new List<IdentifierNode>
+                    new IdentifierNode[]
                     {
 
                     },
-                    new List<IConstructNode>
+                    new IConstructNode[]
                     {
                         new IfBlockNode
                         (
-                            new List<ConditionalBlockNode>
+                            new ConditionalBlockNode[]
                             {
                                 new ConditionalBlockNode
                                 (
@@ -76,7 +76,7 @@ namespace Jelly.Tests
                                         ),
                                         Position(3, 8)
                                     ),
-                                    new List<IConstructNode>
+                                    new IConstructNode[]
                                     {
                                         new ReturnNode
                                         (
@@ -127,7 +127,7 @@ namespace Jelly.Tests
                                         ),
                                         Position(6, 15)
                                     ),
-                                    new List<IConstructNode>
+                                    new IConstructNode[]
                                     {
                                         new ReturnNode
                                         (
@@ -159,11 +159,11 @@ namespace Jelly.Tests
                 new FunctionNode
                 (
                     new IdentifierNode("Maix", Position(1, 1)),
-                    new List<IdentifierNode>
+                    new IdentifierNode[]
                     {
 
                     },
-                    new List<IConstructNode>
+                    new IConstructNode[]
                     {
                         new ReturnNode
                         (
@@ -180,11 +180,11 @@ namespace Jelly.Tests
                 new FunctionNode
                 (
                     new IdentifierNode("Main", Position(1, 1)),
-                    new List<IdentifierNode>
+                    new IdentifierNode[]
                     {
 
                     },
-                    new List<IConstructNode>
+                    new IConstructNode[]
                     {
                         new ReturnNode
                         (
@@ -216,11 +216,11 @@ namespace Jelly.Tests
                         "Main",
                         Position(2, 1)
                     ),
-                    new List<IdentifierNode>
+                    new IdentifierNode[]
                     {
 
                     },
-                    new List<IConstructNode>
+                    new IConstructNode[]
                     {
                         new ReturnNode
                         (
@@ -265,11 +265,11 @@ namespace Jelly.Tests
                         "Main",
                         Position(2, 1)
                     ),
-                    new List<IdentifierNode>
+                    new IdentifierNode[]
                     {
 
                     },
-                    new List<IConstructNode>
+                    new IConstructNode[]
                     {
                         new ReturnNode
                         (

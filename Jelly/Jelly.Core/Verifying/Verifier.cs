@@ -61,7 +61,7 @@ namespace Jelly.Core.Verifying
                 else if (function is FunctionNode node)
                 {
                     info = new FunctionInfo(node.Identifier.Identifier,
-                                            node.Parameters.Count,
+                                            node.Parameters.Length,
                                             node.Position);
                 }
                 else
@@ -114,7 +114,7 @@ namespace Jelly.Core.Verifying
         }
 
         // Verify that constructs are correctly used
-        private static void VerifyConstructs(List<IConstructNode> constructs, 
+        private static void VerifyConstructs(IConstructNode[] constructs, 
                                              List<string> definedVariables)
         {
             foreach (var construct in constructs)

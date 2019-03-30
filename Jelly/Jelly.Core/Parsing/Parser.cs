@@ -172,7 +172,7 @@ namespace Jelly.Core.Parsing
         }
 
         // constructs = {construct}
-        private List<IConstructNode> Constructs()
+        private IConstructNode[] Constructs()
         {
             var constructs = new List<IConstructNode>();
 
@@ -181,7 +181,7 @@ namespace Jelly.Core.Parsing
                 constructs.Add(Construct());
             }
 
-            return constructs;
+            return constructs.ToArray();
         }
 
         // end = 'end' EOL
@@ -274,7 +274,7 @@ namespace Jelly.Core.Parsing
                 blocks.Add(ConditionalBlock(true));
             }
 
-            return new IfBlockNode(blocks, position);
+            return new IfBlockNode(blocks.ToArray(), position);
         }
 
         // loop_block = 'loop' conditional_block;
@@ -349,7 +349,7 @@ namespace Jelly.Core.Parsing
         }
 
         // parameters = identifier {',' identifier};
-        private List<IdentifierNode> Parameters()
+        private IdentifierNode[] Parameters()
         {
             var parameters = new List<IdentifierNode>();
 
@@ -364,7 +364,7 @@ namespace Jelly.Core.Parsing
                 }
             }
 
-            return parameters;
+            return parameters.ToArray();
         }
 
         // return = '~' [value];

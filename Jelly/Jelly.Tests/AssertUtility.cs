@@ -112,12 +112,12 @@ namespace Jelly.Tests
 
                     AreEqual((Node)e.Condition, (Node)a.Condition);
 
-                    if (e.Constructs.Count != a.Constructs.Count)
+                    if (e.Constructs.Length != a.Constructs.Length)
                     {
                         throw new AssertFailedException("Different number of constructs");
                     }
 
-                    for (int i = 0; i < e.Constructs.Count; i++)
+                    for (int i = 0; i < e.Constructs.Length; i++)
                     {
                         AreEqual((Node)e.Constructs[i], (Node)a.Constructs[i]);
                     }
@@ -130,22 +130,22 @@ namespace Jelly.Tests
 
                     AreEqual(e.Identifier, a.Identifier);
 
-                    if (e.Parameters.Count != a.Parameters.Count)
+                    if (e.Parameters.Length != a.Parameters.Length)
                     {
                         throw new AssertFailedException("Different number of parameters");
                     }
 
-                    for (int i = 0; i < e.Parameters.Count; i++)
+                    for (int i = 0; i < e.Parameters.Length; i++)
                     {
                         AreEqual(e.Parameters[i], a.Parameters[i]);
                     }
 
-                    if (e.Constructs.Count != a.Constructs.Count)
+                    if (e.Constructs.Length != a.Constructs.Length)
                     {
                         throw new AssertFailedException("Different number of constructs");
                     }
 
-                    for (int i = 0; i < e.Constructs.Count; i++)
+                    for (int i = 0; i < e.Constructs.Length; i++)
                     {
                         AreEqual((Node)e.Constructs[i], (Node)a.Constructs[i]);
                     }
@@ -164,12 +164,12 @@ namespace Jelly.Tests
                     var e = (IfBlockNode)expected;
                     var a = (IfBlockNode)actual;
 
-                    if (e.Blocks.Count != a.Blocks.Count)
+                    if (e.Blocks.Length != a.Blocks.Length)
                     {
                         throw new AssertFailedException("Different number of blocks");
                     }
 
-                    for (int i = 0; i < e.Blocks.Count; i++)
+                    for (int i = 0; i < e.Blocks.Length; i++)
                     {
                         AreEqual(e.Blocks[i], a.Blocks[i]);
                     }
