@@ -24,6 +24,7 @@ namespace Jelly
 
                 var ast = Engine.GetAST(args[0]);
                 Engine.Verify(ast);
+                ast = Engine.Optimise(ast);
 
                 do
                 {

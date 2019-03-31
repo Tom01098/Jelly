@@ -40,14 +40,17 @@ namespace Jelly.Core
 
             WriteDiagnostic($"Found {ast.Count} user functions.", false);
 
-            var linkedAST = new Linker().LinkAST(ast);
-
-            return new Optimiser().Optimise(linkedAST);
+            return new Linker().LinkAST(ast);
         }
 
         public static void Verify(List<IFunction> ast)
         {
             Verifier.Verify(ast);
+        }
+
+        public static List<IFunction> Optimise(List<IFunction> ast)
+        {
+            return new Optimiser().Optimise(ast);
         }
 
         public static void Execute(List<IFunction> ast)
