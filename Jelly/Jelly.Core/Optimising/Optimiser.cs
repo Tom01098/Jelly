@@ -27,11 +27,23 @@ namespace Jelly.Core.Optimising
             functions["Main"].HasStartedOptimisation = true;
             OptimiseFunction((FunctionNode)functions["Main"].Function);
 
-            // TODO Replace
-            return ast;
+            // Return the new ast
+            // Strip unused functions
+            var newAST = new List<IFunction>();
+
+            foreach (var func in functions.Values)
+            {
+                // TODO Change this to 0 when function stripping is implemented
+                if (func.TimesUsed > -1)
+                {
+                    newAST.Add(func.Function);
+                }
+            }
+
+            return newAST;
         }
 
-        private FunctionNode OptimiseFunction(FunctionNode function)
+        private void OptimiseFunction(FunctionNode function)
         {
             // Initialise parameter values to null as, without calling
             // context, the values are unknown.
@@ -45,17 +57,36 @@ namespace Jelly.Core.Optimising
             // Optimise the constructs within the function
             var constructs = OptimiseConstructs(function.Constructs, variables);
 
-            // Put the function back together and return it
-            return new FunctionNode(function.Identifier, 
-                                    function.Parameters, 
-                                    constructs, 
-                                    function.Position);
+            // Put the function back together
+            functions[function.Name].Function = new FunctionNode(function.Identifier,
+                                                                 function.Parameters,
+                                                                 constructs,
+                                                                 function.Position);
         }
 
+        // Optimise a construct by removing dead code after a return statement
         private IConstructNode[] OptimiseConstructs(IConstructNode[] constructs,
                                                     Dictionary<string, double?> variables)
         {
-            return constructs;
+            var newConstructs = new List<IConstructNode>();
+
+            foreach (var construct in constructs)
+            {
+                newConstructs.Add(OptimiseConstruct(construct, variables));
+
+                if (construct is ReturnNode)
+                {
+                    break;
+                }
+            }
+
+            return newConstructs.ToArray();
+        }
+
+        private IConstructNode OptimiseConstruct(IConstructNode construct,
+                                                 Dictionary<string, double?> variables)
+        {
+            return construct;
         }
 
         private IStatementNode OptimiseStatement(IStatementNode statement,

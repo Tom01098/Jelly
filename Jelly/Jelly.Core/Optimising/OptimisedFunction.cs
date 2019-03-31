@@ -4,9 +4,9 @@ namespace Jelly.Core.Optimising
 {
     public class OptimisedFunction
     {
-        public IFunction Function { get; }
         public bool IsInternal { get; }
 
+        public IFunction Function { get; set; }
         public int TimesUsed { get; set; }
         public bool HasStartedOptimisation { get; set; }
 

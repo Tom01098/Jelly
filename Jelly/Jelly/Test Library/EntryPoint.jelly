@@ -1,3 +1,4 @@
 ﻿Main<>
+	~4
 	WriteLine< Pow<6, 5> >
 end
