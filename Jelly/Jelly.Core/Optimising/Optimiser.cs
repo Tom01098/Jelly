@@ -1,5 +1,4 @@
-﻿using Jelly.Core.Linking;
-using Jelly.Core.Parsing.AST;
+﻿using Jelly.Core.Parsing.AST;
 using System.Collections.Generic;
 
 namespace Jelly.Core.Optimising
@@ -17,15 +16,14 @@ namespace Jelly.Core.Optimising
             // Setup dictionary of available functions
             foreach (var func in ast)
             {
-                functions.Add(func.Name, 
-                              new OptimisedFunction(func, func is InternalFunction));
+                functions.Add(func.Name, new OptimisedFunction(func));
             }
 
             // Optimise the Main function, this will also determine all of the functions
             // used throughout the program
             functions["Main"].TimesUsed++;
             functions["Main"].HasStartedOptimisation = true;
-            OptimiseFunction((FunctionNode)functions["Main"].Function);
+            OptimiseFunction("Main");
 
             // Return the new ast
             // Strip unused functions
@@ -43,8 +41,14 @@ namespace Jelly.Core.Optimising
             return newAST;
         }
 
-        private void OptimiseFunction(FunctionNode function)
+        private void OptimiseFunction(string name)
         {
+            var functionWrapper = functions[name];
+
+            if (functionWrapper.HasStartedOptimisation || functionWrapper.IsInternal) return;
+
+            var function = (FunctionNode)functionWrapper.Function;
+
             // Initialise parameter values to null as, without calling
             // context, the values are unknown.
             var variables = new Dictionary<string, double?>();

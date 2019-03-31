@@ -1,4 +1,5 @@
-﻿using Jelly.Core.Parsing.AST;
+﻿using Jelly.Core.Linking;
+using Jelly.Core.Parsing.AST;
 
 namespace Jelly.Core.Optimising
 {
@@ -10,7 +11,7 @@ namespace Jelly.Core.Optimising
         public int TimesUsed { get; set; }
         public bool HasStartedOptimisation { get; set; }
 
-        public OptimisedFunction(IFunction function, bool isInternal)
-            => (Function, IsInternal) = (function, isInternal);
+        public OptimisedFunction(IFunction function)
+            => (Function, IsInternal) = (function, function is InternalFunction);
     }
 }
