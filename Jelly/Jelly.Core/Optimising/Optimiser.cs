@@ -1,4 +1,5 @@
 ﻿using Jelly.Core.Parsing.AST;
+using System;
 using System.Collections.Generic;
 
 namespace Jelly.Core.Optimising
@@ -76,7 +77,12 @@ namespace Jelly.Core.Optimising
 
             foreach (var construct in constructs)
             {
-                newConstructs.Add(OptimiseConstruct(construct, variables));
+                var newConstruct = OptimiseConstruct(construct, variables);
+
+                if (!(newConstruct is null))
+                {
+                    newConstructs.Add(newConstruct);
+                }
 
                 if (construct is ReturnNode)
                 {
@@ -90,13 +96,35 @@ namespace Jelly.Core.Optimising
         private IConstructNode OptimiseConstruct(IConstructNode construct,
                                                  Dictionary<string, double?> variables)
         {
-            return construct;
+            switch (construct)
+            {
+                case IfBlockNode ifBlock:
+                    return ifBlock;
+                case LoopBlockNode loopBlock:
+                    return loopBlock;
+                case IStatementNode statement:
+                    return OptimiseStatement(statement, variables);
+            }
+
+            throw new Exception();
         }
 
         private IStatementNode OptimiseStatement(IStatementNode statement,
                                                  Dictionary<string, double?> variables)
         {
-            return statement;
+            switch (statement)
+            {
+                case AssignmentNode assignment:
+                    return assignment;
+                case MutationNode mutation:
+                    return mutation;
+                case CallNode call:
+                    return call;
+                case ReturnNode @return:
+                    return @return;
+            }
+
+            throw new Exception();
         }
 
         private ITermNode OptimiseTerm(ITermNode term,
