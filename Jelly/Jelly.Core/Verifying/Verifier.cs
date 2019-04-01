@@ -202,7 +202,7 @@ namespace Jelly.Core.Verifying
                 AddDiagnostic($"{call.Identifier.Identifier} is not defined",
                               call.Position);
             }
-            else if (call.Arguments.Count != functionInfos[call.Identifier.Identifier].ParameterCount)
+            else if (call.Arguments.Length != functionInfos[call.Identifier.Identifier].ParameterCount)
             {
                 AddDiagnostic($"Expected {functionInfos[call.Identifier.Identifier].ParameterCount} arguments",
                               call.Position);

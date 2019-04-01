@@ -93,6 +93,7 @@ namespace Jelly.Core.Optimising
             return newConstructs.ToArray();
         }
 
+        // Call the relevant method for this construct
         private IConstructNode OptimiseConstruct(IConstructNode construct,
                                                  Dictionary<string, double?> variables)
         {
@@ -109,6 +110,7 @@ namespace Jelly.Core.Optimising
             throw new Exception();
         }
 
+        // Call the relevant method for this statement
         private IStatementNode OptimiseStatement(IStatementNode statement,
                                                  Dictionary<string, double?> variables)
         {
@@ -119,14 +121,16 @@ namespace Jelly.Core.Optimising
                 case MutationNode mutation:
                     return OptimiseMutation(mutation, variables);
                 case CallNode call:
-                    return call;
+                    return OptimiseCall(call, variables);
                 case ReturnNode @return:
-                    return @return;
+                    return OptimiseReturn(@return, variables);
             }
 
             throw new Exception();
         }
 
+        // Optimise an assignment by optimising the term, if it is a constant
+        // then the assignment can be removed completely
         private AssignmentNode OptimiseAssignment(AssignmentNode assignment,
                                                   Dictionary<string, double?> variables)
         {
@@ -142,6 +146,8 @@ namespace Jelly.Core.Optimising
             return new AssignmentNode(assignment.Identifier, value, assignment.Position);
         }
 
+        // Optimise a mutation by optimising the term, if it is a constant
+        // then the mutation can be removed completely
         private MutationNode OptimiseMutation(MutationNode assignment,
                                               Dictionary<string, double?> variables)
         {
@@ -157,6 +163,29 @@ namespace Jelly.Core.Optimising
             return new MutationNode(assignment.Identifier, value, assignment.Position);
         }
 
+        // Optimise a call by optimising the arguments and potentially even
+        // inlining the function
+        private CallNode OptimiseCall(CallNode call,
+                                      Dictionary<string, double?> variables)
+        {
+            var args = new ITermNode[call.Arguments.Length];
+
+            for (int i = 0; i < call.Arguments.Length; i++)
+            {
+                args[i] = OptimiseTerm(call.Arguments[i], variables);
+            }
+
+            return new CallNode(call.Identifier, args, call.Position);
+        }
+
+        // Optimise the value of a return statement
+        private ReturnNode OptimiseReturn(ReturnNode @return,
+                                          Dictionary<string, double?> variables)
+        {
+            return new ReturnNode(OptimiseTerm(@return.Value, variables), @return.Position);
+        }
+
+        // Recursively use constant folding techniques to simplify a term
         private ITermNode OptimiseTerm(ITermNode term,
                                        Dictionary<string, double?> variables)
         {

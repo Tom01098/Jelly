@@ -86,7 +86,7 @@ namespace Jelly.Core.Parsing
         }
 
         // arguments = value {',' value};
-        private List<ITermNode> Arguments()
+        private ITermNode[] Arguments()
         {
             var arguments = new List<ITermNode>();
 
@@ -101,7 +101,7 @@ namespace Jelly.Core.Parsing
                 }
             }
 
-            return arguments;
+            return arguments.ToArray();
         }
 
         // call = identifier '<' [arguments] '>';

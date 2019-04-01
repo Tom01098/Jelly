@@ -94,12 +94,12 @@ namespace Jelly.Tests
 
                     AreEqual(e.Identifier, a.Identifier);
 
-                    if (e.Arguments.Count != a.Arguments.Count)
+                    if (e.Arguments.Length != a.Arguments.Length)
                     {
                         throw new AssertFailedException("Different number of arguments");
                     }
 
-                    for (int i = 0; i < e.Arguments.Count; i++)
+                    for (int i = 0; i < e.Arguments.Length; i++)
                     {
                         AreEqual((Node)e.Arguments[i], (Node)a.Arguments[i]);
                     }

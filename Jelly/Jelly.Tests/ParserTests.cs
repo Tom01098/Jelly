@@ -347,7 +347,7 @@ end";
                                 "Test",
                                 Position(3, 5)
                             ),
-                            new List<ITermNode>
+                            new ITermNode[]
                             {
 
                             },
@@ -393,7 +393,7 @@ end";
                                 "Test",
                                 Position(3, 5)
                             ),
-                            new List<ITermNode>
+                            new ITermNode[]
                             {
                                 new IdentifierNode
                                 (
@@ -671,7 +671,7 @@ end";
                                     "Test",
                                     Position(3, 14)
                                 ),
-                                new List<ITermNode>
+                                new ITermNode[]
                                 {
 
                                 },
@@ -726,7 +726,7 @@ end";
                                     "Test",
                                     Position(3, 14)
                                 ),
-                                new List<ITermNode>
+                                new ITermNode[]
                                 {
                                     new NumberNode
                                     (
@@ -1144,7 +1144,7 @@ end";
                                 "Call",
                                 Position(3, 5)
                             ),
-                            new List<ITermNode>
+                            new ITermNode[]
                             {
                                 new ValueNode
                                 (
