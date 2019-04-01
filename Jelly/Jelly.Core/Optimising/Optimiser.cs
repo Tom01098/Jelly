@@ -23,8 +23,7 @@ namespace Jelly.Core.Optimising
 
             // Optimise the Main function, this will also determine all of the functions
             // used throughout the program
-            functions["Main"].TimesUsed++;
-            functions["Main"].HasStartedOptimisation = true;
+            functions["Main"].IsReferenced = true;
             OptimiseFunction("Main");
 
             // Return the new ast
@@ -33,8 +32,7 @@ namespace Jelly.Core.Optimising
 
             foreach (var func in functions.Values)
             {
-                // TODO Change this to 0 when function stripping is implemented
-                if (func.TimesUsed > -1)
+                if (func.IsReferenced)
                 {
                     newAST.Add(func.Function);
                 }
@@ -47,8 +45,9 @@ namespace Jelly.Core.Optimising
         {
             var functionWrapper = functions[name];
 
-            if (!functionWrapper.HasStartedOptimisation || functionWrapper.IsInternal) return;
+            if (functionWrapper.HasStartedOptimisation || functionWrapper.IsInternal) return;
 
+            functionWrapper.HasStartedOptimisation = true;
             var function = (FunctionNode)functionWrapper.Function;
 
             // Initialise parameter values to null as, without calling
@@ -233,6 +232,9 @@ namespace Jelly.Core.Optimising
             {
                 args[i] = OptimiseTerm(call.Arguments[i], variables);
             }
+
+            OptimiseFunction(call.Identifier.Identifier);
+            functions[call.Identifier.Identifier].IsReferenced = true;
 
             return new CallNode(call.Identifier, args, call.Position);
         }

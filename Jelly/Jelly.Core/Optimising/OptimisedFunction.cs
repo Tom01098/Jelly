@@ -8,7 +8,7 @@ namespace Jelly.Core.Optimising
         public bool IsInternal { get; }
 
         public IFunction Function { get; set; }
-        public int TimesUsed { get; set; }
+        public bool IsReferenced { get; set; }
         public bool HasStartedOptimisation { get; set; }
 
         public OptimisedFunction(IFunction function)
