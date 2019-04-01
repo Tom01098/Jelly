@@ -46,7 +46,7 @@ namespace Jelly.Core.Optimising
         {
             var functionWrapper = functions[name];
 
-            if (functionWrapper.HasStartedOptimisation || functionWrapper.IsInternal) return;
+            if (!functionWrapper.HasStartedOptimisation || functionWrapper.IsInternal) return;
 
             var function = (FunctionNode)functionWrapper.Function;
 
@@ -115,9 +115,9 @@ namespace Jelly.Core.Optimising
             switch (statement)
             {
                 case AssignmentNode assignment:
-                    return assignment;
+                    return OptimiseAssignment(assignment, variables);
                 case MutationNode mutation:
-                    return mutation;
+                    return OptimiseMutation(mutation, variables);
                 case CallNode call:
                     return call;
                 case ReturnNode @return:
@@ -125,6 +125,36 @@ namespace Jelly.Core.Optimising
             }
 
             throw new Exception();
+        }
+
+        private AssignmentNode OptimiseAssignment(AssignmentNode assignment,
+                                                  Dictionary<string, double?> variables)
+        {
+            var value = OptimiseTerm(assignment.Value, variables);
+
+            if (value is NumberNode num)
+            {
+                variables[assignment.Identifier.Identifier] = num.Number;
+                return null;
+            }
+
+            variables[assignment.Identifier.Identifier] = null;
+            return new AssignmentNode(assignment.Identifier, value, assignment.Position);
+        }
+
+        private MutationNode OptimiseMutation(MutationNode assignment,
+                                              Dictionary<string, double?> variables)
+        {
+            var value = OptimiseTerm(assignment.Value, variables);
+
+            if (value is NumberNode num)
+            {
+                variables[assignment.Identifier.Identifier] = num.Number;
+                return null;
+            }
+
+            variables[assignment.Identifier.Identifier] = null;
+            return new MutationNode(assignment.Identifier, value, assignment.Position);
         }
 
         private ITermNode OptimiseTerm(ITermNode term,
