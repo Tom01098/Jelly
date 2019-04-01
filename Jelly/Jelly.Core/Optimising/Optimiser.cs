@@ -1,4 +1,5 @@
 ﻿using Jelly.Core.Parsing.AST;
+using Jelly.Core.Parsing.Tokens;
 using System;
 using System.Collections.Generic;
 
@@ -69,6 +70,7 @@ namespace Jelly.Core.Optimising
                                                                  function.Position);
         }
 
+        #region Constructs
         // Optimise a construct by removing dead code after a return statement
         private IConstructNode[] OptimiseConstructs(IConstructNode[] constructs,
                                                     Dictionary<string, double?> variables)
@@ -109,7 +111,9 @@ namespace Jelly.Core.Optimising
 
             throw new Exception();
         }
+        #endregion
 
+        #region Statements
         // Call the relevant method for this statement
         private IStatementNode OptimiseStatement(IStatementNode statement,
                                                  Dictionary<string, double?> variables)
@@ -128,7 +132,6 @@ namespace Jelly.Core.Optimising
 
             throw new Exception();
         }
-
         // Optimise an assignment by optimising the term, if it is a constant
         // then the assignment can be removed completely
         private AssignmentNode OptimiseAssignment(AssignmentNode assignment,
@@ -184,12 +187,133 @@ namespace Jelly.Core.Optimising
         {
             return new ReturnNode(OptimiseTerm(@return.Value, variables), @return.Position);
         }
+        #endregion
 
+        #region Terms
         // Recursively use constant folding techniques to simplify a term
         private ITermNode OptimiseTerm(ITermNode term,
                                        Dictionary<string, double?> variables)
         {
-            return term;
+            switch (term)
+            {
+                case ValueNode value:
+                    return OptimiseValue(value, variables);
+                case AbsoluteNode abs:
+                    return OptimiseAbs(abs, variables);
+                case NotNode not:
+                    return OptimiseNot(not, variables);
+                case NegativeNode negative:
+                    return OptimiseNegative(negative, variables);
+                case CallNode call:
+                    return OptimiseCall(call, variables);
+                case IdentifierNode identifier:
+                    return OptimiseIdentifier(identifier, variables);
+                case NumberNode number:
+                    return number;
+            }
+
+            throw new Exception();
         }
+        
+        // Optimise the LHS and RHS, if they're both numbers then the
+        // result of the operation can be determined
+        private ITermNode OptimiseValue(ValueNode value,
+                                        Dictionary<string, double?> variables)
+        {
+            var lhs = OptimiseTerm(value.LHS, variables);
+            var rhs = OptimiseTerm(value.RHS, variables);
+
+            if (lhs is NumberNode && rhs is NumberNode)
+            {
+                var lNum = ((NumberNode)lhs).Number;
+                var rNum = ((NumberNode)rhs).Number;
+
+                switch (value.Operator)
+                {
+                    case OperatorType.Add:
+                        return new NumberNode(lNum + rNum, value.Position);
+                    case OperatorType.Subtract:
+                        return new NumberNode(lNum - rNum, value.Position);
+                    case OperatorType.Multiply:
+                        return new NumberNode(lNum * rNum, value.Position);
+                    case OperatorType.Divide:
+                        return new NumberNode(lNum / rNum, value.Position);
+                    case OperatorType.Modulo:
+                        return new NumberNode(lNum % rNum, value.Position);
+                    case OperatorType.EqualTo:
+                        return new NumberNode(lNum == rNum ? 1 : 0, value.Position);
+                    case OperatorType.UnequalTo:
+                        return new NumberNode(lNum != rNum ? 1 : 0, value.Position);
+                    case OperatorType.LessThan:
+                        return new NumberNode(lNum < rNum ? 1 : 0, value.Position);
+                    case OperatorType.GreaterThan:
+                        return new NumberNode(lNum > rNum ? 1 : 0, value.Position);
+                    case OperatorType.LessThanOrEqualTo:
+                        return new NumberNode(lNum <= rNum ? 1 : 0, value.Position);
+                    case OperatorType.GreaterThanOrEqualTo:
+                        return new NumberNode(lNum >= rNum ? 1 : 0, value.Position);
+                }
+            }
+
+            return new ValueNode(lhs, value.Operator, rhs, value.Position);
+        }
+
+        // Apply the abs operation if the value is known
+        private ITermNode OptimiseAbs(AbsoluteNode abs,
+                                      Dictionary<string, double?> variables)
+        {
+            var value = OptimiseTerm(abs.Value, variables);
+
+            if (value is NumberNode num)
+            {
+                return new NumberNode(Math.Abs(num.Number), num.Position);
+            }
+
+            return new AbsoluteNode(value, abs.Position);
+        }
+
+        // Apply the not operation if the value is known
+        private ITermNode OptimiseNot(NotNode not,
+                                      Dictionary<string, double?> variables)
+        {
+            var value = OptimiseTerm(not.Term, variables);
+
+            if (value is NumberNode num)
+            {
+                return new NumberNode(num.Number == 0 ? 1 : 0, num.Position);
+            }
+
+            return new NotNode(value, not.Position);
+        }
+
+        // Apply the negative operation if the value is known
+        private ITermNode OptimiseNegative(NegativeNode negative,
+                                           Dictionary<string, double?> variables)
+        {
+            var value = OptimiseTerm(negative.Term, variables);
+
+            if (value is NumberNode num)
+            {
+                return new NumberNode(-num.Number, num.Position);
+            }
+
+            return new NegativeNode(value, negative.Position);
+        }
+
+        // If the value of the identifier is constant, switch it out
+        // for the constant number
+        private ITermNode OptimiseIdentifier(IdentifierNode identifier,
+                                             Dictionary<string, double?> variables)
+        {
+            var constant = variables[identifier.Identifier];
+
+            if (constant is null)
+            {
+                return identifier;
+            }
+
+            return new NumberNode(constant.Value, identifier.Position);
+        }
+        #endregion
     }
 }
