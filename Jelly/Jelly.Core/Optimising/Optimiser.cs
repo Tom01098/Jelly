@@ -116,7 +116,36 @@ namespace Jelly.Core.Optimising
         private IfBlockNode OptimiseIfBlock(IfBlockNode ifBlock,
                                             Dictionary<string, double?> variables)
         {
-            return ifBlock;
+            var blocks = new ConditionalBlockNode[ifBlock.Blocks.Length];
+
+            for (int i = 0; i < ifBlock.Blocks.Length; i++)
+            {
+                ITermNode condition = null;
+
+                if (!(ifBlock.Blocks[i].Condition is null))
+                {
+                    condition = OptimiseTerm(ifBlock.Blocks[i].Condition, variables);
+                }
+
+                // Enter a scope as the current variables are guaranteed to
+                // persist into it.
+                var scopedVariables = new Dictionary<string, double?>(variables);
+                var constructs = OptimiseConstructs(ifBlock.Blocks[i].Constructs, scopedVariables);
+
+                // Remove variables that have changed from this scope
+                foreach (var variable in scopedVariables)
+                {
+                    if (variables.ContainsKey(variable.Key)
+                        && variable.Value != variables[variable.Key])
+                    {
+                        variables[variable.Key] = null;
+                    }
+                }
+
+                blocks[i] = new ConditionalBlockNode(condition, constructs, ifBlock.Position);
+            }
+
+            return new IfBlockNode(blocks, ifBlock.Position);
         }
 
         // Optimise a loop block
@@ -212,6 +241,11 @@ namespace Jelly.Core.Optimising
         private ReturnNode OptimiseReturn(ReturnNode @return,
                                           Dictionary<string, double?> variables)
         {
+            if (@return.Value is null)
+            {
+                return @return;
+            }
+
             return new ReturnNode(OptimiseTerm(@return.Value, variables), @return.Position);
         }
         #endregion
