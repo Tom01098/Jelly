@@ -102,14 +102,37 @@ namespace Jelly.Core.Optimising
             switch (construct)
             {
                 case IfBlockNode ifBlock:
-                    return ifBlock;
+                    return OptimiseIfBlock(ifBlock, variables);
                 case LoopBlockNode loopBlock:
-                    return loopBlock;
+                    return OptimiseLoopBlock(loopBlock);
                 case IStatementNode statement:
                     return OptimiseStatement(statement, variables);
             }
 
             throw new Exception();
+        }
+
+        // Optimise all of the blocks in an if block
+        private IfBlockNode OptimiseIfBlock(IfBlockNode ifBlock,
+                                            Dictionary<string, double?> variables)
+        {
+            return ifBlock;
+        }
+
+        // Optimise a loop block
+        private LoopBlockNode OptimiseLoopBlock(LoopBlockNode loopBlock)
+        {
+            // The condition of a loop block cannot be optimised to be constant
+            // as it could be modified within the loop body.
+            // This is why this scope needs to be treated as completely separate
+            // during optimisation (without further context).
+
+            var constructs = OptimiseConstructs(loopBlock.Block.Constructs, new Dictionary<string, double?>());
+
+            return new LoopBlockNode(new ConditionalBlockNode(loopBlock.Block.Condition,
+                                                              constructs,
+                                                              loopBlock.Position), 
+                                                              loopBlock.Position);
         }
         #endregion
 
@@ -142,10 +165,12 @@ namespace Jelly.Core.Optimising
             if (value is NumberNode num)
             {
                 variables[assignment.Identifier.Identifier] = num.Number;
-                return null;
             }
-
-            variables[assignment.Identifier.Identifier] = null;
+            else
+            {
+                variables[assignment.Identifier.Identifier] = null;
+            }
+            
             return new AssignmentNode(assignment.Identifier, value, assignment.Position);
         }
 
@@ -159,10 +184,12 @@ namespace Jelly.Core.Optimising
             if (value is NumberNode num)
             {
                 variables[assignment.Identifier.Identifier] = num.Number;
-                return null;
+            }
+            else
+            {
+                variables[assignment.Identifier.Identifier] = null;
             }
 
-            variables[assignment.Identifier.Identifier] = null;
             return new MutationNode(assignment.Identifier, value, assignment.Position);
         }
 
@@ -305,14 +332,19 @@ namespace Jelly.Core.Optimising
         private ITermNode OptimiseIdentifier(IdentifierNode identifier,
                                              Dictionary<string, double?> variables)
         {
-            var constant = variables[identifier.Identifier];
-
-            if (constant is null)
+            if (variables.ContainsKey(identifier.Identifier))
             {
-                return identifier;
+                var constant = variables[identifier.Identifier];
+
+                if (constant is null)
+                {
+                    return identifier;
+                }
+
+                return new NumberNode(constant.Value, identifier.Position);
             }
 
-            return new NumberNode(constant.Value, identifier.Position);
+            return identifier;
         }
         #endregion
     }
