@@ -1,7 +1,9 @@
-﻿using Jelly.Core.Parsing.AST;
+﻿using Jelly.Core.Linking;
+using Jelly.Core.Parsing.AST;
 using Jelly.Core.Parsing.Tokens;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Jelly.Core.Optimising
 {
@@ -233,7 +235,38 @@ namespace Jelly.Core.Optimising
                 args[i] = OptimiseTerm(call.Arguments[i], variables);
             }
 
-            OptimiseFunction(call.Identifier.Identifier);
+            if (functions[call.Identifier.Identifier].IsInternal)
+            {
+                var func = (InternalFunction)functions[call.Identifier.Identifier].Function;
+
+                if (func.Deterministic)
+                {
+                    bool areAllArgumentsNumbers = true;
+
+                    foreach (var arg in args)
+                    {
+                        if (!(arg is NumberNode))
+                        {
+                            areAllArgumentsNumbers = false;
+                            break;
+                        }
+                    }
+
+                    if (areAllArgumentsNumbers)
+                    {
+                        var result = func.Execute(args.Select(x => ((NumberNode)x).Number).ToArray());
+
+                        // Potentially split this call node into two methods 
+                        // as it can't return this for a statement case.
+                        new NumberNode(result, call.Position);
+                    }
+                }
+            }
+            else
+            {
+                OptimiseFunction(call.Identifier.Identifier); 
+            }
+
             functions[call.Identifier.Identifier].IsReferenced = true;
 
             return new CallNode(call.Identifier, args, call.Position);

@@ -19,7 +19,7 @@ namespace Jelly.Core.Interpreting
             values = new ValueStack();
             CreateFunctionDictionary(ast);
 
-            ExecuteFunction(functions["Main"], new List<double> { });
+            ExecuteFunction(functions["Main"], new double[0]);
         }
 
         // Create a dictionary of functions from the AST
@@ -41,7 +41,7 @@ namespace Jelly.Core.Interpreting
         }
 
         // Execute a function with the given arguments
-        private double ExecuteFunction(IFunction function, List<double> arguments)
+        private double ExecuteFunction(IFunction function, double[] arguments)
         {
             // Execute the internal function if it is one
             if (function is InternalFunction internalFunction)
@@ -54,7 +54,7 @@ namespace Jelly.Core.Interpreting
             // Push the arguments to the call stack
             values.PushIndependentFrame();
 
-            for (int i = 0; i < arguments.Count; i++)
+            for (int i = 0; i < arguments.Length; i++)
             {
                 values.Add(node.Parameters[i].Identifier, arguments[i]);
             }
@@ -133,11 +133,11 @@ namespace Jelly.Core.Interpreting
                     }
                     else if (statementNode is CallNode callNode)
                     {
-                        var args = new List<double>();
+                        var args = new double[callNode.Arguments.Length];
 
-                        foreach (var arg in callNode.Arguments)
+                        for (int i = 0; i < callNode.Arguments.Length; i++)
                         {
-                            args.Add(Evaluate(arg));
+                            args[i] = Evaluate(callNode.Arguments[i]);
                         }
 
                         ExecuteFunction(functions[callNode.Identifier.Identifier], args);
@@ -207,11 +207,11 @@ namespace Jelly.Core.Interpreting
             }
             else if (term is CallNode callNode)
             {
-                var args = new List<double>();
+                var args = new double[callNode.Arguments.Length];
 
-                foreach (var arg in callNode.Arguments)
+                for (int i = 0; i < callNode.Arguments.Length; i++)
                 {
-                    args.Add(Evaluate(arg));
+                    args[i] = Evaluate(callNode.Arguments[i]);
                 }
 
                 return ExecuteFunction(functions[callNode.Identifier.Identifier], args);

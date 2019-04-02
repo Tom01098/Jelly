@@ -25,7 +25,7 @@ namespace Jelly.Core.Linking
             this.info = info;
         }
 
-        public double Execute(List<double> arguments)
+        public double Execute(double[] arguments)
         {
             return (double)info.Invoke(null, arguments.Cast<object>().ToArray());
         }

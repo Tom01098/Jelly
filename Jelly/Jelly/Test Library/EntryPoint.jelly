@@ -1,5 +1,5 @@
 ﻿Main<>
-	x = 4
+	x = Pow<2, 4>
 	WriteLine<x>
 	x => x + 3
 	WriteLine<x>
