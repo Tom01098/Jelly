@@ -450,6 +450,28 @@ end";
 
             Interpret(text, expected);
         }
+
+        [TestMethod]
+        public void UseAfterLoop()
+        {
+            var text = @"
+Main<>
+	x = 0
+	in = 5
+
+	loop in >> 0
+		x => x + in
+		in => in - 1
+	end
+
+	WriteLine<x>
+end";
+
+            var expected = @"15
+";
+
+            Interpret(text, expected);
+        }
         #endregion
 
         #region Two Functions
