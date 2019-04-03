@@ -178,7 +178,7 @@ namespace Jelly.Core.Optimising
                 case MutationNode mutation:
                     return OptimiseMutation(mutation, variables);
                 case CallNode call:
-                    return OptimiseCall(call, variables);
+                    return OptimiseStatementCall(call, variables);
                 case ReturnNode @return:
                     return OptimiseReturn(@return, variables);
             }
@@ -223,9 +223,8 @@ namespace Jelly.Core.Optimising
             return new MutationNode(assignment.Identifier, value, assignment.Position);
         }
 
-        // Optimise a call by optimising the arguments and potentially even
-        // inlining the function
-        private CallNode OptimiseCall(CallNode call,
+        // Optimise a call's arguments
+        private CallNode OptimiseStatementCall(CallNode call,
                                       Dictionary<string, double?> variables)
         {
             var args = new ITermNode[call.Arguments.Length];
@@ -235,34 +234,7 @@ namespace Jelly.Core.Optimising
                 args[i] = OptimiseTerm(call.Arguments[i], variables);
             }
 
-            if (functions[call.Identifier.Identifier].IsInternal)
-            {
-                var func = (InternalFunction)functions[call.Identifier.Identifier].Function;
-
-                if (func.Deterministic)
-                {
-                    bool areAllArgumentsNumbers = true;
-
-                    foreach (var arg in args)
-                    {
-                        if (!(arg is NumberNode))
-                        {
-                            areAllArgumentsNumbers = false;
-                            break;
-                        }
-                    }
-
-                    if (areAllArgumentsNumbers)
-                    {
-                        var result = func.Execute(args.Select(x => ((NumberNode)x).Number).ToArray());
-
-                        // Potentially split this call node into two methods 
-                        // as it can't return this for a statement case.
-                        new NumberNode(result, call.Position);
-                    }
-                }
-            }
-            else
+            if (!functions[call.Identifier.Identifier].IsInternal)
             {
                 OptimiseFunction(call.Identifier.Identifier); 
             }
@@ -301,7 +273,7 @@ namespace Jelly.Core.Optimising
                 case NegativeNode negative:
                     return OptimiseNegative(negative, variables);
                 case CallNode call:
-                    return OptimiseCall(call, variables);
+                    return OptimiseTermCall(call, variables);
                 case IdentifierNode identifier:
                     return OptimiseIdentifier(identifier, variables);
                 case NumberNode number:
@@ -394,6 +366,53 @@ namespace Jelly.Core.Optimising
             }
 
             return new NegativeNode(value, negative.Position);
+        }
+
+        // Optimise a call's arguments and potentially execute it
+        // if it is deterministic
+        private ITermNode OptimiseTermCall(CallNode call,
+                                          Dictionary<string, double?> variables)
+        {
+            var args = new ITermNode[call.Arguments.Length];
+
+            for (int i = 0; i < call.Arguments.Length; i++)
+            {
+                args[i] = OptimiseTerm(call.Arguments[i], variables);
+            }
+
+            if (functions[call.Identifier.Identifier].IsInternal)
+            {
+                var func = (InternalFunction)functions[call.Identifier.Identifier].Function;
+
+                if (func.Deterministic)
+                {
+                    bool areAllArgumentsNumbers = true;
+
+                    foreach (var arg in args)
+                    {
+                        if (!(arg is NumberNode))
+                        {
+                            areAllArgumentsNumbers = false;
+                            break;
+                        }
+                    }
+
+                    if (areAllArgumentsNumbers)
+                    {
+                        var result = func.Execute(args.Select(x => ((NumberNode)x).Number).ToArray());
+                        
+                        return new NumberNode(result, call.Position);
+                    }
+                }
+            }
+            else
+            {
+                OptimiseFunction(call.Identifier.Identifier);
+            }
+
+            functions[call.Identifier.Identifier].IsReferenced = true;
+
+            return new CallNode(call.Identifier, args, call.Position);
         }
 
         // If the value of the identifier is constant, switch it out
