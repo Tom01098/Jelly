@@ -64,21 +64,46 @@ namespace Jelly.Core.Optimising
             // Optimise the constructs within the function
             var constructs = OptimiseConstructs(function.Constructs, variables);
 
+            // Remove unneeded assignments and mutations
+            var referencedVariables = new List<string>();
+
+            for (int i = constructs.Count - 1; i >= 0; i--)
+            {
+                // Get the variables used in this construct
+                // to determine if an assignment or mutation
+                // is unecessary
+                GetReferencedVariables((Node)constructs[i], referencedVariables);
+
+                if (constructs[i] is AssignmentNode assignment)
+                {
+                    if (!referencedVariables.Contains(assignment.Identifier.Identifier))
+                    {
+                        constructs.RemoveAt(i);
+                    }
+                }
+                else if (constructs[i] is MutationNode mutation)
+                {
+                    if (!referencedVariables.Contains(mutation.Identifier.Identifier))
+                    {
+                        constructs.RemoveAt(i);
+                    }
+                }
+            }
+
             // Put the function back together
             functions[function.Name].Function = new FunctionNode(function.Identifier,
                                                                  function.Parameters,
-                                                                 constructs,
+                                                                 constructs.ToArray(),
                                                                  function.Position);
         }
 
         #region Constructs
         // Optimise a construct by removing dead code after a return statement
-        private IConstructNode[] OptimiseConstructs(IConstructNode[] constructs,
+        private List<IConstructNode> OptimiseConstructs(IConstructNode[] constructs,
                                                     Dictionary<string, double?> variables)
         {
             var newConstructs = new List<IConstructNode>();
-
-            // First pass optimise constructs
+            
             foreach (var construct in constructs)
             {
                 var newConstruct = OptimiseConstruct(construct, variables);
@@ -94,33 +119,7 @@ namespace Jelly.Core.Optimising
                 }
             }
 
-            // Second pass - remove unneeded assignments and mutations
-            var referencedVariables = new List<string>();
-
-            for (int i = newConstructs.Count - 1; i >= 0; i--)
-            {
-                // Get the variables used in this construct
-                // to determine if an assignment or mutation
-                // is unecessary
-                GetReferencedVariables((Node)newConstructs[i], referencedVariables);
-
-                if (newConstructs[i] is AssignmentNode assignment)
-                {
-                    if (!referencedVariables.Contains(assignment.Identifier.Identifier))
-                    {
-                        newConstructs.RemoveAt(i);
-                    }
-                }
-                else if (newConstructs[i] is MutationNode mutation)
-                {
-                    if (!referencedVariables.Contains(mutation.Identifier.Identifier))
-                    {
-                        newConstructs.RemoveAt(i);
-                    }
-                }
-            }
-
-            return newConstructs.ToArray();
+            return newConstructs;
         }
 
         // Call the relevant method for this construct
@@ -170,7 +169,7 @@ namespace Jelly.Core.Optimising
                     }
                 }
 
-                blocks[i] = new ConditionalBlockNode(condition, constructs, ifBlock.Position);
+                blocks[i] = new ConditionalBlockNode(condition, constructs.ToArray(), ifBlock.Position);
             }
 
             return new IfBlockNode(blocks, ifBlock.Position);
@@ -187,7 +186,7 @@ namespace Jelly.Core.Optimising
             var constructs = OptimiseConstructs(loopBlock.Block.Constructs, new Dictionary<string, double?>());
 
             return new LoopBlockNode(new ConditionalBlockNode(loopBlock.Block.Condition,
-                                                              constructs,
+                                                              constructs.ToArray(),
                                                               loopBlock.Position), 
                                                               loopBlock.Position);
         }
