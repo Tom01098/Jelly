@@ -131,7 +131,7 @@ namespace Jelly.Core.Optimising
                 case IfBlockNode ifBlock:
                     return OptimiseIfBlock(ifBlock, variables);
                 case LoopBlockNode loopBlock:
-                    return OptimiseLoopBlock(loopBlock);
+                    return OptimiseLoopBlock(loopBlock, variables);
                 case IStatementNode statement:
                     return OptimiseStatement(statement, variables);
             }
@@ -172,11 +172,14 @@ namespace Jelly.Core.Optimising
                 blocks[i] = new ConditionalBlockNode(condition, constructs.ToArray(), ifBlock.Position);
             }
 
+            variables.Clear();
+
             return new IfBlockNode(blocks, ifBlock.Position);
         }
 
         // Optimise a loop block
-        private LoopBlockNode OptimiseLoopBlock(LoopBlockNode loopBlock)
+        private LoopBlockNode OptimiseLoopBlock(LoopBlockNode loopBlock,
+                                                Dictionary<string, double?> variables)
         {
             // The condition of a loop block cannot be optimised to be constant
             // as it could be modified within the loop body.
@@ -184,6 +187,8 @@ namespace Jelly.Core.Optimising
             // during optimisation (without further context).
 
             var constructs = OptimiseConstructs(loopBlock.Block.Constructs, new Dictionary<string, double?>());
+
+            variables.Clear();
 
             return new LoopBlockNode(new ConditionalBlockNode(loopBlock.Block.Condition,
                                                               constructs.ToArray(),
