@@ -78,6 +78,7 @@ namespace Jelly.Core.Optimising
         {
             var newConstructs = new List<IConstructNode>();
 
+            // First pass optimise constructs
             foreach (var construct in constructs)
             {
                 var newConstruct = OptimiseConstruct(construct, variables);
@@ -90,6 +91,32 @@ namespace Jelly.Core.Optimising
                 if (construct is ReturnNode)
                 {
                     break;
+                }
+            }
+
+            // Second pass - remove unneeded assignments and mutations
+            var referencedVariables = new List<string>();
+
+            for (int i = newConstructs.Count - 1; i >= 0; i--)
+            {
+                // Get the variables used in this construct
+                // to determine if an assignment or mutation
+                // is unecessary
+                GetReferencedVariables((Node)newConstructs[i], referencedVariables);
+
+                if (newConstructs[i] is AssignmentNode assignment)
+                {
+                    if (!referencedVariables.Contains(assignment.Identifier.Identifier))
+                    {
+                        newConstructs.RemoveAt(i);
+                    }
+                }
+                else if (newConstructs[i] is MutationNode mutation)
+                {
+                    if (!referencedVariables.Contains(mutation.Identifier.Identifier))
+                    {
+                        newConstructs.RemoveAt(i);
+                    }
                 }
             }
 
@@ -433,6 +460,63 @@ namespace Jelly.Core.Optimising
             }
 
             return identifier;
+        }
+        #endregion
+
+        #region Utility
+        private void GetReferencedVariables(Node node, List<string> variables)
+        {
+            switch (node)
+            {
+                case AbsoluteNode absolute:
+                    GetReferencedVariables((Node)absolute.Value, variables);
+                    break;
+                case AssignmentNode assignment:
+                    GetReferencedVariables((Node)assignment.Value, variables);
+                    break;
+                case CallNode call:
+                    foreach (var arg in call.Arguments)
+                    {
+                        GetReferencedVariables((Node)arg, variables);
+                    }
+                    break;
+                case ConditionalBlockNode conditionalBlock:
+                    GetReferencedVariables((Node)conditionalBlock.Condition, variables);
+
+                    foreach (var construct in conditionalBlock.Constructs)
+                    {
+                        GetReferencedVariables((Node)construct, variables);
+                    }
+                    break;
+                case IdentifierNode identifier:
+                    variables.Add(identifier.Identifier);
+                    break;
+                case IfBlockNode ifBlock:
+                    foreach (var block in ifBlock.Blocks)
+                    {
+                        GetReferencedVariables(block, variables);
+                    }
+                    break;
+                case LoopBlockNode loopBlock:
+                    GetReferencedVariables(loopBlock.Block, variables);
+                    break;
+                case MutationNode mutation:
+                    GetReferencedVariables((Node)mutation.Value, variables);
+                    break;
+                case NegativeNode negative:
+                    GetReferencedVariables((Node)negative.Term, variables);
+                    break;
+                case NotNode not:
+                    GetReferencedVariables((Node)not.Term, variables);
+                    break;
+                case ReturnNode @return:
+                    GetReferencedVariables((Node)@return.Value, variables);
+                    break;
+                case ValueNode value:
+                    GetReferencedVariables((Node)value.LHS, variables);
+                    GetReferencedVariables((Node)value.RHS, variables);
+                    break;
+            }
         }
         #endregion
     }
