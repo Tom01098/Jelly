@@ -1,5 +1,4 @@
-﻿using Jelly.Core.Linking;
-using Jelly.Core.Parsing.AST;
+﻿using Jelly.Core.Parsing.AST;
 using Jelly.Core.Utility;
 using System.Collections.Generic;
 
@@ -54,7 +53,7 @@ namespace Jelly.Core.Verifying
 
                 if (functionInfos.ContainsKey(info.Name))
                 {
-                    AddDiagnostic($"Multiple functions called {info.Name}",
+                    AddDiagnostic($"Duplicate function called '{info.Name}'",
                                   info.Position);
                 }
                 else
@@ -83,7 +82,7 @@ namespace Jelly.Core.Verifying
             {
                 if (parameters.Contains(parameter.Identifier))
                 {
-                    AddDiagnostic($"Multiple parameters called {parameter.Identifier}",
+                    AddDiagnostic($"Multiple parameters called '{parameter.Identifier}'",
                                   parameter.Position);
                 }
                 else
@@ -129,7 +128,7 @@ namespace Jelly.Core.Verifying
             {
                 if (definedVariables.Contains(assignment.Identifier.Identifier))
                 {
-                    AddDiagnostic($"Assigning to an already assigned variable", 
+                    AddDiagnostic($"'{assignment.Identifier.Identifier}' has already been defined, you can mutate it with '=>'", 
                                   assignment.Position);
                 }
 
@@ -141,7 +140,7 @@ namespace Jelly.Core.Verifying
             {
                 if (!definedVariables.Contains(mutation.Identifier.Identifier))
                 {
-                    AddDiagnostic($"Mutating an undefined variable",
+                    AddDiagnostic($"Mutating '{mutation.Identifier.Identifier}' before it has been defined, you need to assign it first with '='",
                                   mutation.Position);
                 }
 
@@ -168,7 +167,7 @@ namespace Jelly.Core.Verifying
             {
                 if (!definedVariables.Contains(identifier.Identifier))
                 {
-                    AddDiagnostic($"{identifier.Identifier} is undefined",
+                    AddDiagnostic($"'{identifier.Identifier}' must be defined before it is used",
                                   identifier.Position);
                 }
             }
@@ -199,12 +198,12 @@ namespace Jelly.Core.Verifying
         {
             if (!functionInfos.ContainsKey(call.Identifier.Identifier))
             {
-                AddDiagnostic($"{call.Identifier.Identifier} is not defined",
+                AddDiagnostic($"The function '{call.Identifier.Identifier}' is undefined",
                               call.Position);
             }
             else if (call.Arguments.Length != functionInfos[call.Identifier.Identifier].ParameterCount)
             {
-                AddDiagnostic($"Expected {functionInfos[call.Identifier.Identifier].ParameterCount} arguments",
+                AddDiagnostic($"Expected {functionInfos[call.Identifier.Identifier].ParameterCount} arguments but got {call.Arguments.Length}",
                               call.Position);
             }
 
