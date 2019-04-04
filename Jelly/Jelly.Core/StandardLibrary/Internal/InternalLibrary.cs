@@ -29,7 +29,14 @@ namespace Jelly.Core.StandardLibrary.Internal
         [InternalFunction]
         public static double Read()
         {
-            return double.Parse(Console.ReadLine());
+            var input = Console.ReadLine();
+
+            if (double.TryParse(input, out var num))
+            {
+                return num;
+            }
+
+            throw new ArgumentException("User input can only be a number");
         }
         #endregion
 
@@ -71,6 +78,12 @@ namespace Jelly.Core.StandardLibrary.Internal
         [InternalFunction]
         public static double RandomIntBetween(double min, double max)
         {
+            if (min % 1 != 0 || max % 1 != 0)
+            {
+                throw new ArgumentException($"{nameof(RandomIntBetween)} " +
+                    $"can only accept integers but got '{min}' and '{max}'");
+            }
+
             return random.Next((int)min, (int)max);
         }
 
