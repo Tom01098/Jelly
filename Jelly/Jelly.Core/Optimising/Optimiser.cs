@@ -415,10 +415,16 @@ namespace Jelly.Core.Optimising
                                           Dictionary<string, double?> variables)
         {
             var args = new ITermNode[call.Arguments.Length];
+            bool areAllArgumentsNumbers = true;
 
             for (int i = 0; i < call.Arguments.Length; i++)
             {
                 args[i] = OptimiseTerm(call.Arguments[i], variables);
+
+                if (!(args[i] is NumberNode))
+                {
+                    areAllArgumentsNumbers = false;
+                }
             }
 
             if (functions[call.Identifier.Identifier].IsInternal)
@@ -427,17 +433,6 @@ namespace Jelly.Core.Optimising
 
                 if (func.Deterministic)
                 {
-                    bool areAllArgumentsNumbers = true;
-
-                    foreach (var arg in args)
-                    {
-                        if (!(arg is NumberNode))
-                        {
-                            areAllArgumentsNumbers = false;
-                            break;
-                        }
-                    }
-
                     if (areAllArgumentsNumbers)
                     {
                         var result = func.Execute(args.Select(x => ((NumberNode)x).Number).ToArray());
