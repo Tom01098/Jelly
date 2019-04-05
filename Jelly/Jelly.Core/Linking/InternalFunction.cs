@@ -1,6 +1,5 @@
 ﻿using Jelly.Core.Parsing.AST;
 using Jelly.Core.Utility;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -27,7 +26,14 @@ namespace Jelly.Core.Linking
 
         public double Execute(double[] arguments)
         {
-            return (double)info.Invoke(null, arguments.Cast<object>().ToArray());
+            try
+            {
+                return (double)info.Invoke(null, arguments.Cast<object>().ToArray());
+            }
+            catch (TargetInvocationException ex)
+            {
+                throw ex.InnerException;
+            }
         }
     }
 }

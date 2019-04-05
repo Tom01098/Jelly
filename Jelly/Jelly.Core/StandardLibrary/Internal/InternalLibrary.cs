@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Jelly.Core.Utility;
+using System;
 
 namespace Jelly.Core.StandardLibrary.Internal
 {
@@ -36,7 +37,7 @@ namespace Jelly.Core.StandardLibrary.Internal
                 return num;
             }
 
-            throw new ArgumentException("User input can only be a number");
+            throw new JellyException("User input can only be a number");
         }
         #endregion
 
@@ -80,7 +81,7 @@ namespace Jelly.Core.StandardLibrary.Internal
         {
             if (min % 1 != 0 || max % 1 != 0)
             {
-                throw new ArgumentException($"{nameof(RandomIntBetween)} " +
+                throw new JellyException($"{nameof(RandomIntBetween)} " +
                     $"can only accept integers but got '{min}' and '{max}'");
             }
 

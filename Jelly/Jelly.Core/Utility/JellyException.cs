@@ -11,6 +11,9 @@ namespace Jelly.Core.Utility
         public JellyException() 
             : base("") { }
 
+        public JellyException(string message)
+            : base(message) { }
+
         public JellyException(string message, Position position) 
             : base($"{message} at {position}") { }
     }
