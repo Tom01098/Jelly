@@ -69,16 +69,16 @@ namespace Jelly.Core.Optimising
 
             for (int i = constructs.Count - 1; i >= 0; i--)
             {
-                // Get the variables used in this construct
-                // to determine if an assignment or mutation
-                // is unecessary
-                GetReferencedVariables((Node)constructs[i], referencedVariables);
+                bool removed = false;
 
+                // If the variable being assigned/mutated is not
+                // being used after this construct, remove it.
                 if (constructs[i] is AssignmentNode assignment)
                 {
                     if (!referencedVariables.Contains(assignment.Identifier.Identifier))
                     {
                         constructs.RemoveAt(i);
+                        removed = true;
                     }
                 }
                 else if (constructs[i] is MutationNode mutation)
@@ -86,7 +86,17 @@ namespace Jelly.Core.Optimising
                     if (!referencedVariables.Contains(mutation.Identifier.Identifier))
                     {
                         constructs.RemoveAt(i);
+                        removed = true;
                     }
+                }
+
+                // Get the variables used in this construct
+                // to determine if an assignment or mutation
+                // is unnecessary in the constructs before it.
+                if (!removed)
+                {
+                    GetReferencedVariables((Node)constructs[i], 
+                                            referencedVariables);
                 }
             }
 
