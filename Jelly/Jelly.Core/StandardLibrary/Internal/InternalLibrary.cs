@@ -65,6 +65,18 @@ namespace Jelly.Core.StandardLibrary.Internal
         {
             return Math.Floor(x);
         }
+
+        [InternalFunction(true)]
+        public static double Sin(double x)
+        {
+            return Math.Sin(x);
+        }
+
+        [InternalFunction(true)]
+        public static double Cos(double x)
+        {
+            return Math.Cos(x);
+        }
         #endregion
 
         #region Random

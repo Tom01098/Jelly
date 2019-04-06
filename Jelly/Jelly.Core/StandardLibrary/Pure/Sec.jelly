@@ -1,0 +1,4 @@
+﻿@ The value of secx for x, in radians
+Sec<x>
+	~1 / Cos<x>
+end

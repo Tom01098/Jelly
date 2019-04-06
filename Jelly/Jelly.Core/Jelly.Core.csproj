@@ -6,6 +6,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Update="StandardLibrary\Pure\Sec.jelly">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="StandardLibrary\Pure\Cot.jelly">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="StandardLibrary\Pure\Sqrt.jelly">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="StandardLibrary\Pure\Tan.jelly">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="StandardLibrary\Pure\Round.jelly">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -21,7 +33,7 @@
     <None Update="StandardLibrary\Pure\SafeDivide.jelly">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="StandardLibrary\Pure\Sqrt.jelly">
+    <None Update="StandardLibrary\Pure\Cosec.jelly">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

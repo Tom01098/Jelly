@@ -1,0 +1,4 @@
+﻿@ The value of cotx for x, in radians
+Cot<x>
+	~Cos<x> / Sin<x>
+end

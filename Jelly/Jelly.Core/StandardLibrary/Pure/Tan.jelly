@@ -1,0 +1,4 @@
+﻿@ The value of tanx for x, in radians
+Tan<x>
+	~Sin<x> / Cos<x>
+end

@@ -1,0 +1,4 @@
+﻿@ The value of cosecx for x, in radians
+Cosec<x>
+	~1 / Sin<x>
+end
