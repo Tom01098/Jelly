@@ -41,6 +41,56 @@ Divide<top, bottom>
 end
 ```
 
+## Operators
+> Operations are currently parsed right-to-left as it was the easiest way to parse it. If precedence is needed, use parenthesis to explicitly determine the order of operations.
+
+| Operator | Use                                                                        |
+|----------|----------------------------------------------------------------------------|
+| +        | Add the LHS and RHS                                                        |
+| -        | Subtract the RHS from the LHS, or the negative value of the following term |
+| *        | Multiply the LHS and RHS                                                   |
+| /        | Divide the LHS by the RHS                                                  |
+| %        | The remainder after dividing the LHS from the RHS                          |
+| ==       | 1 if the LHS and RHS are equal, 0 otherwise                                |
+| !=       | 0 if the LHS and RHS are equal, 1 otherwise                                |
+| <<       | 1 if the LHS is less than the RHS, 0 otherwise                             |
+| >>       | 1 if the LHS is greater than the RHS, 0 otherwise                          |
+| <=       | 1 if the LHS is less than or equal to the RHS, 0 otherwise                 |
+| >=       | 1 if the LHS is greater than or equal to the RHS, 0 otherwise              |
+| \|       | The absolute value of the term inside (eg: \|-4\|)                         |
+
+## Blocks
+### If-Elif-Else
+The keywords `if`, `elif`, and `else` are used to start a conditional block. 
+`if` and `elif` blocks have an expression after the keyword, if it evaluates to a non-zero value, the block will execute.
+Each block ends with the `end` keyword.
+
+```
+if x == 2
+	@ If x is 2
+end
+elif x == 4
+	@ If x is 4
+end
+elif x == 5
+	@ If x is 5
+end
+else
+	@ If x is not 2, 4, or 5
+end
+```
+
+### Loop
+A loop is declared with the `loop` keyword, and is followed by an expression.
+While the expression evaluates to a non-zero value, the loop body will execute over and over again.
+
+```
+loop x >> 100
+	WriteLine<x>
+	x => RandomIntBetween<0, 1000>
+end
+```
+
 ## Comments
 An '@' symbol denotes that the rest of the line will not be processed by the compiler and can be used to comment.
 
