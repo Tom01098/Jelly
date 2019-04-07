@@ -57,10 +57,15 @@ end
 | >=       | 1 if the LHS is greater than or equal to the RHS, 0 otherwise              |
 | \|       | The absolute value of the term inside (eg: \|-4\|)                         |
 
+## Conditions
+A condition is an expression which is used in a block to determine whether to run it or not.
+A zero value is equivalent to false, everything else is considered true.
+The unary operator `!` is used before a condition to 'flip' it; if it is true, it will become false, and vice-versa.
+
 ## Blocks
 ### If-Elif-Else
 The keywords `if`, `elif`, and `else` are used to start a conditional block. 
-`if` and `elif` blocks have an expression after the keyword, if it evaluates to a non-zero value, the block will execute.
+`if` and `elif` blocks have a condition after the keyword, if it is true, it will execute that block.
 Each block ends with the `end` keyword.
 
 ```
@@ -79,8 +84,8 @@ end
 ```
 
 ### Loop
-A loop is declared with the `loop` keyword, and is followed by an expression.
-While the expression evaluates to a non-zero value, the loop body will execute over and over again.
+A loop is declared with the `loop` keyword, and is followed by a condition.
+While the condition evaluates to true, the loop body will execute over and over again.
 
 ```
 loop x >> 100
