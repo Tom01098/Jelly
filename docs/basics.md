@@ -1,9 +1,7 @@
-*Syntax is subject to change*
-
 Jelly has a minimal syntax focusing on code clarity. Whitespace is insignificant but newlines are as only one statement is allowed per line.
 
 ## Literals
-Jelly only has one literal type - a double-precision floating point number.
+Jelly only has one literal type - a double-precision floating point number (eg: `4`, `5.2`, or `-2.34`).
 
 ## Variables
 ### Initialisation
