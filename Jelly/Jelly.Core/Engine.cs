@@ -38,8 +38,6 @@ namespace Jelly.Core
                 ast.AddRange(functions);
             }
 
-            WriteDiagnostic($"Found {ast.Count} user functions.", false);
-
             return new Linker().LinkAST(ast);
         }
 

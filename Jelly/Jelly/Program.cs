@@ -15,8 +15,11 @@ namespace Jelly
             [Value(0)]
             public string Path { get; set; }
 
-            [Option('o')]
+            [Option('o', "optimise")]
             public bool Optimise { get; set; }
+
+            [Option('d', "diagnostics")]
+            public bool Diagnostics { get; set; }
         }
 
         private static void Main(string[] args)
@@ -24,19 +27,15 @@ namespace Jelly
             try
             {
                 // Parse the command line arguments
-                var options = new Options();
-                Parser.Default.ParseArguments<Options>(args).WithParsed(result =>
-                {
-                    options.Path = result.Path;
-                    options.Optimise = result.Optimise;
-                });
+                Options options = null;
+                Parser.Default.ParseArguments<Options>(args).WithParsed(result => options = result);
 
                 // Set diagnostics
                 Engine.SetDiagnosticOut(x =>
                 {
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine(x);
-                });
+                }, !options.Diagnostics);
 
                 Engine.SetErrorOut(x =>
                 {
