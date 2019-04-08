@@ -22,6 +22,7 @@ namespace Jelly.Core.Linking
             libraryFunctions.AddRange(GetPureFunctions());
             libraryFunctions.AddRange(userAST.Cast<IFunction>().ToList());
 
+            Engine.WriteDiagnostic("Linking succeeded");
             return libraryFunctions;
         }
 

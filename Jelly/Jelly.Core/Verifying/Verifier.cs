@@ -39,6 +39,8 @@ namespace Jelly.Core.Verifying
 
                 throw new JellyException();
             }
+
+            Engine.WriteDiagnostic("Verifying succeeded");
         }
 
         // Retrieve function information from all functions and check for

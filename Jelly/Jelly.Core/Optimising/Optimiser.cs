@@ -40,6 +40,7 @@ namespace Jelly.Core.Optimising
                 }
             }
 
+            Engine.WriteDiagnostic("Optimisation succeeded");
             return newAST;
         }
 

@@ -19,7 +19,9 @@ namespace Jelly.Core.Interpreting
             values = new ValueStack();
             CreateFunctionDictionary(ast);
 
+            Engine.WriteDiagnostic("START PROGRAM\n");
             ExecuteFunction(functions["Main"], new double[0]);
+            Engine.WriteDiagnostic("\nEND PROGRAM");
         }
 
         // Create a dictionary of functions from the AST

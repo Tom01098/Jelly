@@ -31,11 +31,14 @@ namespace Jelly
                 Parser.Default.ParseArguments<Options>(args).WithParsed(result => options = result);
 
                 // Set diagnostics
-                Engine.SetDiagnosticOut(x =>
+                if (options.Diagnostics)
                 {
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.WriteLine(x);
-                }, !options.Diagnostics);
+                    Engine.SetDiagnosticOut(x =>
+                    {
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine(x);
+                    }); 
+                }
 
                 Engine.SetErrorOut(x =>
                 {
