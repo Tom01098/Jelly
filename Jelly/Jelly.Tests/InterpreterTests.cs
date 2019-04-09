@@ -472,6 +472,32 @@ end";
 
             Interpret(text, expected);
         }
+
+        [TestMethod]
+        public void FoldInsideConditional()
+        {
+            var text = @"
+Main<>
+	x = 4
+
+	if x
+		x => 6
+		y = 5
+		z = x + y
+
+		WriteLine<z>
+	end
+
+	x => 6
+	WriteLine<x>
+end";
+
+            var expected = @"11
+6
+";
+
+            Interpret(text, expected);
+        }
         #endregion
 
         #region Two Functions

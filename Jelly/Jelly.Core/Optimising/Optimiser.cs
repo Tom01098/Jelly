@@ -63,43 +63,11 @@ namespace Jelly.Core.Optimising
             }
 
             // Optimise the constructs within the function
-            var constructs = OptimiseConstructs(function.Constructs, variables);
+            var constructs = FoldConstructs(function.Constructs, variables);
 
             // Remove unneeded assignments and mutations
             var referencedVariables = new List<string>();
-
-            for (int i = constructs.Count - 1; i >= 0; i--)
-            {
-                bool removed = false;
-
-                // If the variable being assigned/mutated is not
-                // being used after this construct, remove it.
-                if (constructs[i] is AssignmentNode assignment)
-                {
-                    if (!referencedVariables.Contains(assignment.Identifier.Identifier))
-                    {
-                        constructs.RemoveAt(i);
-                        removed = true;
-                    }
-                }
-                else if (constructs[i] is MutationNode mutation)
-                {
-                    if (!referencedVariables.Contains(mutation.Identifier.Identifier))
-                    {
-                        constructs.RemoveAt(i);
-                        removed = true;
-                    }
-                }
-
-                // Get the variables used in this construct
-                // to determine if an assignment or mutation
-                // is unnecessary in the constructs before it.
-                if (!removed)
-                {
-                    GetReferencedVariables((Node)constructs[i], 
-                                            referencedVariables);
-                }
-            }
+            EliminateDeadCode(constructs, referencedVariables);
 
             // Put the function back together
             functions[function.Name].Function = new FunctionNode(function.Identifier,
@@ -108,16 +76,17 @@ namespace Jelly.Core.Optimising
                                                                  function.Position);
         }
 
+        #region First Pass - Constant Folding
         #region Constructs
         // Optimise a construct by removing dead code after a return statement
-        private List<IConstructNode> OptimiseConstructs(IConstructNode[] constructs,
+        private List<IConstructNode> FoldConstructs(IConstructNode[] constructs,
                                                     Dictionary<string, double?> variables)
         {
             var newConstructs = new List<IConstructNode>();
-            
+
             foreach (var construct in constructs)
             {
-                var newConstruct = OptimiseConstruct(construct, variables);
+                var newConstruct = FoldConstruct(construct, variables);
 
                 if (!(newConstruct is null))
                 {
@@ -134,24 +103,24 @@ namespace Jelly.Core.Optimising
         }
 
         // Call the relevant method for this construct
-        private IConstructNode OptimiseConstruct(IConstructNode construct,
+        private IConstructNode FoldConstruct(IConstructNode construct,
                                                  Dictionary<string, double?> variables)
         {
             switch (construct)
             {
                 case IfBlockNode ifBlock:
-                    return OptimiseIfBlock(ifBlock, variables);
+                    return FoldIfBlock(ifBlock, variables);
                 case LoopBlockNode loopBlock:
-                    return OptimiseLoopBlock(loopBlock, variables);
+                    return FoldLoopBlock(loopBlock, variables);
                 case IStatementNode statement:
-                    return OptimiseStatement(statement, variables);
+                    return FoldStatement(statement, variables);
             }
 
             throw new Exception();
         }
 
         // Optimise all of the blocks in an if block
-        private IfBlockNode OptimiseIfBlock(IfBlockNode ifBlock,
+        private IfBlockNode FoldIfBlock(IfBlockNode ifBlock,
                                             Dictionary<string, double?> variables)
         {
             var blocks = new ConditionalBlockNode[ifBlock.Blocks.Length];
@@ -162,13 +131,13 @@ namespace Jelly.Core.Optimising
 
                 if (!(ifBlock.Blocks[i].Condition is null))
                 {
-                    condition = OptimiseTerm(ifBlock.Blocks[i].Condition, variables);
+                    condition = FoldTerm(ifBlock.Blocks[i].Condition, variables);
                 }
 
                 // Enter a scope as the current variables are guaranteed to
                 // persist into it.
                 var scopedVariables = new Dictionary<string, double?>(variables);
-                var constructs = OptimiseConstructs(ifBlock.Blocks[i].Constructs, scopedVariables);
+                var constructs = FoldConstructs(ifBlock.Blocks[i].Constructs, scopedVariables);
 
                 // Remove variables that have changed from this scope
                 foreach (var variable in scopedVariables)
@@ -189,7 +158,7 @@ namespace Jelly.Core.Optimising
         }
 
         // Optimise a loop block
-        private LoopBlockNode OptimiseLoopBlock(LoopBlockNode loopBlock,
+        private LoopBlockNode FoldLoopBlock(LoopBlockNode loopBlock,
                                                 Dictionary<string, double?> variables)
         {
             // The condition of a loop block cannot be optimised to be constant
@@ -197,42 +166,42 @@ namespace Jelly.Core.Optimising
             // This is why this scope needs to be treated as completely separate
             // during optimisation (without further context).
 
-            var constructs = OptimiseConstructs(loopBlock.Block.Constructs, new Dictionary<string, double?>());
+            var constructs = FoldConstructs(loopBlock.Block.Constructs, new Dictionary<string, double?>());
 
             variables.Clear();
 
             return new LoopBlockNode(new ConditionalBlockNode(loopBlock.Block.Condition,
                                                               constructs.ToArray(),
-                                                              loopBlock.Position), 
+                                                              loopBlock.Position),
                                                               loopBlock.Position);
         }
         #endregion
 
         #region Statements
         // Call the relevant method for this statement
-        private IStatementNode OptimiseStatement(IStatementNode statement,
+        private IStatementNode FoldStatement(IStatementNode statement,
                                                  Dictionary<string, double?> variables)
         {
             switch (statement)
             {
                 case AssignmentNode assignment:
-                    return OptimiseAssignment(assignment, variables);
+                    return FoldAssignment(assignment, variables);
                 case MutationNode mutation:
-                    return OptimiseMutation(mutation, variables);
+                    return FoldMutation(mutation, variables);
                 case CallNode call:
-                    return OptimiseStatementCall(call, variables);
+                    return FoldStatementCall(call, variables);
                 case ReturnNode @return:
-                    return OptimiseReturn(@return, variables);
+                    return FoldReturn(@return, variables);
             }
 
             throw new Exception();
         }
-        // Optimise an assignment by optimising the term, if it is a constant
-        // then the assignment can be removed completely
-        private AssignmentNode OptimiseAssignment(AssignmentNode assignment,
+
+        // Optimise an assignment by optimising the term
+        private AssignmentNode FoldAssignment(AssignmentNode assignment,
                                                   Dictionary<string, double?> variables)
         {
-            var value = OptimiseTerm(assignment.Value, variables);
+            var value = FoldTerm(assignment.Value, variables);
 
             if (value is NumberNode num)
             {
@@ -242,16 +211,16 @@ namespace Jelly.Core.Optimising
             {
                 variables[assignment.Identifier.Identifier] = null;
             }
-            
+
             return new AssignmentNode(assignment.Identifier, value, assignment.Position);
         }
 
         // Optimise a mutation by optimising the term, if it is a constant
         // then the mutation can be removed completely
-        private MutationNode OptimiseMutation(MutationNode assignment,
+        private MutationNode FoldMutation(MutationNode assignment,
                                               Dictionary<string, double?> variables)
         {
-            var value = OptimiseTerm(assignment.Value, variables);
+            var value = FoldTerm(assignment.Value, variables);
 
             if (value is NumberNode num)
             {
@@ -266,19 +235,19 @@ namespace Jelly.Core.Optimising
         }
 
         // Optimise a call's arguments
-        private CallNode OptimiseStatementCall(CallNode call,
+        private CallNode FoldStatementCall(CallNode call,
                                       Dictionary<string, double?> variables)
         {
             var args = new ITermNode[call.Arguments.Length];
 
             for (int i = 0; i < call.Arguments.Length; i++)
             {
-                args[i] = OptimiseTerm(call.Arguments[i], variables);
+                args[i] = FoldTerm(call.Arguments[i], variables);
             }
 
             if (!functions[call.Identifier.Identifier].IsInternal)
             {
-                OptimiseFunction(call.Identifier.Identifier); 
+                OptimiseFunction(call.Identifier.Identifier);
             }
 
             functions[call.Identifier.Identifier].IsReferenced = true;
@@ -287,7 +256,7 @@ namespace Jelly.Core.Optimising
         }
 
         // Optimise the value of a return statement
-        private ReturnNode OptimiseReturn(ReturnNode @return,
+        private ReturnNode FoldReturn(ReturnNode @return,
                                           Dictionary<string, double?> variables)
         {
             if (@return.Value is null)
@@ -295,43 +264,43 @@ namespace Jelly.Core.Optimising
                 return @return;
             }
 
-            return new ReturnNode(OptimiseTerm(@return.Value, variables), @return.Position);
+            return new ReturnNode(FoldTerm(@return.Value, variables), @return.Position);
         }
         #endregion
 
         #region Terms
         // Recursively use constant folding techniques to simplify a term
-        private ITermNode OptimiseTerm(ITermNode term,
+        private ITermNode FoldTerm(ITermNode term,
                                        Dictionary<string, double?> variables)
         {
             switch (term)
             {
                 case ValueNode value:
-                    return OptimiseValue(value, variables);
+                    return FoldValue(value, variables);
                 case AbsoluteNode abs:
-                    return OptimiseAbs(abs, variables);
+                    return FoldAbs(abs, variables);
                 case NotNode not:
-                    return OptimiseNot(not, variables);
+                    return FoldNot(not, variables);
                 case NegativeNode negative:
-                    return OptimiseNegative(negative, variables);
+                    return FoldNegative(negative, variables);
                 case CallNode call:
-                    return OptimiseTermCall(call, variables);
+                    return FoldTermCall(call, variables);
                 case IdentifierNode identifier:
-                    return OptimiseIdentifier(identifier, variables);
+                    return FoldIdentifier(identifier, variables);
                 case NumberNode number:
                     return number;
             }
 
             throw new Exception();
         }
-        
+
         // Optimise the LHS and RHS, if they're both numbers then the
         // result of the operation can be determined
-        private ITermNode OptimiseValue(ValueNode value,
+        private ITermNode FoldValue(ValueNode value,
                                         Dictionary<string, double?> variables)
         {
-            var lhs = OptimiseTerm(value.LHS, variables);
-            var rhs = OptimiseTerm(value.RHS, variables);
+            var lhs = FoldTerm(value.LHS, variables);
+            var rhs = FoldTerm(value.RHS, variables);
 
             if (lhs is NumberNode && rhs is NumberNode)
             {
@@ -369,10 +338,10 @@ namespace Jelly.Core.Optimising
         }
 
         // Apply the abs operation if the value is known
-        private ITermNode OptimiseAbs(AbsoluteNode abs,
+        private ITermNode FoldAbs(AbsoluteNode abs,
                                       Dictionary<string, double?> variables)
         {
-            var value = OptimiseTerm(abs.Value, variables);
+            var value = FoldTerm(abs.Value, variables);
 
             if (value is NumberNode num)
             {
@@ -383,10 +352,10 @@ namespace Jelly.Core.Optimising
         }
 
         // Apply the not operation if the value is known
-        private ITermNode OptimiseNot(NotNode not,
+        private ITermNode FoldNot(NotNode not,
                                       Dictionary<string, double?> variables)
         {
-            var value = OptimiseTerm(not.Term, variables);
+            var value = FoldTerm(not.Term, variables);
 
             if (value is NumberNode num)
             {
@@ -397,10 +366,10 @@ namespace Jelly.Core.Optimising
         }
 
         // Apply the negative operation if the value is known
-        private ITermNode OptimiseNegative(NegativeNode negative,
+        private ITermNode FoldNegative(NegativeNode negative,
                                            Dictionary<string, double?> variables)
         {
-            var value = OptimiseTerm(negative.Term, variables);
+            var value = FoldTerm(negative.Term, variables);
 
             if (value is NumberNode num)
             {
@@ -412,7 +381,7 @@ namespace Jelly.Core.Optimising
 
         // Optimise a call's arguments and potentially execute it
         // if it is deterministic
-        private ITermNode OptimiseTermCall(CallNode call,
+        private ITermNode FoldTermCall(CallNode call,
                                           Dictionary<string, double?> variables)
         {
             var args = new ITermNode[call.Arguments.Length];
@@ -420,7 +389,7 @@ namespace Jelly.Core.Optimising
 
             for (int i = 0; i < call.Arguments.Length; i++)
             {
-                args[i] = OptimiseTerm(call.Arguments[i], variables);
+                args[i] = FoldTerm(call.Arguments[i], variables);
 
                 if (!(args[i] is NumberNode))
                 {
@@ -437,7 +406,7 @@ namespace Jelly.Core.Optimising
                     if (areAllArgumentsNumbers)
                     {
                         var result = func.Execute(args.Select(x => ((NumberNode)x).Number).ToArray());
-                        
+
                         return new NumberNode(result, call.Position);
                     }
                 }
@@ -454,7 +423,7 @@ namespace Jelly.Core.Optimising
 
         // If the value of the identifier is constant, switch it out
         // for the constant number
-        private ITermNode OptimiseIdentifier(IdentifierNode identifier,
+        private ITermNode FoldIdentifier(IdentifierNode identifier,
                                              Dictionary<string, double?> variables)
         {
             if (variables.ContainsKey(identifier.Identifier))
@@ -472,8 +441,49 @@ namespace Jelly.Core.Optimising
             return identifier;
         }
         #endregion
+        #endregion
 
-        #region Utility
+        #region Second Pass - Dead Code Elimination
+        // Eliminate dead code from this construct.
+        private void EliminateDeadCode(List<IConstructNode> constructs, 
+                                       List<string> referencedVariables)
+        {
+            // Loop backwards through the constructs.
+            for (int i = constructs.Count - 1; i >= 0; i--)
+            {
+                bool removed = false;
+
+                // If the variable being assigned/mutated is not
+                // being used after this construct, remove it.
+                if (constructs[i] is AssignmentNode assignment)
+                {
+                    if (!referencedVariables.Contains(assignment.Identifier.Identifier))
+                    {
+                        constructs.RemoveAt(i);
+                        removed = true;
+                    }
+                }
+                else if (constructs[i] is MutationNode mutation)
+                {
+                    if (!referencedVariables.Contains(mutation.Identifier.Identifier))
+                    {
+                        constructs.RemoveAt(i);
+                        removed = true;
+                    }
+                }
+
+                // Get the variables used in this construct
+                // to determine if an assignment or mutation
+                // is unnecessary in the constructs before it.
+                if (!removed)
+                {
+                    GetReferencedVariables((Node)constructs[i],
+                                            referencedVariables);
+                }
+            }
+        }
+
+        // Get the variables referenced in this node recursively.
         private void GetReferencedVariables(Node node, List<string> variables)
         {
             switch (node)
