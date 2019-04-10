@@ -6,7 +6,7 @@ If you would like, you can download it and create your own `.jelly` programs!
 
 ## Quick Start
 1) Create a folder with as many `*.jelly` files as you like, these can be in any subdirectory needed for organisation.
-2) Open the command line and navigate to the directory which Jelly was installed in. Assumning it was installed in the Users\USERNAME\ directory, on Windows: `cd C:\Users\USERNAME`.
+2) Open the command line and navigate to the directory which Jelly was installed in. Assuming it was installed in the Users\USERNAME\ directory, on Windows: `cd C:\Users\USERNAME`.
 3) Run the command `dotnet Jelly.dll "FOLDER_PATH_OF_JELLY_CODE"`.
 
 Optionally, add the `-o` flag to optimise the code before running it.
