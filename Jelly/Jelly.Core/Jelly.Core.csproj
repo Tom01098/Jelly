@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Optimising\Optimiser.cs~RF84ff4a72.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="StandardLibrary\Pure\Sec.jelly">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

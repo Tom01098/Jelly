@@ -302,35 +302,71 @@ namespace Jelly.Core.Optimising
             var lhs = FoldTerm(value.LHS, variables);
             var rhs = FoldTerm(value.RHS, variables);
 
-            if (lhs is NumberNode && rhs is NumberNode)
-            {
-                var lNum = ((NumberNode)lhs).Number;
-                var rNum = ((NumberNode)rhs).Number;
+            var lNum = (lhs as NumberNode)?.Number;
+            var rNum = (rhs as NumberNode)?.Number;
 
+            if (lNum.HasValue && rNum.HasValue)
+            {
                 switch (value.Operator)
                 {
                     case OperatorType.Add:
-                        return new NumberNode(lNum + rNum, value.Position);
+                        return new NumberNode(lNum.Value + rNum.Value, value.Position);
                     case OperatorType.Subtract:
-                        return new NumberNode(lNum - rNum, value.Position);
+                        return new NumberNode(lNum.Value - rNum.Value, value.Position);
                     case OperatorType.Multiply:
-                        return new NumberNode(lNum * rNum, value.Position);
+                        return new NumberNode(lNum.Value * rNum.Value, value.Position);
                     case OperatorType.Divide:
-                        return new NumberNode(lNum / rNum, value.Position);
+                        return new NumberNode(lNum.Value / rNum.Value, value.Position);
                     case OperatorType.Modulo:
-                        return new NumberNode(lNum % rNum, value.Position);
+                        return new NumberNode(lNum.Value % rNum.Value, value.Position);
                     case OperatorType.EqualTo:
-                        return new NumberNode(lNum == rNum ? 1 : 0, value.Position);
+                        return new NumberNode(lNum.Value == rNum.Value ? 1 : 0, value.Position);
                     case OperatorType.UnequalTo:
-                        return new NumberNode(lNum != rNum ? 1 : 0, value.Position);
+                        return new NumberNode(lNum.Value != rNum.Value ? 1 : 0, value.Position);
                     case OperatorType.LessThan:
-                        return new NumberNode(lNum < rNum ? 1 : 0, value.Position);
+                        return new NumberNode(lNum.Value < rNum.Value ? 1 : 0, value.Position);
                     case OperatorType.GreaterThan:
-                        return new NumberNode(lNum > rNum ? 1 : 0, value.Position);
+                        return new NumberNode(lNum.Value > rNum.Value ? 1 : 0, value.Position);
                     case OperatorType.LessThanOrEqualTo:
-                        return new NumberNode(lNum <= rNum ? 1 : 0, value.Position);
+                        return new NumberNode(lNum.Value <= rNum.Value ? 1 : 0, value.Position);
                     case OperatorType.GreaterThanOrEqualTo:
-                        return new NumberNode(lNum >= rNum ? 1 : 0, value.Position);
+                        return new NumberNode(lNum.Value >= rNum.Value ? 1 : 0, value.Position);
+                }
+            }
+            else if (lNum.HasValue)
+            {
+                if (lNum.Value == 0)
+                {
+                    if (value.Operator == OperatorType.Add)
+                    {
+                        return rhs;
+                    }
+                }
+                else if (lNum.Value == 1)
+                {
+                    if (value.Operator == OperatorType.Multiply)
+                    {
+                        return rhs;
+                    }
+                }
+            }
+            else if (rNum.HasValue)
+            {
+                if (rNum.Value == 0)
+                {
+                    if (value.Operator == OperatorType.Add
+                        || value.Operator == OperatorType.Subtract)
+                    {
+                        return lhs;
+                    }
+                }
+                else if (rNum.Value == 1)
+                {
+                    if (value.Operator == OperatorType.Multiply
+                        || value.Operator == OperatorType.Divide)
+                    {
+                        return lhs;
+                    }
                 }
             }
 
